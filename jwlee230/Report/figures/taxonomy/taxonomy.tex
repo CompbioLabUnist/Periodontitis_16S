@@ -1,0 +1,51 @@
+\documentclass[border=1cm]{standalone}
+
+\usepackage{tikz}
+
+\usetikzlibrary{shapes, arrows, calc, positioning}
+\definecolor{codegreen}{rgb}{0, 0.6, 0}
+\definecolor{codegray}{rgb}{0.5, 0.5, 0.5}
+\definecolor{codepurple}{rgb}{0.58, 0, 0.82}
+\definecolor{backcolour}{rgb}{0.95, 0.95, 0.92}
+
+\tikzstyle{decision} = [diamond, draw, fill=blue!20, text width=4.5em, text badly centered, node distance=3cm, inner sep=0pt]
+\tikzstyle{block} = [rectangle, draw, fill=blue!20, text centered, rounded corners, minimum height=2em]
+\tikzstyle{line} = [draw, -latex']
+\tikzstyle{cloud} = [draw, ellipse, fill=red!20, node distance=5em, minimum height=2em]
+\tikzset
+{
+    -|-/.style=
+    {
+        to path=
+        {
+            (\tikztostart) -| ($(\tikztostart)!#1!(\tikztotarget)$) |- (\tikztotarget)
+            \tikztonodes
+        }
+    },
+    -|-/.default=0.5,
+    |-|/.style=
+    {
+        to path=
+        {
+            (\tikztostart) |- ($(\tikztostart)!#1!(\tikztotarget)$) -| (\tikztotarget)
+            \tikztonodes
+        }
+    },
+    |-|/.default=0.5,
+}
+
+\begin{document}
+    \begin{tikzpicture}
+        \node[decision] (node00) {Taxnomy};
+
+        \node[cloud, below of=node00, left of=node00] (node01) {Greengenes};
+        \path[line] (node00) -- (node01);
+        \node[cloud, below of=node00, right of=node00] (node02) {SILVA};
+        \path[line] (node00) -- (node02);
+
+        \node[block, below=1cm of node01] (node03) {Kingdom -- Species};
+        \path[line] (node01) -- (node03);
+        \node[block, below=1cm of node02] (node04) {Domain -- Genus};
+        \path[line] (node02) -- (node04);
+    \end{tikzpicture}
+\end{document}
