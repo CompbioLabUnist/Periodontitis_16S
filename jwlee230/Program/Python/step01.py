@@ -10,6 +10,9 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
+    if list(filter(lambda x: x.endswith(".fastq.gz"), args.input)):
+        raise ValueError("Input files must end with .fastq.gz!!")
+
     args.input.sort()
 
     f1 = sorted(list(filter(lambda x: x.endswith("1.fastq.gz"), args.input)))

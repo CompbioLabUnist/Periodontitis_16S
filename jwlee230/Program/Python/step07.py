@@ -14,6 +14,8 @@ if __name__ == "__main__":
 
     if not args.info.endswith(".xlsx"):
         raise ValueError("INFO file must end with .xlsx")
+    elif list(filter(lambda x: x.endswith(".fastq.gz"), args.input)):
+        raise ValueError("INPUT file must end with .fastq.gz!!")
 
     info_data = pandas.read_excel(args.info)
 
