@@ -149,3 +149,16 @@ Output/Step08/%.Deblur.seq.qzv: Output/Step05/%.seq.qza | Output/Step08 build.lo
 
 step08: Output/Step08/whole.DADA.table.qzv Output/Step08/whole.DADA.seq.qzv Output/Step08/whole.Deblur.table.qzv Output/Step08/whole.Deblur.seq.qzv
 .PHONY += step08
+
+# Step 09 (Phylogenetic diversity analysis)
+Output/Step09:
+	mkdir -p $@
+
+Output/Step09/%.DADA.aligned-rep-seqs.qza Output/Step09/%.DADA.masked-aligned-rep-seqs.qza Output/Step09/%.DADA.unrooted-tree.qza Output/Step09/%.DADA.rooted-tree.qza: Output/Step04/%.seq.qza | Output/Step09 build.log
+	$(DOCKER) qiime phylogeny align-to-tree-mafft-fasttree --i-sequences $(addprefix /,$<) --o-alignment $(addprefix /,$(basename $(basename $@))).aligned-rep-seqs.qza --o-masked-alignment $(addprefix /,$(basename $(basename $@))).masked-aligned-rep-seqs.qza --o-tree $(addprefix /,$(basename $(basename $@))).unrooted-tree.qza --o-rooted-tree $(addprefix /,$(basename $(basename $@))).rooted-tree.qza --p-n-threads $(CPUS) 1> $@.stdout 2> $@.stderr
+
+Output/Step09/%.Deblur.aligned-rep-seqs.qza Output/Step09/%.Deblur.masked-aligned-rep-seqs.qza Output/Step09/%.Deblur.unrooted-tree.qza Output/Step09/%.Deblur.rooted-tree.qza: Output/Step05/%.seq.qza | Output/Step09 build.log
+	$(DOCKER) qiime phylogeny align-to-tree-mafft-fasttree --i-sequences $(addprefix /,$<) --o-alignment $(addprefix /,$(basename $(basename $@))).aligned-rep-seqs.qza --o-masked-alignment $(addprefix /,$(basename $(basename $@))).masked-aligned-rep-seqs.qza --o-tree $(addprefix /,$(basename $(basename $@))).unrooted-tree.qza --o-rooted-tree $(addprefix /,$(basename $(basename $@))).rooted-tree.qza --p-n-threads $(CPUS) 1> $@.stdout 2> $@.stderr
+
+step09: Output/Step09/whole.DADA.rooted-tree.qza Output/Step09/whole.Deblur.rooted-tree.qza
+.PHONY += step09
