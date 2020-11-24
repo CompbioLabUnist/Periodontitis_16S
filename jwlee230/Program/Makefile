@@ -92,12 +92,12 @@ Output/Step04:
 
 Output/Step04/%.table.qza Output/Step04/%.seq.qza Output/Step04/%.stat.qza: Output/Step02/%.qza | Output/Step04 build.log
 	@echo "You have to check the length manually!!"
-	$(DOCKER) qiime dada2 denoise-paired --i-demultiplexed-seqs $(addprefix /,$<) --p-n-threads $(CPUS) --p-trunc-len-f 265 --p-trunc-len-r 265 --o-table $(addprefix /,$(basename $(basename $@))).table.qza --o-representative-sequences $(addprefix /,$(basename $(basename $@))).seq.qza --o-denoising-stats $(addprefix /,$(basename $(basename $@))).stat.qza 1> $@.stdout 2> $@.stderr
+	$(DOCKER) qiime dada2 denoise-paired --i-demultiplexed-seqs $(addprefix /,$<) --p-n-threads $(CPUS) --p-trunc-len-f 300 --p-trunc-len-r 265 --o-table $(addprefix /,$(basename $(basename $@))).table.qza --o-representative-sequences $(addprefix /,$(basename $(basename $@))).seq.qza --o-denoising-stats $(addprefix /,$(basename $(basename $@))).stat.qza 1> $@.stdout 2> $@.stderr
 
 step04: Output/Step04/whole.seq.qza
 .PHONY += step04
 
-# Step 05 $(Deblur Denoising)
+# Step 05 (Deblur Denoising)
 Output/Step05:
 	mkdir -p $@
 
@@ -107,3 +107,26 @@ Output/Step05/%.table.qza Output/Step05/%.seq.qza Output/Step05/%.stat.qza: Outp
 
 step05: Output/Step05/whole.seq.qza
 .PHONY += step05
+
+# Step 06 (Visulaize Denoising)
+Output/Step06:
+	mkdir -p $@
+
+Output/Step06/%.Demux.stat.qzv: Output/Step03/%.stat.qza | Output/Step06 build.log
+	$(DOCKER) qiime metadata tabulate --m-input-file $(addprefix /,$<) --o-visualization $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
+
+Output/Step06/%.Deblur.stat.qzv: Output/Step05/%.stat.qza | Output/Step06 build.log
+	$(DOCKER) qiime deblur visualize-stats --i-deblur-stats $(addprefix /,$<) --o-visualization $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
+
+step06: Output/Step06/whole.Demux.stat.qzv# Output/Step06/whole.Deblur.stat.qzv
+.PHONY += step06
+
+# Step 07 (Make metadata)
+Output/Step07:
+	mkdir -p $@
+
+Output/Step07/whole.tsv: Python/step07.py Data/치주염선정샘플_250샘플.xlsx $(wildcard Data/fastq/*.fastq.gz) | Output/Step07 build.log
+	@$(DOCKER) python3 $(addprefix /,$^) > $@
+
+step07: Output/Step07/whole.tsv
+.PHONY += step07
