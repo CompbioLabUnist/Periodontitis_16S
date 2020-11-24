@@ -76,7 +76,7 @@ Output/Step02/%.qzv: Output/Step02/%.qza | build.log
 step02: Output/Step02/whole.qza Output/Step02/whole.qzv
 .PHONY += step02
 
-# Step03 (Quality Filter)
+# Step 03 (Quality Filter)
 Output/Step03:
 	mkdir -p $@
 
@@ -86,7 +86,7 @@ Output/Step03/%.seq.qza Output/Step03/%.stat.qza: Output/Step02/%.qza | Output/S
 step03: Output/Step03/whole.seq.qza
 .PHONY += step03
 
-# Step04 (DATDA Denoising)
+# Step 04 (DATDA Denoising)
 Output/Step04:
 	mkdir -p $@
 
@@ -96,3 +96,14 @@ Output/Step04/%.table.qza Output/Step04/%.seq.qza Output/Step04/%.stat.qza: Outp
 
 step04: Output/Step04/whole.seq.qza
 .PHONY += step04
+
+# Step 05 $(Deblur Denoising)
+Output/Step05:
+	mkdir -p $@
+
+Output/Step05/%.table.qza Output/Step05/%.seq.qza Output/Step05/%.stat.qza: Output/Step03/%.seq.qza | Output/Step05 build.log
+	@echo "You have to check the length manually!!"
+	$(DOCKER) qiime deblur denoise-16S --i-demultiplexed-seqs $(addprefix /,$<) --p-trim-length 265 --p-jobs-to-start $(CPUS) --o-table $(addprefix /,$(basename $(basename $@))).table.qza --o-representative-sequences $(addprefix /,$(basename $(basename $@))).seq.qza --o-stats $(addprefix /,$(basename $(basename $@))).stat.qza 1> $@.stdout 2> $@.stderr
+
+step05: Output/Step05/whole.seq.qza
+.PHONY += step05
