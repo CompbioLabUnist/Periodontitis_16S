@@ -118,7 +118,7 @@ Output/Step06/%.Demux.stat.qzv: Output/Step03/%.stat.qza | Output/Step06 build.l
 Output/Step06/%.Deblur.stat.qzv: Output/Step05/%.stat.qza | Output/Step06 build.log
 	$(DOCKER) qiime deblur visualize-stats --i-deblur-stats $(addprefix /,$<) --o-visualization $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
 
-step06: Output/Step06/whole.Demux.stat.qzv# Output/Step06/whole.Deblur.stat.qzv
+step06: Output/Step06/whole.Demux.stat.qzv Output/Step06/whole.Deblur.stat.qzv
 .PHONY += step06
 
 # Step 07 (Make metadata)
@@ -130,3 +130,7 @@ Output/Step07/whole.tsv: Python/step07.py Data/치주염선정샘플_250샘플.x
 
 step07: Output/Step07/whole.tsv
 .PHONY += step07
+
+# Step 08 (Summary FeatureTable and FeatureData)
+Output/Step08:
+	mkdir -p $@
