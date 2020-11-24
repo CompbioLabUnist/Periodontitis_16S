@@ -1,7 +1,7 @@
 # Variables
 DATE := $(shell date "+%y%m%d")
 RANDOM := $(shell bash -c 'echo $$RANDOM')
-IMAGE_NAME = premature:latest
+IMAGE_NAME = periodontitis:latest
 CPUS = 20
 MEMS = 200G
 PWD := $(shell pwd)
