@@ -70,7 +70,10 @@ Output/Step02:
 Output/Step02/%.qza: Output/Step01/%.tsv | Output/Step02 build.log
 	$(DOCKER) qiime tools import --type "SampleData[PairedEndSequencesWithQuality]" --input-format "PairedEndFastqManifestPhred33V2" --input-path $(addprefix /,$<) --output-path $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
 
-step02: Output/Step02/whole.qza
+Output/Step02/%.qzv: Output/Step02/%.qza | build.log
+	$(DOCKER) qiime demux summarize --i-data $(addprefix /,$<) --o-visualization $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
+
+step02: Output/Step02/whole.qza Output/Step02/whole.qzv
 .PHONY += step02
 
 # Step03 (Quality Filter)
