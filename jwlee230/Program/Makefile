@@ -72,3 +72,13 @@ Output/Step02/%.qza: Output/Step01/%.tsv | Output/Step02 build.log
 
 step02: Output/Step02/whole.qza
 .PHONY += step02
+
+# Step03 (Quality Filter)
+Output/Step03:
+	mkdir -p $@
+
+Output/Step03/%.seq.qza Output/Step03/%.stat.qza: Output/Step02/%.qza | Output/Step03 build.log
+	$(DOCKER) qiime quality-filter q-score --i-demux $(addprefix /,$<) --o-filtered-sequences $(addprefix /,$(basename $(basename $@))).seq.qza --o-filter-stats $(addprefix /,$(basename $(basename $@))).stat.qza 1> $@.stdout 2> $@.stderr
+
+step03: Output/Step03/whole.seq.qza
+.PHONY += step03
