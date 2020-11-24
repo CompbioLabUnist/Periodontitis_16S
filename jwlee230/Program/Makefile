@@ -62,3 +62,13 @@ Output/Step01/whole.tsv: Python/step01.py $(wildcard Data/fastq/*.fastq.gz) | Ou
 
 step01: Output/Step01/whole.tsv
 .PHONY += step01
+
+# Step 02 (De-multiplexing)
+Output/Step02:
+	mkdir -p $@
+
+Output/Step02/%.qza: Output/Step01/%.tsv | Output/Step02 build.log
+	$(DOCKER) qiime tools import --type "SampleData[PairedEndSequencesWithQuality]" --input-format "PairedEndFastqManifestPhred33V2" --input-path $(addprefix /,$<) --output-path $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
+
+step02: Output/Step02/whole.qza
+.PHONY += step02
