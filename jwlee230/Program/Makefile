@@ -52,3 +52,13 @@ run: tmp.sh | log Output
 # Actual
 latest: step01
 .PHONY += step01
+
+# Step 01 (Make manifest files)
+Output/Step01:
+	mkdir -p $@
+
+Output/Step01/whole.tsv: Python/step01.py $(wildcard Data/fastq/*.fastq.gz) | Output/Step01 build.log
+	@$(DOCKER) python3 $(addprefix /,$^) > $@
+
+step01: Output/Step01/whole.tsv
+.PHONY += step01
