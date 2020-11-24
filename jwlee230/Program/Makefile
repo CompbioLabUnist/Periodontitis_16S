@@ -134,3 +134,18 @@ step07: Output/Step07/whole.tsv
 # Step 08 (Summary FeatureTable and FeatureData)
 Output/Step08:
 	mkdir -p $@
+
+Output/Step08/%.DADA.table.qzv: Output/Step04/%.table.qza Output/Step07/%.tsv | Output/Step08 build.log
+	$(DOCKER) qiime feature-table summarize --i-table $(addprefix /,$(word 1,$^)) --m-sample-metadata-file $(addprefix /,$(word 2,$^)) --o-visualization $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
+
+Output/Step08/%.DADA.seq.qzv: Output/Step04/%.seq.qza | Output/Step08 build.log
+	$(DOCKER) qiime feature-table tabulate-seqs --i-data $(addprefix /,$<) --o-visualization $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
+
+Output/Step08/%.Deblur.table.qzv: Output/Step05/%.table.qza Output/Step07/%.tsv | Output/Step08 build.log
+	$(DOCKER) qiime feature-table summarize --i-table $(addprefix /,$(word 1,$^)) --m-sample-metadata-file $(addprefix /,$(word 2,$^)) --o-visualization $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
+
+Output/Step08/%.Deblur.seq.qzv: Output/Step05/%.seq.qza | Output/Step08 build.log
+	$(DOCKER) qiime feature-table tabulate-seqs --i-data $(addprefix /,$<) --o-visualization $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
+
+step08: Output/Step08/whole.DADA.table.qzv Output/Step08/whole.DADA.seq.qzv Output/Step08/whole.Deblur.table.qzv Output/Step08/whole.Deblur.seq.qzv
+.PHONY += step08
