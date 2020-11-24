@@ -86,7 +86,7 @@ Output/Step03/%.seq.qza Output/Step03/%.stat.qza: Output/Step02/%.qza | Output/S
 step03: Output/Step03/whole.seq.qza
 .PHONY += step03
 
-# Step 04 (DATDA Denoising)
+# Step 04 (DADA2 Denoising)
 Output/Step04:
 	mkdir -p $@
 
