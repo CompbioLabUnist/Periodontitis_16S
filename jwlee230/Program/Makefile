@@ -85,3 +85,14 @@ Output/Step03/%.seq.qza Output/Step03/%.stat.qza: Output/Step02/%.qza | Output/S
 
 step03: Output/Step03/whole.seq.qza
 .PHONY += step03
+
+# Step04 (DATDA Denoising)
+Output/Step04:
+	mkdir -p $@
+
+Output/Step04/%.table.qza Output/Step04/%.seq.qza Output/Step04/%.stat.qza: Output/Step02/%.qza | Output/Step04 build.log
+	@echo "You have to check the length manually!!"
+	$(DOCKER) qiime dada2 denoise-paired --i-demultiplexed-seqs $(addprefix /,$<) --p-n-threads $(CPUS) --p-trunc-len-f 265 --p-trunc-len-r 265 --o-table $(addprefix /,$(basename $(basename $@))).table.qza --o-representative-sequences $(addprefix /,$(basename $(basename $@))).seq.qza --o-denoising-stats $(addprefix /,$(basename $(basename $@))).stat.qza 1> $@.stdout 2> $@.stderr
+
+step04: Output/Step04/whole.seq.qza
+.PHONY += step04
