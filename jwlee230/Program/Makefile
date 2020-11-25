@@ -2,8 +2,8 @@
 DATE := $(shell date "+%y%m%d")
 RANDOM := $(shell bash -c 'echo $$RANDOM')
 IMAGE_NAME = periodontitis:latest
-CPUS = 20
-MEMS = 100G
+CPUS = 10
+MEMS = 50G
 PWD := $(shell pwd)
 TOOLS = 
 DOCKER = docker run --rm $(VOLUME_OPTS) $(RUN_OPTS) $(IMAGE_NAME)
@@ -163,7 +163,7 @@ Output/Step09/%.Deblur.aligned-rep-seqs.qza Output/Step09/%.Deblur.masked-aligne
 step09: Output/Step09/whole.DADA.rooted-tree.qza Output/Step09/whole.Deblur.rooted-tree.qza
 .PHONY += step09
 
-# Step 10 (alpha- & beta-analysis)
+# Step 10 (Core metrics phylogenetic)
 Output/Step10/DADA2 Output/Step10/Deblur:
 	mkdir -p $@
 
@@ -190,3 +190,16 @@ Output/Step11/Deblur/%.qzv: Output/Step10/Deblur/%.qza Output/Step07/whole.tsv |
 
 step11: Output/Step11/DADA2/whole.faith_pd_vector.qzv Output/Step11/DADA2/whole.observed_features_vector.qzv Output/Step11/DADA2/whole.shannon_vector.qzv Output/Step11/DADA2/whole.evenness_vector.qzv Output/Step11/Deblur/whole.faith_pd_vector.qzv Output/Step11/Deblur/whole.observed_features_vector.qzv Output/Step11/Deblur/whole.shannon_vector.qzv Output/Step11/Deblur/whole.evenness_vector.qzv
 .PHONY += step11
+
+# Step 12 (Beta-diversity)
+Output/Step12/DADA2 Output/Step12/Deblur:
+	mkdir -p $@
+
+Output/Step12/DADA2/%.qzv: Output/Step10/DADA2/%.qza Output/Step07/whole.tsv | Output/Step12/DADA2 build.log
+	$(DOCKER) qiime diversity beta-group-significance --i-distance-matrix $(addprefix /,$(word 1,$^)) --m-metadata-file $(addprefix /,$(word 2,$^)) --m-metadata-column "LongStage" --o-visualization $(addprefix /,$@) --p-pairwise
+
+Output/Step12/Deblur/%.qzv: Output/Step10/Deblur/%.qza Output/Step07/whole.tsv | Output/Step12/Deblur build.log
+	$(DOCKER) qiime diversity beta-group-significance --i-distance-matrix $(addprefix /,$(word 1,$^)) --m-metadata-file $(addprefix /,$(word 2,$^)) --m-metadata-column "LongStage" --o-visualization $(addprefix /,$@) --p-pairwise
+
+step12: Output/Step12/DADA2/whole.unweighted_unifrac_distance_matrix.qzv Output/Step12/DADA2/whole.weighted_unifrac_distance_matrix.qzv Output/Step12/DADA2/whole.jaccard_distance_matrix.qzv Output/Step12/DADA2/whole.bray_curtis_distance_matrix.qzv Output/Step12/Deblur/whole.unweighted_unifrac_distance_matrix.qzv Output/Step12/Deblur/whole.weighted_unifrac_distance_matrix.qzv Output/Step12/Deblur/whole.jaccard_distance_matrix.qzv Output/Step12/Deblur/whole.bray_curtis_distance_matrix.qzv
+.PHONY += step12
