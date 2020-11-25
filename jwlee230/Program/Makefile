@@ -3,7 +3,7 @@ DATE := $(shell date "+%y%m%d")
 RANDOM := $(shell bash -c 'echo $$RANDOM')
 IMAGE_NAME = periodontitis:latest
 CPUS = 20
-MEMS = 200G
+MEMS = 100G
 PWD := $(shell pwd)
 TOOLS = 
 DOCKER = docker run --rm $(VOLUME_OPTS) $(RUN_OPTS) $(IMAGE_NAME)
@@ -177,3 +177,16 @@ Output/Step10/Deblur/%.faith_pd_vector.qza Output/Step10/Deblur/%.unweighted_uni
 
 step10: Output/Step10/DADA2/whole.faith_pd_vector.qza Output/Step10/Deblur/whole.faith_pd_vector.qza
 .PHONY += step10
+
+# Step 11 (Alpha-diversity)
+Output/Step11/DADA2 Output/Step11/Deblur:
+	mkdir -p $@
+
+Output/Step11/DADA2/%.qzv: Output/Step10/DADA2/%.qza Output/Step07/whole.tsv | Output/Step11/DADA2 build.log
+	$(DOCKER) qiime diversity alpha-group-significance --i-alpha-diversity $(addprefix /,$(word 1,$^)) --m-metadata-file $(addprefix /,$(word 2,$^)) --o-visualization $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
+
+Output/Step11/Deblur/%.qzv: Output/Step10/Deblur/%.qza Output/Step07/whole.tsv | Output/Step11/Deblur build.log
+	$(DOCKER) qiime diversity alpha-group-significance --i-alpha-diversity $(addprefix /,$(word 1,$^)) --m-metadata-file $(addprefix /,$(word 2,$^)) --o-visualization $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
+
+step11: Output/Step11/DADA2/whole.faith_pd_vector.qzv Output/Step11/DADA2/whole.observed_features_vector.qzv Output/Step11/DADA2/whole.shannon_vector.qzv Output/Step11/DADA2/whole.evenness_vector.qzv Output/Step11/Deblur/whole.faith_pd_vector.qzv Output/Step11/Deblur/whole.observed_features_vector.qzv Output/Step11/Deblur/whole.shannon_vector.qzv Output/Step11/Deblur/whole.evenness_vector.qzv
+.PHONY += step11
