@@ -46,11 +46,11 @@ tmp.sh: build.log
 	echo "make -C $(PWD) latest" > tmp.sh
 
 run: tmp.sh | log Output
-	qsub -cwd -l h_vmem=$(MEMS) -m abe -M "230@fumire.moe" -N Premature_$(DATE) -pe smp $(CPUS) -o $(abspath log) -e $(abspath log) $<
+	qsub -cwd -l h_vmem=$(MEMS) -m abe -M "230@fumire.moe" -N Periodontitis_$(DATE) -pe smp $(CPUS) -o $(abspath log) -e $(abspath log) $<
 .PHONY += run
 
 # Actual
-latest: step01
+latest: step13
 .PHONY += step01
 
 # Step 01 (Make manifest files)
