@@ -203,3 +203,28 @@ Output/Step12/Deblur/%.qzv: Output/Step10/Deblur/%.qza Output/Step07/whole.tsv |
 
 step12: Output/Step12/DADA2/whole.unweighted_unifrac_distance_matrix.qzv Output/Step12/DADA2/whole.weighted_unifrac_distance_matrix.qzv Output/Step12/DADA2/whole.jaccard_distance_matrix.qzv Output/Step12/DADA2/whole.bray_curtis_distance_matrix.qzv Output/Step12/Deblur/whole.unweighted_unifrac_distance_matrix.qzv Output/Step12/Deblur/whole.weighted_unifrac_distance_matrix.qzv Output/Step12/Deblur/whole.jaccard_distance_matrix.qzv Output/Step12/Deblur/whole.bray_curtis_distance_matrix.qzv
 .PHONY += step12
+
+# Step 13 (Taxonomy Classification)
+Output/Step13:
+	mkdir -p $@
+
+Output/Step13/silva.qza: | Output/Step13 build.log
+	wget "https://data.qiime2.org/2020.8/common/silva-138-99-nb-classifier.qza" -O $@
+
+Output/Step13/gg.qza: | Output/Step13 build.log
+	wget "https://data.qiime2.org/2020.8/common/gg-13-8-99-nb-classifier.qza" -O $@
+
+Output/Step13/%.DADA2.silva.qza: Output/Step13/silva.qza Output/Step04/%.seq.qza | build.log
+	$(DOCKER) qiime feature-classifier classify-sklearn --i-classifier $(addprefix /,$(word 1,$^)) --i-reads $(addprefix /,$(word 2,$^)) --p-n-jobs $(CPUS) --o-classification $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
+
+Output/Step13/%.DADA2.gg.qza: Output/Step13/gg.qza Output/Step04/%.seq.qza | build.log
+	$(DOCKER) qiime feature-classifier classify-sklearn --i-classifier $(addprefix /,$(word 1,$^)) --i-reads $(addprefix /,$(word 2,$^)) --p-n-jobs $(CPUS) --o-classification $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
+
+Output/Step13/%.Deblur.silva.qza: Output/Step13/silva.qza Output/Step05/%.seq.qza | build.log
+	$(DOCKER) qiime feature-classifier classify-sklearn --i-classifier $(addprefix /,$(word 1,$^)) --i-reads $(addprefix /,$(word 2,$^)) --p-n-jobs $(CPUS) --o-classification $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
+
+Output/Step13/%.Deblur.gg.qza: Output/Step13/gg.qza Output/Step05/%.seq.qza | build.log
+	$(DOCKER) qiime feature-classifier classify-sklearn --i-classifier $(addprefix /,$(word 1,$^)) --i-reads $(addprefix /,$(word 2,$^)) --p-n-jobs $(CPUS) --o-classification $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
+
+step13: Output/Step13/whole.DADA2.silva.qza Output/Step13/whole.DADA2.gg.qza Output/Step13/whole.Deblur.silva.qza Output/Step13/whole.Deblur.gg.qza
+.PHONY += step13
