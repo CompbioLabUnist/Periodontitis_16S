@@ -234,6 +234,40 @@
 
     \begin{frame}[allowframebreaks]
         \frametitle{Alpha-diversity}
+
+        \begin{figure}
+            $\begin{array}{cc}
+                \includegraphics[width=0.3 \linewidth]{figures/AlphaDiversity/DADA2/evenness.png}
+                &
+                \includegraphics[width=0.3 \linewidth]{figures/AlphaDiversity/DADA2/faith.png}
+                \\
+                \mbox{(a) Evenness vector ($p < 0.01$)} & \mbox{(b) Faith PD ($p < 10^{-6}$)} \\
+
+                \includegraphics[width=0.3 \linewidth]{figures/AlphaDiversity/DADA2/observed.png}
+                &
+                \includegraphics[width=0.3 \linewidth]{figures/AlphaDiversity/DADA2/shannon.png}
+                \\
+                \mbox{(c) Observed features ($p < 10^{-3}$)} & \mbox{(d) Shannon ($p > 0.05$)}
+            \end{array}$
+            \caption{Alpha Diversity from DADA2 with Kruskal-Wallis among All Groups}
+        \end{figure}
+
+        \begin{figure}
+            $\begin{array}{cc}
+                \includegraphics[width=0.3 \linewidth]{figures/AlphaDiversity/Deblur/evenness.png}
+                &
+                \includegraphics[width=0.3 \linewidth]{figures/AlphaDiversity/Deblur/faith.png}
+                \\
+                \mbox{(a) Evenness vector ($p < 0.05$)} & \mbox{(b) Faith PD ($p < 10^{-18}$)} \\
+
+                \includegraphics[width=0.3 \linewidth]{figures/AlphaDiversity/Deblur/observed.png}
+                &
+                \includegraphics[width=0.3 \linewidth]{figures/AlphaDiversity/Deblur/shannon.png}
+                \\
+                \mbox{(c) Observed features ($p < 10^{-12}$)} & \mbox{(d) Shannon ($p < 10^{-4}$)}
+            \end{array}$
+            \caption{Alpha Diversity from Deblur with Kruskal-Wallis among All Groups}
+        \end{figure}
     \end{frame}
 
     \begin{frame}[allowframebreaks]
