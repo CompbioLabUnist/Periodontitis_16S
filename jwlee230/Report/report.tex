@@ -117,11 +117,13 @@
             \subsubsection{Beta-diversity}
                 Beta-diversity is a metric which indicates the taxonomic differentiation between multiple communities. There are four beta-diversity indices which provided from QIIME2:
                 \begin{itemize}
-                    \item Jaccard distance.
                     \item Bray-Curtis distance.
+                    \item Jaccard distance.
                     \item Unweighted UniFrac distance.
                     \item Weighted UniFrac distance.
                 \end{itemize}
+
+                Bray-Curtis distance shows a quantitative of community dissimilarity; Jaccard distance, however, indicates a qualitative measure of community dissimilarity. UniFrac distances reveal a measure of community dissimilarity which consolidates phylogenetic relationship among features. Difference between unweighted UniFrac distance and weighted UniFrac distance is a qualitative and a quantitative, respectively.
 
             \subsubsection{ANCOM}
                 ANCOM (Analysis of composition of microbiomes) can be used for analyzing the composition of microbiome in multiple populations \cite{ANCOM1}. Example ANCOM volcano plot is shows as figure \ref{fig:ancom-example}.
