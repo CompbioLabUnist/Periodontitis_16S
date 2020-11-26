@@ -46,7 +46,7 @@
 
             \begin{figure}[p]
                 \centering
-                \includegraphics[width=0.5 \linewidth]{figures/microbiome.jpg}
+                \includegraphics[width=0.4 \linewidth]{figures/microbiome.jpg}
                 \caption{Concept of a Core Human Microbiome \protect\cite{microbiome1}}
                 \label{fig:microbiome-concept}
             \end{figure}
@@ -81,7 +81,7 @@
             \end{figure}
 
             \subsubsection{Denoising techniques}
-                There are two denoising techniques provided by QIIME2: DADA2 \cite{DADA1} and Deblur \cite{deblur1}. Major difference between DADA2 and Deblur is a strategy, the strategy used to divide as different species.
+                There are two denoising techniques provided by QIIME2: DADA2 \cite{DADA1} and Deblur \cite{deblur1}. Major difference between DADA2 and Deblur, as shown as figure \ref{fig:denosing-workflow}, is a strategy, the strategy used to divide as different species. DADA2 uses amplicon sequence variants (ASVs), strictly divides sequences even one-base mismatch. However, Deblur uses operational taxonomic units (OTUs), considers as same sequence when sequences are 97 \% or more matched.
 
                 \begin{figure}[p]
                     \centering
@@ -91,7 +91,7 @@
                 \end{figure}
 
             \subsubsection{Taxonomy Classification}
-                There are two taxonomy classification databases which provided by QIIME2: Greengenes (GG) \cite{greengenes1} and SILVA \cite{silva1}.
+                There are two taxonomy classification databases which provided by QIIME2: Greengenes (GG) \cite{greengenes1} and SILVA \cite{silva1}. Major difference between Greengenes and SILVA is resolution. Resolution of Greengenes is from kingdom to species; however, resolution of SILVA is from domain to genus. Note that a higher accuracy at taxonomic levels above genus level; but accuracy drops at species level \cite{performance1}.
 
                 \begin{figure}[p]
                     \centering
