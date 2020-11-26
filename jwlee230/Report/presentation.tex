@@ -153,6 +153,51 @@
     \end{frame}
 
     \begin{frame}
+                \frametitle{Rarefaction}
+
+        \begin{itemize}
+            \item a statistical method of estimating the number of species expected in a random sample which taken from a collection \cite{rarefaction1}
+            \item allows comparisons of the species richness among communities
+            \item a good choice for normalization \cite{rarefaction2}
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{Alpha- \& Beta-diversity}
+
+        \begin{itemize}
+            \item alpha-diversity: the richness of taxa at a single community
+            \item beta-diversity: the taxonomic differentiation between communities
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{Alpha-diversity}
+
+        \begin{itemize}
+            \item Shannon's diversity index: a quantitative measure of community richness
+            \item Observed Features: a qualitative measure of community richness
+            \item Faith's Phylogenetic Diversity: a qualitative measure of community richness which incorporates phylogenetic relationship between the features
+            \item Evenness: a measure of community evenness
+        \end{itemize}
+        \cite{qiime1, qiime2}
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{Beta-diversity}
+
+        \begin{itemize}
+            \item Bray-Curtis distance: a quantitative measure of community dissimilarity
+            \item Jaccard distance: a qualitative measure of community dissimilarity
+            \item Unweighted UniFrac distance: a qualitative measure of community dissimilarity which incorporates phylogenetic relationships between the features
+            \item Weighted UniFrac distance: a quantitative measure of community dissimilarity which incorporates phylogenetic relationship between the features
+        \end{itemize}
+        \cite{qiime1, qiime2}
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{ANCOM}
+
         \begin{itemize}
             \item Analysis of composition of microbiomes
             \item ANCOM can be used for analyzing the composition of microbiomes in multiple populations \cite{ANCOM1}
@@ -232,7 +277,7 @@
                 &
                 \includegraphics[width=0.4 \linewidth]{figures/AlphaDiversity/DADA2/shannon.png}
                 \\
-                \mbox{(c) Observed features ($p < 10^{-3}$)} & \mbox{(d) Shannon ($p > 0.05$)}
+                \mbox{(c) Observed features ($p < 10^{-3}$)} & \mbox{(d) Shannon's diversity ($p > 0.05$)}
             \end{array}$
             \caption{Alpha Diversity from DADA2 with Kruskal-Wallis among All Groups}
         \end{figure}
@@ -249,7 +294,7 @@
                 &
                 \includegraphics[width=0.4 \linewidth]{figures/AlphaDiversity/Deblur/shannon.png}
                 \\
-                \mbox{(c) Observed features ($p < 10^{-12}$)} & \mbox{(d) Shannon ($p < 10^{-4}$)}
+                \mbox{(c) Observed features ($p < 10^{-12}$)} & \mbox{(d) Shannon's diversity ($p < 10^{-4}$)}
             \end{array}$
             \caption{Alpha Diversity from Deblur with Kruskal-Wallis among All Groups}
         \end{figure}
@@ -272,7 +317,7 @@
                 \\
                 \mbox{(c) Moderate} & \mbox{(d) Severe} \\
             \end{array}$
-            \caption{Bray Curtis Distance with DADA2}
+            \caption{Bray-Curtis Distance with DADA2}
         \end{figure}
 
         \begin{figure}
@@ -340,7 +385,7 @@
                 \\
                 \mbox{(c) Moderate} & \mbox{(d) Severe} \\
             \end{array}$
-            \caption{Bray Curtis Distance with Deblur}
+            \caption{Bray-Curtis Distance with Deblur}
         \end{figure}
 
         \begin{figure}
