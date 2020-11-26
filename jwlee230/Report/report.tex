@@ -150,6 +150,7 @@
 
     \section{Results}
         \subsection{Quality Filter}
+            Longer sequences have more fallen sequence quality than shorter. Thus, sequences which longer than threshold should be trimmed out due to their low quality. However, gold-standard strategy for deciding the threshold does not exist; the threshold is set as longest sequence length which have half of sequences have greater than 30 quality score. Hence, sequence quality plot is shown as figure \ref{fig:sequence-quality}; trimmed length in forward reads is 300, and trimmed length in reverse reads is 265.
 
             \begin{figure}[p]
                 \centering
@@ -165,6 +166,7 @@
             \end{figure}
 
         \subsection{Rarefaction}
+            Sampling depth should be decided for rarefaction. Gold-standard method for determining sampling depth is minimum frequency in the samples. Hence, sampling depth with DADA2 is 3786 (Figure \ref{fig:frequency-sample-dada2}), and sampling depth with Deblur is 7253 (Figure \ref{fig:frequency-sample-deblur}).
 
             \begin{figure}[p]
                 \centering
