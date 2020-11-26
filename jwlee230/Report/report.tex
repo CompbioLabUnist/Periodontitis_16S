@@ -108,7 +108,7 @@
                 Alpha-diversity is a metric which shows the richness of taxa at a single community. There are four alpha-diversity indices which provided from QIIME2:
                 \begin{itemize}
                     \item Evenness index.
-                    \item Faith's phylogenetic diversity.
+                    \item Faith's phylogenetic diversity (Faith PD).
                     \item Observed features.
                     \item Shannon's diversity index.
                 \end{itemize}
@@ -184,9 +184,7 @@
             \end{figure}
 
         \subsection{Alpha-diversity}
-            Alpha-diversity analysis with DADA2 was done as tables \ref{tb:alpha-all-dada2}, \ref{tb:alpha-evenness-dada2}, \ref{tb:alpha-faith-dada2}, \ref{tb:alpha-observed-dada2} and \ref{tb:alpha-shannon-dada2} and figures \ref{fig:evenness-dada2}, \ref{fig:faith-dada2}, \ref{fig:observed-dada2} and \ref{fig:shannon-dada2}. Every alpha diversity indices, except Shannon's diversity index, have statistically significant difference among all groups (Table \ref{tb:alpha-all-dada2}).
-
-            Alpha-diversity analysis with Deblur was done as tables \ref{tb:alpha-all-deblur}, \ref{tb:alpha-evenness-deblur}, \ref{tb:alpha-faith-deblur}, \ref{tb:alpha-observed-deblur} and \ref{tb:alpha-shannon-deblur} and figures \ref{fig:evenness-deblur}, \ref{fig:faith-deblur}, \ref{fig:observed-deblur} and \ref{fig:shannon-deblur}.
+            Alpha-diversity analysis with DADA2 was done: Evenness index (Table \ref{tb:alpha-evenness-dada2} and Figure \ref{fig:evenness-dada2}), Faith PD (Table \ref{tb:alpha-faith-dada2} and Figure \ref{fig:faith-dada2}), observed feature index (Table \ref{tb:alpha-observed-dada2} and Figure \ref{fig:observed-dada2}) and Shannon's diversity index (Table \ref{tb:alpha-shannon-dada2} and Figure \ref{fig:shannon-dada2}). Also, alpha-diversity analysis with DADA2 was done: Evenness index (Table \ref{tb:alpha-evenness-deblur} and Figure \ref{fig:evenness-deblur}), Faith PD (Table \ref{tb:alpha-faith-deblur} and Figure \ref{fig:faith-deblur}), observed feature index (Table \ref{tb:alpha-observed-deblur} and Figure \ref{fig:observed-deblur}) and Shannon's diversity index (Table \ref{tb:alpha-shannon-deblur} and Figure \ref{fig:shannon-deblur}). Moreover, Kruskal-Wallis tests among all groups are shown as table \ref{tb:alpha-all-dada2} (with DADA2) and table \ref{tb:alpha-all-deblur} (with Deblur).
 
             \begin{table}[p]
                 \centering
@@ -315,6 +313,7 @@
             \end{figure}
 
         \subsection{Beta-diversity}
+            Beta-diversity analysis with DADA2 was done: Bray-Curtis distance (Table \ref{tb:bray-dada2} and Figure \ref{fig:bray-dada2}), Jaccard distance (Table \ref{tb:jaccard-dada2} and Figure \ref{fig:jaccard-dada2}), unweighted UniFrac distance (Table \ref{tb:unweighted-dada2} and Figure \ref{fig:unweighted-dada2}) and weighted UniFrac distance (Table \ref{tb:weighted-dada2} and Figure \ref{fig:unweighted-dada2}). Also, beta-diversity analysis with Deblur was done: Bray-Curtis distance (Table \ref{tb:bray-deblur} and Figure \ref{fig:bray-deblur}), Jaccard distance (Table \ref{tb:jaccard-deblur} and Figure \ref{fig:jaccard-deblur}), unweighted UniFrac distance (Table \ref{tb:unweighted-deblur} and Figure \ref{fig:unweighted-deblur}) and weighted UniFrac distance (Table \ref{tb:weighted-deblur} and Figure \ref{fig:unweighted-deblur}).
 
             \begin{table}[p]
                 \centering
@@ -525,10 +524,11 @@
             \end{figure}
 
         \subsection{ANCOM}
+            Statistically significant different taxa and volcano plots by ANCOM were derived: DADA2 and Greengenes (Table \ref{tb:ANCOM-dada2-gg} and Figure \ref{fig:volcano-dada2-gg}), DADA2 and SILVA (Table \ref{tb:ANCOM-dada2-silva} and Figure \ref{fig:volcano-dada2-silva}), Deblur and Greengenes (Table \ref{tb:ANCOM-deblur-gg} and Figure \ref{fig:volcano-deblur-gg}) and Deblur and SILVA (Table \ref{tb:ANCOM-deblur-silva} and Figure \ref{fig:volcano-deblur-silva}).
 
             \begin{table}[p]
                 \centering
-                \caption{ANCOM Significant Result with DADA2 and Greengenes}
+                \caption{ANCOM Significant Taxa with DADA2 and Greengenes}
                 \label{tb:ANCOM-dada2-gg}
 
                 \csvreader[tabular=p{10cm}cc, nohead, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline, respect underscore]{csv/ANCOM/DADA2.gg.csv}{}{\csvlinetotablerow}
@@ -543,7 +543,7 @@
 
             \begin{table}[p]
                 \centering
-                \caption{ANCOM Significant Result with DADA2 and SILVA}
+                \caption{ANCOM Significant Taxa with DADA2 and SILVA}
                 \label{tb:ANCOM-dada2-silva}
 
                 \csvreader[tabular=p{10cm}cc, nohead, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline, respect underscore]{csv/ANCOM/DADA2.silva.csv}{}{\csvlinetotablerow}
@@ -558,7 +558,7 @@
 
             \begin{table}[p]
                 \centering
-                \caption{ANCOM Significant Result with Deblur and Greengenes}
+                \caption{ANCOM Significant Taxa with Deblur and Greengenes}
                 \label{tb:ANCOM-deblur-gg}
 
                 \csvreader[tabular=p{10cm}cc, nohead, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline, respect underscore]{csv/ANCOM/Deblur.gg.csv}{}{\csvlinetotablerow}
@@ -573,7 +573,7 @@
 
             \begin{table}[p]
                 \centering
-                \caption{ANCOM Significant Result with DADA2 and SILVA}
+                \caption{ANCOM Significant Taxa with DADA2 and SILVA}
                 \label{tb:ANCOM-deblur-silva}
 
                 \csvreader[tabular=p{10cm}cc, nohead, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline, respect underscore]{csv/ANCOM/DADA2.silva.csv}{}{\csvlinetotablerow}
