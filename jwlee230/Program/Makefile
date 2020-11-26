@@ -50,7 +50,7 @@ run: tmp.sh | log Output
 .PHONY += run
 
 # Actual
-latest: step14
+latest: step15
 .PHONY += step01
 
 # Step 01 (Make manifest files)
@@ -257,3 +257,42 @@ Output/Step14/%/ancom.tsv: Output/Step14/%.qzv | build.log
 
 step14: Output/Step14/whole.DADA2.gg.pseudocount.site.qzv Output/Step14/whole.DADA2.silva.pseudocount.site.qzv Output/Step14/whole.Deblur.gg.pseudocount.site.qzv Output/Step14/whole.Deblur.silva.pseudocount.site.qzv Output/Step14/whole.DADA2.gg.pseudocount.site/ancom.tsv Output/Step14/whole.DADA2.silva.pseudocount.site/ancom.tsv Output/Step14/whole.Deblur.gg.pseudocount.site/ancom.tsv Output/Step14/whole.Deblur.silva.pseudocount.site/ancom.tsv
 .PHONY += step14
+
+# Step 15 (Get TSV files)
+Output/Step15:
+	mkdir -p $@
+
+Output/Step15/whole.DADA2.gg.tsv: Output/Step04/whole.table.qza Output/Step13/whole.DADA2.gg.qza | Output/Step15 build.log
+	$(DOCKER) qiime tools export --input-path $(addprefix /,$(word 1,$^)) --output-path /Output/Step15/tmp
+	$(DOCKER) qiime tools export --input-path $(addprefix /,$(word 2,$^)) --output-path /Output/Step15/tmp
+	$(DOCKER) sed --in-place "1c#OTU ID\ttaxonomy\tconfidence" /Output/Step15/tmp/taxonomy.tsv
+	$(DOCKER) biom add-metadata --input-fp /Output/Step15/tmp/feature-table.biom --observation-metadata-fp /Output/Step15/tmp/taxonomy.tsv --output-fp /Output/Step15/tmp/tmp.biom --sc-separated "taxonomy"
+	$(DOCKER) biom convert --input-fp /Output/Step15/tmp/tmp.biom --output-fp $(addprefix /,$@) --to-tsv --process-obs-metadata "taxonomy" --tsv-metadata-formatter "sc_separated" --header-key "taxonomy"
+	$(DOCKER) rm -rfv /Output/Step15/tmp
+
+Output/Step15/whole.DADA2.silva.tsv: Output/Step04/whole.table.qza Output/Step13/whole.DADA2.silva.qza | Output/Step15 build.log
+	$(DOCKER) qiime tools export --input-path $(addprefix /,$(word 1,$^)) --output-path /Output/Step15/tmp
+	$(DOCKER) qiime tools export --input-path $(addprefix /,$(word 2,$^)) --output-path /Output/Step15/tmp
+	$(DOCKER) sed --in-place "1c#OTU ID\ttaxonomy\tconfidence" /Output/Step15/tmp/taxonomy.tsv
+	$(DOCKER) biom add-metadata --input-fp /Output/Step15/tmp/feature-table.biom --observation-metadata-fp /Output/Step15/tmp/taxonomy.tsv --output-fp /Output/Step15/tmp/tmp.biom --sc-separated "taxonomy"
+	$(DOCKER) biom convert --input-fp /Output/Step15/tmp/tmp.biom --output-fp $(addprefix /,$@) --to-tsv --process-obs-metadata "taxonomy" --tsv-metadata-formatter "sc_separated" --header-key "taxonomy"
+	$(DOCKER) rm -rfv /Output/Step15/tmp
+
+Output/Step15/whole.Deblur.gg.tsv: Output/Step05/whole.table.qza Output/Step13/whole.Deblur.gg.qza | Output/Step15 build.log
+	$(DOCKER) qiime tools export --input-path $(addprefix /,$(word 1,$^)) --output-path /Output/Step15/tmp
+	$(DOCKER) qiime tools export --input-path $(addprefix /,$(word 2,$^)) --output-path /Output/Step15/tmp
+	$(DOCKER) sed --in-place "1c#OTU ID\ttaxonomy\tconfidence" /Output/Step15/tmp/taxonomy.tsv
+	$(DOCKER) biom add-metadata --input-fp /Output/Step15/tmp/feature-table.biom --observation-metadata-fp /Output/Step15/tmp/taxonomy.tsv --output-fp /Output/Step15/tmp/tmp.biom --sc-separated "taxonomy"
+	$(DOCKER) biom convert --input-fp /Output/Step15/tmp/tmp.biom --output-fp $(addprefix /,$@) --to-tsv --process-obs-metadata "taxonomy" --tsv-metadata-formatter "sc_separated" --header-key "taxonomy"
+	$(DOCKER) rm -rfv /Output/Step15/tmp
+
+Output/Step15/whole.Deblur.silva.tsv: Output/Step05/whole.table.qza Output/Step13/whole.Deblur.silva.qza | Output/Step15 build.log
+	$(DOCKER) qiime tools export --input-path $(addprefix /,$(word 1,$^)) --output-path /Output/Step15/tmp
+	$(DOCKER) qiime tools export --input-path $(addprefix /,$(word 2,$^)) --output-path /Output/Step15/tmp
+	$(DOCKER) sed --in-place "1c#OTU ID\ttaxonomy\tconfidence" /Output/Step15/tmp/taxonomy.tsv
+	$(DOCKER) biom add-metadata --input-fp /Output/Step15/tmp/feature-table.biom --observation-metadata-fp /Output/Step15/tmp/taxonomy.tsv --output-fp /Output/Step15/tmp/tmp.biom --sc-separated "taxonomy"
+	$(DOCKER) biom convert --input-fp /Output/Step15/tmp/tmp.biom --output-fp $(addprefix /,$@) --to-tsv --process-obs-metadata "taxonomy" --tsv-metadata-formatter "sc_separated" --header-key "taxonomy"
+	$(DOCKER) rm -rfv /Output/Step15/tmp
+
+step15: Output/Step15/whole.DADA2.gg.tsv Output/Step15/whole.DADA2.silva.tsv Output/Step15/whole.Deblur.gg.tsv Output/Step15/whole.Deblur.silva.tsv
+.PHONY += step15
