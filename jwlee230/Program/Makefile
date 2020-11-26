@@ -3,7 +3,7 @@ DATE := $(shell date "+%y%m%d")
 RANDOM := $(shell bash -c 'echo $$RANDOM')
 IMAGE_NAME = periodontitis:latest
 CPUS = 10
-MEMS = 50G
+MEMS = 100G
 PWD := $(shell pwd)
 TOOLS = 
 DOCKER = docker run --rm $(VOLUME_OPTS) $(RUN_OPTS) $(IMAGE_NAME)
@@ -50,7 +50,7 @@ run: tmp.sh | log Output
 .PHONY += run
 
 # Actual
-latest: step13
+latest: step14
 .PHONY += step01
 
 # Step 01 (Make manifest files)
@@ -228,3 +228,32 @@ Output/Step13/%.Deblur.gg.qza: Output/Step13/gg.qza Output/Step05/%.seq.qza | bu
 
 step13: Output/Step13/whole.DADA2.silva.qza Output/Step13/whole.DADA2.gg.qza Output/Step13/whole.Deblur.silva.qza Output/Step13/whole.Deblur.gg.qza
 .PHONY += step13
+
+# Step 14 (Run ANCOM)
+Output/Step14:
+	mkdir -p $@
+
+Output/Step14/%.DADA2.silva.qza: Output/Step04/%.table.qza Output/Step13/%.DADA2.silva.qza | Output/Step14 build.log
+	$(DOCKER) qiime taxa collapse --i-table $(addprefix /,$(word 1,$^)) --i-taxonomy $(addprefix /,$(word 2,$^)) --p-level 7 --o-collapsed-table $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
+
+Output/Step14/%.DADA2.gg.qza: Output/Step04/%.table.qza Output/Step13/%.DADA2.gg.qza | Output/Step14 build.log
+	$(DOCKER) qiime taxa collapse --i-table $(addprefix /,$(word 1,$^)) --i-taxonomy $(addprefix /,$(word 2,$^)) --p-level 7 --o-collapsed-table $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
+
+Output/Step14/%.Deblur.silva.qza: Output/Step05/%.table.qza Output/Step13/%.Deblur.silva.qza | Output/Step14 build.log
+	$(DOCKER) qiime taxa collapse --i-table $(addprefix /,$(word 1,$^)) --i-taxonomy $(addprefix /,$(word 2,$^)) --p-level 7 --o-collapsed-table $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
+
+Output/Step14/%.Deblur.gg.qza: Output/Step05/%.table.qza Output/Step13/%.Deblur.gg.qza | Output/Step14 build.log
+	$(DOCKER) qiime taxa collapse --i-table $(addprefix /,$(word 1,$^)) --i-taxonomy $(addprefix /,$(word 2,$^)) --p-level 7 --o-collapsed-table $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
+
+Output/Step14/%.pseudocount.qza: Output/Step14/%.qza | build.log
+	$(DOCKER) qiime composition add-pseudocount --i-table $(addprefix /,$(word 1,$^)) --o-composition-table $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
+
+Output/Step14/%.site.qzv: Output/Step14/%.qza Output/Step07/whole.tsv | build.log
+	$(DOCKER) qiime composition ancom --i-table $(addprefix /,$(word 1,$^)) --m-metadata-file $(addprefix /,$(word 2,$^)) --m-metadata-column "LongStage" --o-visualization $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
+
+Output/Step14/%/ancom.tsv: Output/Step14/%.qzv | build.log
+	$(DOCKER) rm -rfv $(addprefix /,$(@D))
+	$(DOCKER) qiime tools export --input-path $(addprefix /,$(word 1,$^)) --output-path $(addprefix /,$(@D))
+
+step14: Output/Step14/whole.DADA2.gg.pseudocount.site/ancom.tsv Output/Step14/whole.DADA2.silva.pseudocount.site/ancom.tsv Output/Step14/whole.Deblur.gg.pseudocount.site/ancom.tsv Output/Step14/whole.Deblur.silva.pseudocount.site/ancom.tsv
+.PHONY += step14
