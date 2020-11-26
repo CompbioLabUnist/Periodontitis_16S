@@ -119,7 +119,7 @@
                 \end{itemize}
 
             \subsubsection{ANCOM}
-                ANCOM (Analysis of composition of microbiomes) can be used for analyzing the composition of microbiome in multiple populations \cite{ANCOM1}.
+                ANCOM (Analysis of composition of microbiomes) can be used for analyzing the composition of microbiome in multiple populations \cite{ANCOM1}. Example ANCOM volcano plot is shows as figure \ref{fig:ancom-example}.
 
                 \begin{figure}[p]
                     \centering
@@ -142,6 +142,94 @@
                 Seaborn is a Python data visualization package which based on matplotlib, allows a high-level interface for displaying engaging and descriptive statistical graphics \cite{seaborn1}.
 
     \section{Results}
+        \subsection{Quality Filter}
+
+            \begin{figure}[p]
+                \centering
+                $\begin{array}{cc}
+                    \includegraphics[width=0.4 \linewidth]{figures/QualityFilter/Forward.png}
+                    &
+                    \includegraphics[width=0.4 \linewidth]{figures/QualityFilter/Reverse.png}
+                    \\
+                    \mbox{(a) Forward Reads} & \mbox{(b) Reverse Reads} \\
+                \end{array}$
+                \caption{Sequence Quality Plot}
+                \label{fig:sequence-quality}
+            \end{figure}
+
+        \subsection{Rarefaction}
+
+            \begin{figure}[p]
+                \centering
+                \includegraphics[width=0.6 \linewidth]{figures/Rarefaction/DADA.pdf}
+                \caption{Frequency per Sample by DADA2}
+                \label{fig:frequency-sample-dada2}
+            \end{figure}
+
+            \begin{figure}[p]
+                \centering
+                \includegraphics[width=0.6 \linewidth]{figures/Rarefaction/Deblur.pdf}
+                \caption{Frequency per Sample by DADA2}
+                \label{fig:frequency-sample-deblur}
+            \end{figure}
+
+        \subsection{Alpha-diversity}
+
+            \begin{figure}[p]
+                \centering
+                \includegraphics[width=0.8 \linewidth]{figures/AlphaDiversity/DADA2/evenness.png}
+                \caption{Evenness Index from DADA2}
+                \label{fig:evenness-dada2}
+            \end{figure}
+
+            \begin{figure}[p]
+                \centering
+                \includegraphics[width=0.8 \linewidth]{figures/AlphaDiversity/DADA2/faith.png}
+                \caption{Faith PD Index from DADA2}
+                \label{fig:faith-dada2}
+            \end{figure}
+
+            \begin{figure}[p]
+                \centering
+                \includegraphics[width=0.8 \linewidth]{figures/AlphaDiversity/DADA2/observed.png}
+                \caption{Observed Features Index from DADA2}
+                \label{fig:observed-dada2}
+            \end{figure}
+
+            \begin{figure}[p]
+                \centering
+                \includegraphics[width=0.8 \linewidth]{figures/AlphaDiversity/DADA2/shannon.png}
+                \caption{Shannon's Diversity Index from DADA2}
+                \label{fig:shannon-dada2}
+            \end{figure}
+
+            \begin{figure}[p]
+                \centering
+                \includegraphics[width=0.8 \linewidth]{figures/AlphaDiversity/Deblur/evenness.png}
+                \caption{Evenness Index from Deblur}
+                \label{fig:evenness-deblur}
+            \end{figure}
+
+            \begin{figure}[p]
+                \centering
+                \includegraphics[width=0.8 \linewidth]{figures/AlphaDiversity/Deblur/faith.png}
+                \caption{Faith PD Index from Deblur}
+                \label{fig:faith-deblur}
+            \end{figure}
+
+            \begin{figure}[p]
+                \centering
+                \includegraphics[width=0.8 \linewidth]{figures/AlphaDiversity/Deblur/observed.png}
+                \caption{Observed Features Index from Deblur}
+                \label{fig:observed-deblur}
+            \end{figure}
+
+            \begin{figure}[p]
+                \centering
+                \includegraphics[width=0.8 \linewidth]{figures/AlphaDiversity/Deblur/shannon.png}
+                \caption{Shannon's Diversity Index from Deblur}
+                \label{fig:shannon-deblur}
+            \end{figure}
 
     \section{Discussion}
 
