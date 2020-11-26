@@ -195,6 +195,16 @@
         \cite{qiime1, qiime2}
     \end{frame}
 
+    \begin{frame}
+        \frametitle{ANCOM}
+
+        \begin{itemize}
+            \item Analysis of composition of microbiomes
+            \item ANCOM can be used for analyzing the composition of microbiomes in multiple populations \cite{ANCOM1}
+            \item Differential abundance testing
+        \end{itemize}
+    \end{frame}
+
     \section{Results}
     \begin{frame}
         \frametitle{Quality Filter}
@@ -406,6 +416,32 @@
                 \mbox{(c) Moderate} & \mbox{(d) Severe} \\
             \end{array}$
             \caption{Weighted Unifrac Distance with Deblur}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}[allowframebreaks]
+        \frametitle{ANCOM}
+
+        \begin{figure}
+            $\begin{array}{cc}
+                \includegraphics[width=0.4 \linewidth]{figures/ANCOM/DADA2.gg.png}
+                &
+                \includegraphics[width=0.4 \linewidth]{figures/ANCOM/DADA2.silva.png}
+                \\
+                \mbox{(a) Greengenes} & \mbox{(b) SILVA} \\
+            \end{array}$
+            \caption{ANCOM Volcano Plot with DADA2}
+        \end{figure}
+
+        \begin{figure}
+            $\begin{array}{cc}
+                \includegraphics[width=0.4 \linewidth]{figures/ANCOM/Deblur.gg.png}
+                &
+                \includegraphics[width=0.4 \linewidth]{figures/ANCOM/Deblur.silva.png}
+                \\
+                \mbox{(a) Greengenes} & \mbox{(b) SILVA} \\
+            \end{array}$
+            \caption{ANCOM Volcano Plot with Deblur}
         \end{figure}
     \end{frame}
 
