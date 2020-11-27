@@ -13,6 +13,8 @@
 \usepackage[numberedbib]{apacite}
 \usepackage[style=iso]{datetime2}
 \usepackage{csvsimple, booktabs}
+\usepackage[maxfloats=256]{morefloats}
+\maxdeadcycles=1000
 
 \geometry
 {
@@ -603,6 +605,67 @@
                 \includegraphics[width=0.8 \linewidth]{figures/ANCOM/Deblur.silva.png}
                 \caption{ANCOM Volcano Plot with Deblur and SILVA}
                 \label{fig:volcano-deblur-silva}
+            \end{figure}
+
+        \subsection{t-SNE Plot with Whole Microbiome}
+            As mentioned herein-before, t-SNE is a technique which reduce multi-dimensional data into two-dimension. Whole microbiome data are multi-dimensional data, which have \textit{circa} 600 columns, so the data should be reduced their dimension for readability. Hence, by the grace of t-SNE, the microbiome data have been deflated their dimension: 328 taxa from DADA2 and Greengenes (Figure \ref{fig:tsne-whole-dada2-gg}), 633 taxa from DADA2 and SILVA (Figure \ref{fig:tsne-whole-dada2-silva}), 232 taxa from Deblur and Greengenes (Figure \ref{fig:tsne-whole-deblur-gg}) and 414 taxa from Deblur and SILVA (Figure \ref{fig:tsne-whole-deblur-silva}).
+
+            \begin{figure}[p]
+                \centering
+                \includegraphics[width=0.6 \linewidth]{figures/tSNE/Whole/whole.DADA2.gg.png}
+                \caption{t-SNE Plot with Whole Microbiome from DADA2 and Greengenes}
+                \label{fig:tsne-whole-dada2-gg}
+            \end{figure}
+
+            \begin{figure}[p]
+                \centering
+                \includegraphics[width=0.6 \linewidth]{figures/tSNE/Whole/whole.DADA2.silva.png}
+                \caption{t-SNE Plot with Whole Microbiome from DADA2 and SILVA}
+                \label{fig:tsne-whole-dada2-silva}
+            \end{figure}
+
+            \begin{figure}[p]
+                \centering
+                \includegraphics[width=0.6 \linewidth]{figures/tSNE/Whole/whole.Deblur.gg.png}
+                \caption{t-SNE Plot with Whole Microbiome from Deblur and Greengenes}
+                \label{fig:tsne-whole-deblur-gg}
+            \end{figure}
+
+            \begin{figure}[p]
+                \centering
+                \includegraphics[width=0.6 \linewidth]{figures/tSNE/Whole/whole.Deblur.silva.png}
+                \caption{t-SNE Plot with Whole Microbiome from Deblur and SILVA}
+                \label{fig:tsne-whole-deblur-silva}
+            \end{figure}
+
+        \subsection{t-SNE Plot with ANCOM Selected}
+
+            \begin{figure}[p]
+                \centering
+                \includegraphics[width=0.6 \linewidth]{figures/tSNE/ANCOM/ANCOM.DADA2.gg.png}
+                \caption{t-SNE Plot with ANCOM Selected from DADA2 and Greengenes}
+                \label{fig:tsne-ANCOM-dada2-gg}
+            \end{figure}
+
+            \begin{figure}[p]
+                \centering
+                \includegraphics[width=0.6 \linewidth]{figures/tSNE/ANCOM/ANCOM.DADA2.silva.png}
+                \caption{t-SNE Plot with ANCOM Selected from DADA2 and SILVA}
+                \label{fig:tsne-ANCOM-dada2-silva}
+            \end{figure}
+
+            \begin{figure}[p]
+                \centering
+                \includegraphics[width=0.6 \linewidth]{figures/tSNE/ANCOM/ANCOM.Deblur.gg.png}
+                \caption{t-SNE Plot with ANCOM Selected from Deblur and Greengenes}
+                \label{fig:tsne-ANCOM-deblur-gg}
+            \end{figure}
+
+            \begin{figure}[p]
+                \centering
+                \includegraphics[width=0.6 \linewidth]{figures/tSNE/ANCOM/ANCOM.Deblur.silva.png}
+                \caption{t-SNE Plot with ANCOM Selected from Deblur and SILVA}
+                \label{fig:tsne-ANCOM-deblur-silva}
             \end{figure}
 
     \section{Discussion}
