@@ -316,3 +316,16 @@ Output/Step17/%.tar.gz: Python/step17.py Output/Step16/%.tar.gz Output/Step14/%.
 
 step17: Output/Step17/whole.DADA2.gg.tar.gz Output/Step17/whole.DADA2.silva.tar.gz Output/Step17/whole.Deblur.gg.tar.gz Output/Step17/whole.Deblur.silva.tar.gz
 .PHONY += step17
+
+# Step 18 (Make t-SNE)
+Output/Step18:
+	mkdir -p $@
+
+Output/Step18/whole.%.tar.gz: Python/step18.py Output/Step16/whole.%.tar.gz | Output/Step18 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS)
+
+Output/Step18/ANCOM.%.tar.gz: Python/step18.py Output/Step17/whole.%.tar.gz | Output/Step18 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS)
+
+step18: Output/Step18/whole.DADA2.gg.tar.gz Output/Step18/whole.DADA2.silva.tar.gz Output/Step18/whole.Deblur.gg.tar.gz Output/Step18/whole.Deblur.silva.tar.gz Output/Step18/ANCOM.DADA2.gg.tar.gz Output/Step18/ANCOM.DADA2.silva.tar.gz Output/Step18/ANCOM.Deblur.gg.tar.gz Output/Step18/ANCOM.Deblur.silva.tar.gz
+.PHONY += step18
