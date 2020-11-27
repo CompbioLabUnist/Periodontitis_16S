@@ -329,3 +329,13 @@ Output/Step18/ANCOM.%.tar.gz: Python/step18.py Output/Step17/whole.%.tar.gz | Ou
 
 step18: Output/Step18/whole.DADA2.gg.tar.gz Output/Step18/whole.DADA2.silva.tar.gz Output/Step18/whole.Deblur.gg.tar.gz Output/Step18/whole.Deblur.silva.tar.gz Output/Step18/ANCOM.DADA2.gg.tar.gz Output/Step18/ANCOM.DADA2.silva.tar.gz Output/Step18/ANCOM.Deblur.gg.tar.gz Output/Step18/ANCOM.Deblur.silva.tar.gz
 .PHONY += step18
+
+# Step 19 (Draw default t-SNE)
+Output/Step19:
+	mkdir -p $@
+
+Output/Step19/%.png: Python/step19.py Output/Step18/%.tar.gz | Output/Step19 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@)
+
+step19: Output/Step19/whole.DADA2.gg.png Output/Step19/whole.DADA2.silva.png Output/Step19/whole.Deblur.gg.png Output/Step19/whole.Deblur.silva.png Output/Step19/ANCOM.DADA2.gg.png Output/Step19/ANCOM.DADA2.silva.png Output/Step19/ANCOM.Deblur.gg.png Output/Step19/ANCOM.Deblur.silva.png
+.PHONY += step19
