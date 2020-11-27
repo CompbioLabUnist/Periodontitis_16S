@@ -296,3 +296,23 @@ Output/Step15/whole.Deblur.silva.tsv: Output/Step05/whole.table.qza Output/Step1
 
 step15: Output/Step15/whole.DADA2.gg.tsv Output/Step15/whole.DADA2.silva.tsv Output/Step15/whole.Deblur.gg.tsv Output/Step15/whole.Deblur.silva.tsv
 .PHONY += step15
+
+# Step 16 (Clearify raw TSV into pandas)
+Output/Step16:
+	mkdir -p $@
+
+Output/Step16/%.tar.gz: Python/step16.py Output/Step15/%.tsv | Output/Step16 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@)
+
+step16: Output/Step16/whole.DADA2.gg.tar.gz Output/Step16/whole.DADA2.silva.tar.gz Output/Step16/whole.Deblur.gg.tar.gz Output/Step16/whole.Deblur.silva.tar.gz
+.PHONY += step16
+
+# Step 17 (Select by ANCOM)
+Output/Step17:
+	mkdir -p $@
+
+Output/Step17/%.tar.gz: Python/step17.py Output/Step16/%.tar.gz Output/Step14/%.pseudocount.site/ancom.tsv | Output/Step17 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@)
+
+step17: Output/Step17/whole.DADA2.gg.tar.gz Output/Step17/whole.DADA2.silva.tar.gz Output/Step17/whole.Deblur.gg.tar.gz Output/Step17/whole.Deblur.silva.tar.gz
+.PHONY += step17

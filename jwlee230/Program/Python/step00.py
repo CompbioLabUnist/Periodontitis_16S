@@ -82,4 +82,4 @@ def consistency_taxonomy(taxonomy: str) -> str:
     """
     consistency_taxonomy: make taxonomy information with consistency
     """
-    return ";".join(list(map(lambda x: x.strip(), taxonomy.split(";"))))
+    return "; ".join(list(filter(lambda x: x != "__", list(map(lambda x: x.strip(), taxonomy.split(";"))))))
