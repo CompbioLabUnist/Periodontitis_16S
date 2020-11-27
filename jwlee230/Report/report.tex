@@ -149,6 +149,15 @@
             \subsubsection{Seaborn}
                 Seaborn is a Python data visualization package which based on matplotlib, allows a high-level interface for displaying engaging and descriptive statistical graphics \cite{seaborn1}.
 
+        \subsection{t-SNE}
+            t-SNE (t-distributed stochastic neighbor embedding) reveals high-dimensional data a location in two-dimensional map \cite{tSNE1}.
+
+            \begin{figure}[p]
+                \centering
+                \includegraphics[width=0.4 \linewidth]{figures/tSNE.png}
+                \caption{Visualization by t-SNE \protect\cite{tSNE1}}
+            \end{figure}
+
     \section{Results}
         \subsection{Quality Filter}
             Longer sequences have more fallen sequence quality than shorter. Thus, sequences which longer than threshold should be trimmed out due to their low quality. However, gold-standard strategy for deciding the threshold does not exist; the threshold is set as longest sequence length which have half of sequences have greater than 30 quality score. Hence, sequence quality plot is shown as figure \ref{fig:sequence-quality}; trimmed length in forward reads is 300, and trimmed length in reverse reads is 265.
