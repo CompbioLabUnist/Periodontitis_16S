@@ -101,6 +101,16 @@
                     \label{fig:taxonomy-workflow}
                 \end{figure}
 
+            \subsubsection{Merging Denoising and Taxonomy Classification}
+                After denosing and taxonomy classification steps, some different IDs (ASVs or OTUs) have been identified as same taxonomy. In that case, the different IDs will be merged into one taxonomy (Figure \ref{fig:merging}).
+
+                \begin{figure}[p]
+                    \centering
+                    \includegraphics[width=0.8 \linewidth]{figures/Merging/merging.pdf}
+                    \caption{Example Diagram for Merging Denoising and Taxonomy Classification}
+                    \label{fig:merging}
+                \end{figure}
+
             \subsubsection{Rarefaction}
                 Rarefaction is a statistical method of estimating the number of species expected in a random sample which taken from a collection \cite{rarefaction1}. Moreover, rarefaction allows comparisons of the species richness among communities. Thus, rarefaction is a good choice for normalization \cite{rarefaction2}.
 
