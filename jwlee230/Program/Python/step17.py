@@ -1,5 +1,5 @@
 """
-step17.py: Clearify raw TSV into pandas
+step17.py: Select by ANCOM
 """
 import argparse
 import pandas
