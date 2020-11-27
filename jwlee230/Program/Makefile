@@ -339,3 +339,16 @@ Output/Step19/%.png: Python/step19.py Output/Step18/%.tar.gz | Output/Step19 bui
 
 step19: Output/Step19/whole.DADA2.gg.png Output/Step19/whole.DADA2.silva.png Output/Step19/whole.Deblur.gg.png Output/Step19/whole.Deblur.silva.png Output/Step19/ANCOM.DADA2.gg.png Output/Step19/ANCOM.DADA2.silva.png Output/Step19/ANCOM.Deblur.gg.png Output/Step19/ANCOM.Deblur.silva.png
 .PHONY += step19
+
+# Step 20 (Random Forest Classifier)
+Output/Step20:
+	mkdir -p $@
+
+Output/Step20/whole.%.tar: Python/step20.py Output/Step16/whole.%.tar.gz | Output/Step20 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS)
+
+Output/Step20/ANCOM.%.tar: Python/step20.py Output/Step17/whole.%.tar.gz | Output/Step20 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS)
+
+step20: Output/Step20/whole.DADA2.gg.tar Output/Step20/ANCOM.DADA2.gg.tar
+.PHONY += step20
