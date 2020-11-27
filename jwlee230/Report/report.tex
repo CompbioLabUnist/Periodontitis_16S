@@ -552,7 +552,7 @@
                 \caption{ANCOM Significant Taxa with DADA2 and Greengenes}
                 \label{tb:ANCOM-dada2-gg}
 
-                \csvreader[tabular=p{10cm}cc, nohead, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline, respect underscore]{csv/ANCOM/DADA2.gg.csv}{}{\csvlinetotablerow}
+                \csvreader[tabular=p{10cm}cc, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline, respect underscore]{csv/ANCOM/DADA2.gg.csv}{}{\csvlinetotablerow}
             \end{table}
 
             \begin{figure}[p]
@@ -567,7 +567,7 @@
                 \caption{ANCOM Significant Taxa with DADA2 and SILVA}
                 \label{tb:ANCOM-dada2-silva}
 
-                \csvreader[tabular=p{10cm}cc, nohead, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline, respect underscore]{csv/ANCOM/DADA2.silva.csv}{}{\csvlinetotablerow}
+                \csvreader[tabular=p{10cm}cc, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline, respect underscore]{csv/ANCOM/DADA2.silva.csv}{}{\csvlinetotablerow}
             \end{table}
 
             \begin{figure}[p]
@@ -582,7 +582,7 @@
                 \caption{ANCOM Significant Taxa with Deblur and Greengenes}
                 \label{tb:ANCOM-deblur-gg}
 
-                \csvreader[tabular=p{10cm}cc, nohead, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline, respect underscore]{csv/ANCOM/Deblur.gg.csv}{}{\csvlinetotablerow}
+                \csvreader[tabular=p{10cm}cc, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline, respect underscore]{csv/ANCOM/Deblur.gg.csv}{}{\csvlinetotablerow}
             \end{table}
 
             \begin{figure}[p]
@@ -597,7 +597,7 @@
                 \caption{ANCOM Significant Taxa with DADA2 and SILVA}
                 \label{tb:ANCOM-deblur-silva}
 
-                \csvreader[tabular=p{10cm}cc, nohead, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline, respect underscore]{csv/ANCOM/DADA2.silva.csv}{}{\csvlinetotablerow}
+                \csvreader[tabular=p{10cm}cc, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline, respect underscore]{csv/ANCOM/DADA2.silva.csv}{}{\csvlinetotablerow}
             \end{table}
 
             \begin{figure}[p]
@@ -638,33 +638,34 @@
                 \label{fig:tsne-whole-deblur-silva}
             \end{figure}
 
-        \subsection{t-SNE Plot with ANCOM Selected}
+        \subsection{t-SNE Plot with ANCOM Selected Microbiome Data}
+            As whole microbiome data, ANCOM selected microbiome data are also multi-dimensional data, even though their columns are selected by ANCOM. Hence, with t-SNE, ANCOM selected microbiome data have also been deflated their dimension: 15 taxa (as Table \ref{tb:ANCOM-dada2-gg}) from DADA2 and Greengenes (Figure \ref{fig:tsne-ANCOM-dada2-gg}), 23 taxa (as Table \ref{tb:ANCOM-dada2-silva}) from DADA2 and SILVA (Figure \ref{fig:tsne-ANCOM-dada2-silva}), 27 taxa (as Table \ref{tb:ANCOM-deblur-gg}) from Deblur and Greengenes (Figure \ref{fig:tsne-whole-deblur-gg}) and 20 taxa (as Table \ref{tb:ANCOM-deblur-silva}) from Deblur and SILVA (Figure \ref{fig:tsne-ANCOM-deblur-silva}).
 
             \begin{figure}[p]
                 \centering
                 \includegraphics[width=0.6 \linewidth]{figures/tSNE/ANCOM/ANCOM.DADA2.gg.png}
-                \caption{t-SNE Plot with ANCOM Selected from DADA2 and Greengenes}
+                \caption{t-SNE Plot with ANCOM Selected Microbiome Data from DADA2 and Greengenes}
                 \label{fig:tsne-ANCOM-dada2-gg}
             \end{figure}
 
             \begin{figure}[p]
                 \centering
                 \includegraphics[width=0.6 \linewidth]{figures/tSNE/ANCOM/ANCOM.DADA2.silva.png}
-                \caption{t-SNE Plot with ANCOM Selected from DADA2 and SILVA}
+                \caption{t-SNE Plot with ANCOM Selected Microbiome Data from DADA2 and SILVA}
                 \label{fig:tsne-ANCOM-dada2-silva}
             \end{figure}
 
             \begin{figure}[p]
                 \centering
                 \includegraphics[width=0.6 \linewidth]{figures/tSNE/ANCOM/ANCOM.Deblur.gg.png}
-                \caption{t-SNE Plot with ANCOM Selected from Deblur and Greengenes}
+                \caption{t-SNE Plot with ANCOM Selected Microbiome Data from Deblur and Greengenes}
                 \label{fig:tsne-ANCOM-deblur-gg}
             \end{figure}
 
             \begin{figure}[p]
                 \centering
                 \includegraphics[width=0.6 \linewidth]{figures/tSNE/ANCOM/ANCOM.Deblur.silva.png}
-                \caption{t-SNE Plot with ANCOM Selected from Deblur and SILVA}
+                \caption{t-SNE Plot with ANCOM Selected Microbiome Data from Deblur and SILVA}
                 \label{fig:tsne-ANCOM-deblur-silva}
             \end{figure}
 
