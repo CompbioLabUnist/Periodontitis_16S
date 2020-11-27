@@ -1,0 +1,79 @@
+\documentclass[border=1cm]{standalone}
+
+\usepackage{tikz}
+
+\usetikzlibrary{shapes, arrows, calc, positioning}
+\definecolor{codegreen}{rgb}{0, 0.6, 0}
+\definecolor{codegray}{rgb}{0.5, 0.5, 0.5}
+\definecolor{codepurple}{rgb}{0.58, 0, 0.82}
+\definecolor{backcolour}{rgb}{0.95, 0.95, 0.92}
+
+\tikzstyle{decision} = [diamond, draw, fill=blue!20, text width=4.5em, text badly centered, node distance=3cm, inner sep=0pt]
+\tikzstyle{block} = [rectangle, draw, fill=blue!20, text centered, rounded corners, minimum height=2em]
+\tikzstyle{line} = [draw, -latex']
+\tikzstyle{cloud} = [draw, ellipse, fill=red!20, node distance=5em, minimum height=2em]
+\tikzset
+{
+    -|-/.style=
+    {
+        to path=
+        {
+            (\tikztostart) -| ($(\tikztostart)!#1!(\tikztotarget)$) |- (\tikztotarget)
+            \tikztonodes
+        }
+    },
+    -|-/.default=0.5,
+    |-|/.style=
+    {
+        to path=
+        {
+            (\tikztostart) |- ($(\tikztostart)!#1!(\tikztotarget)$) -| (\tikztotarget)
+            \tikztonodes
+        }
+    },
+    |-|/.default=0.5,
+}
+
+\begin{document}
+    \begin{tikzpicture}
+        \node[decision] (00) {Denoising};
+
+        \node[decision, right=of 00] (01) {Taxonomy};
+
+        \node[cloud, below=of 00] (02) {ID 3; Taxo 2};
+        \path[line] (00) -- (02);
+        \path[line] (01) -- (02);
+
+        \node[cloud, left=of 02] (03) {ID 2; Taxo 2};
+        \path[line] (00) -- (03);
+        \path[line] (01) -- (03);
+
+        \node[cloud, left=of 03] (04) {ID 1; Taxo 1};
+        \path[line] (00) -- (04);
+        \path[line] (01) -- (04);
+
+        \node[cloud, below=of 01] (05) {ID 4; Taxo 3};
+        \path[line] (00) -- (05);
+        \path[line] (01) -- (05);
+
+        \node[cloud, right=of 05] (06) {ID 5; Taxo 3};
+        \path[line] (00) -- (06);
+        \path[line] (01) -- (06);
+
+        \node[cloud, right=of 06] (07) {ID 6; Taxo 3};
+        \path[line] (00) -- (07);
+        \path[line] (01) -- (07);
+
+        \node[block, below=of 04] (08) {Taxo 1};
+        \path[line] (04) -- (08);
+
+        \node[block, below=of 03] (09) {Taxo 2};
+        \path[line] (03) -- (09);
+        \path[line] (02) -- (09);
+
+        \node[block, below=of 05] (10) {Taxo 3};
+        \path[line] (05) -- (10);
+        \path[line] (06) -- (10);
+        \path[line] (07) -- (10);
+    \end{tikzpicture}
+\end{document}
