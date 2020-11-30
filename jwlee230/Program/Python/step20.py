@@ -63,13 +63,13 @@ if __name__ == "__main__":
             y_train, y_test = data.iloc[train_index]["LongStage"], data.iloc[test_index]["LongStage"]
 
             classifier.fit(x_train, y_train)
-            scores.append((i, classifier.score(x_test, y_test))
+            scores.append((i, classifier.score(x_test, y_test)))
 
     # Draw K-fold
-    score_data = pandas.DataFrame.from_records(test_scores, columns=["FeatureCount", "Accuracy"])
+    score_data = pandas.DataFrame.from_records(scores, columns=["FeatureCount", "Accuracy"])
     seaborn.set(context="poster", style="whitegrid")
     fig, ax = matplotlib.pyplot.subplots(figsize=(32, 18))
-    seaborn.lineplot(data=score_data, x="Features", y="Accuracy", style="Database", ax=ax)
+    seaborn.lineplot(data=score_data, x="FeatureCount", y="Accuracy", ax=ax)
     matplotlib.pyplot.grid(True)
     tar_files.append("accuracy.png")
     fig.savefig(tar_files[-1])
