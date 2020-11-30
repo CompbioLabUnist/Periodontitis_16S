@@ -52,25 +52,28 @@ if __name__ == "__main__":
     fig.savefig(tar_files[-1])
     matplotlib.pyplot.close(fig)
 
-    # Run K-fold
-    k_fold = sklearn.model_selection.StratifiedKFold(n_splits=10)
-    scores = list()
+    # Run Accurary by Feature Counts
+    accuracies = list()
+    best_accuracy = (0, 0)
     for i in range(1, len(best_features) + 1):
         print("With", i, "/", len(best_features), "features!!")
         used_columns = best_features[:i]
-        for j, (train_index, test_index) in enumerate(k_fold.split(data[used_columns], data["LongStage"])):
-            x_train, x_test = data.iloc[train_index][used_columns], data.iloc[test_index][used_columns]
-            y_train, y_test = data.iloc[train_index]["LongStage"], data.iloc[test_index]["LongStage"]
+        x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(data[used_columns], data["LongStage"], test_size=0.1, random_state=0, stratify=data["LongStage"])
 
-            classifier.fit(x_train, y_train)
-            scores.append((i, classifier.score(x_test, y_test)))
+        classifier.fit(x_train, y_train)
+        accuracy = classifier.score(x_test, y_test)
+        accuracies.append((i, accuracy))
 
-    # Draw K-fold
-    score_data = pandas.DataFrame.from_records(scores, columns=["FeatureCount", "Accuracy"])
+        if best_accuracy[0] < accuracy:
+            best_accuracy = (accuracy, i)
+
+    # Draw Accuracy
+    score_data = pandas.DataFrame.from_records(accuracies, columns=["FeatureCount", "Accuracy"])
     seaborn.set(context="poster", style="whitegrid")
     fig, ax = matplotlib.pyplot.subplots(figsize=(32, 18))
     seaborn.lineplot(data=score_data, x="FeatureCount", y="Accuracy", ax=ax)
     matplotlib.pyplot.grid(True)
+    matplotlib.pyplot.title("Best Accuracy at %s with %s features" % best_accuracy)
     tar_files.append("accuracy.png")
     fig.savefig(tar_files[-1])
     matplotlib.pyplot.close(fig)
