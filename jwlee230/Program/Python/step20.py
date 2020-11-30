@@ -9,6 +9,7 @@ import matplotlib
 import matplotlib.pyplot
 import seaborn
 import sklearn.ensemble
+import sklearn.metrics
 import sklearn.model_selection
 import step00
 
@@ -52,31 +53,45 @@ if __name__ == "__main__":
     fig.savefig(tar_files[-1])
     matplotlib.pyplot.close(fig)
 
-    # Run Accurary by Feature Counts
-    accuracies = list()
-    best_accuracy = (0, 0)
+    # Calculate Metrics by Feature Counts
+    highest_metrics = {metric: (0, 0.0) for metric in step00.derivations}
+    lowest_metrics = {metric: (0, 1.0) for metric in step00.derivations}
+    scores = list()
+
     for i in range(1, len(best_features) + 1):
         print("With", i, "/", len(best_features), "features!!")
         used_columns = best_features[:i]
+        tmp: typing.List[typing.Union[int, float]] = [i]
+
         x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(data[used_columns], data["LongStage"], test_size=0.1, random_state=0, stratify=data["LongStage"])
 
         classifier.fit(x_train, y_train)
-        accuracy = classifier.score(x_test, y_test)
-        accuracies.append((i, accuracy))
+        confusion_matrix = sklearn.metrics.confusion_matrix(y_test, classifier.predict(x_test))
 
-        if best_accuracy[0] < accuracy:
-            best_accuracy = (accuracy, i)
+        for metric in step00.derivations:
+            score = step00.aggregate_confusion_matrix(confusion_matrix, metric)
+            tmp.append(score)
 
-    # Draw Accuracy
-    score_data = pandas.DataFrame.from_records(accuracies, columns=["FeatureCount", "Accuracy"])
-    seaborn.set(context="poster", style="whitegrid")
-    fig, ax = matplotlib.pyplot.subplots(figsize=(32, 18))
-    seaborn.lineplot(data=score_data, x="FeatureCount", y="Accuracy", ax=ax)
-    matplotlib.pyplot.grid(True)
-    matplotlib.pyplot.title("Best Accuracy at %s with %s features" % best_accuracy)
-    tar_files.append("accuracy.png")
-    fig.savefig(tar_files[-1])
-    matplotlib.pyplot.close(fig)
+            if highest_metrics[metric][1] < score:
+                highest_metrics[metric] = (i, score)
+
+            if lowest_metrics[metric][1] > score:
+                lowest_metrics[metric] = (i, score)
+
+        scores.append(tmp)
+
+    # Draw Scores
+    score_data = pandas.DataFrame.from_records(scores, columns=["FeatureCount"] + list(step00.derivations))
+
+    for metric in step00.derivations:
+        seaborn.set(context="poster", style="whitegrid")
+        fig, ax = matplotlib.pyplot.subplots(figsize=(32, 18))
+        seaborn.lineplot(data=score_data, x="FeatureCount", y=metric, ax=ax)
+        matplotlib.pyplot.grid(True)
+        matplotlib.pyplot.title("Higest with %s features at %.3f; Lowest with %s features at %.3f" % (highest_metrics[metric] + lowest_metrics[metric]))
+        tar_files.append(metric + ".png")
+        fig.savefig(tar_files[-1])
+        matplotlib.pyplot.close(fig)
 
     # Save data
     with tarfile.open(args.output, "w") as tar:

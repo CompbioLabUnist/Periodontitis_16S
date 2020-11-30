@@ -350,5 +350,5 @@ Output/Step20/whole.%.tar: Python/step20.py Output/Step16/whole.%.tar.gz | Outpu
 Output/Step20/ANCOM.%.tar: Python/step20.py Output/Step17/whole.%.tar.gz | Output/Step20 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS)
 
-step20: Output/Step20/ANCOM.DADA2.gg.tar# Output/Step20/ANCOM.DADA2.silva.tar Output/Step20/ANCOM.Deblur.gg.tar Output/Step20/ANCOM.Deblur.silva.tar
+step20: Output/Step20/ANCOM.DADA2.gg.tar Output/Step20/ANCOM.DADA2.silva.tar Output/Step20/ANCOM.Deblur.gg.tar Output/Step20/ANCOM.Deblur.silva.tar
 .PHONY += step20

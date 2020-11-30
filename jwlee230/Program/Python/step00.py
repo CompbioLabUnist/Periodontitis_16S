@@ -86,18 +86,17 @@ def consistency_taxonomy(taxonomy: str) -> str:
     return "; ".join(list(filter(lambda x: x != "__", list(map(lambda x: x.strip(), taxonomy.split(";"))))))
 
 
-def aggregate_confusion_matrix(confusion_matrix: typing.Union[None, numpy.ndarray], derivation: str = "") -> typing.Union[typing.Tuple[str, str, str, str, str, str, str, str, str, str, str, str], float]:
+derivations = ("sensitivity", "specificity", "precision", "negative_predictive_value", "miss_rate", "fall_out", "false_discovery_rate", "false_ommission_rate", "thread_score", "accuracy", "F1_score", "odds_ratio")
+
+
+def aggregate_confusion_matrix(confusion_matrix: numpy.ndarray, derivation: str = "") -> float:
     """
     aggregate_confusion_matrix: derivations from confusion matrix
     """
-    derivations = ("sensitivity", "specificity", "precision", "negative_predictive_value", "miss_rate", "fall_out", "false_discovery_rate", "false_ommission_rate", "thread_score", "accuracy", "F1_score", "odds_ratio")
 
-    if confusion_matrix is None:
-        return derivations
-
-    assert (derivation == "") or (derivation in derivations)
+    assert (derivation in derivations)
 
     TP, FP, FN, TN = confusion_matrix[0][0], confusion_matrix[0][1], confusion_matrix[1][0], confusion_matrix[1][1]
 
     with numpy.errstate(divide="ignore"):
-        return list(filter(lambda x: (derivation == "") or (x[0] == derivation), zip(derivations, (TP / (TP + FN), TN / (TN + FP), TP / (TP + FP), TN / (TN + FN), FN / (FN + TP), FP / (FP + TN), FP / (FP + TP), FN / (FN + TN), TP / (TP + FN + FP), (TP + TN) / (TP + TN + FP + FN), 2 * TP / (2 * TP + FP + FN), (TP / FP) / (FN / TN)))))[0][1]
+        return list(filter(lambda x: (x[0] == derivation), zip(derivations, (TP / (TP + FN), TN / (TN + FP), TP / (TP + FP), TN / (TN + FN), FN / (FN + TP), FP / (FP + TN), FP / (FP + TP), FN / (FN + TN), TP / (TP + FN + FP), (TP + TN) / (TP + TN + FP + FN), 2 * TP / (2 * TP + FP + FN), (TP / FP) / (FN / TN)))))[0][1]
