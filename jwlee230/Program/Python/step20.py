@@ -88,7 +88,7 @@ if __name__ == "__main__":
         fig, ax = matplotlib.pyplot.subplots(figsize=(32, 18))
         seaborn.lineplot(data=score_data, x="FeatureCount", y=metric, ax=ax)
         matplotlib.pyplot.grid(True)
-        matplotlib.pyplot.title("Higest with %s features at %.3f; Lowest with %s features at %.3f" % (highest_metrics[metric] + lowest_metrics[metric]))
+        matplotlib.pyplot.title("Higest with %s feature(s) at %.3f; Lowest with %s feature(s) at %.3f" % (highest_metrics[metric] + lowest_metrics[metric]))
         tar_files.append(metric + ".png")
         fig.savefig(tar_files[-1])
         matplotlib.pyplot.close(fig)
