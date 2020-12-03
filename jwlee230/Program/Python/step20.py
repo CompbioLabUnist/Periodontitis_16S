@@ -55,7 +55,7 @@ if __name__ == "__main__":
 
     # Calculate Metrics by Feature Counts
     highest_metrics = {metric: (0, 0.0) for metric in step00.derivations}
-    lowest_metrics = {metric: (0, 1.0) for metric in step00.derivations}
+    lowest_metrics = {metric: (0, 0.0) for metric in step00.derivations}
     scores = list()
 
     for i in range(1, len(best_features) + 1):
@@ -72,10 +72,10 @@ if __name__ == "__main__":
             score = step00.aggregate_confusion_matrix(confusion_matrix, metric)
             tmp.append(score)
 
-            if highest_metrics[metric][1] < score:
+            if (highest_metrics[metric][0] == 0) or (highest_metrics[metric][1] < score):
                 highest_metrics[metric] = (i, score)
 
-            if lowest_metrics[metric][1] > score:
+            if (lowest_metrics[metric][0] == 0) or (lowest_metrics[metric][1] > score):
                 lowest_metrics[metric] = (i, score)
 
         scores.append(tmp)
@@ -85,7 +85,6 @@ if __name__ == "__main__":
     score_data = pandas.DataFrame.from_records(scores, columns=["FeatureCount"] + list(step00.derivations))
     for metric in step00.derivations:
         print("--", metric)
-        seaborn.set(context="poster", style="whitegrid")
         fig, ax = matplotlib.pyplot.subplots(figsize=(32, 18))
         seaborn.lineplot(data=score_data, x="FeatureCount", y=metric, ax=ax)
         matplotlib.pyplot.grid(True)
@@ -99,10 +98,9 @@ if __name__ == "__main__":
     print("Drawing highest trees start!!")
     for metric in step00.derivations:
         print("--", metric)
-        seaborn.set(context="poster", style="whitegrid")
-        fig, ax = matplotlib.pyplot.subplots(figsize=(24, 24))
+        fig, ax = matplotlib.pyplot.subplots(figsize=(36, 36))
         classifier.fit(data[best_features[:highest_metrics[metric][0]]], data["LongStage"])
-        sklearn.tree.plot_tree(classifier.estimators_[0], ax=ax, class_names=data["LongStage"], filled=True)
+        sklearn.tree.plot_tree(classifier.estimators_[0], ax=ax, filled=True, class_names=data["LongStage"])
         matplotlib.pyplot.title("Highest %s with %s feature(s) at %.3f" % ((metric,) + highest_metrics[metric]))
         tar_files.append("highest_" + metric + ".png")
         fig.savefig(tar_files[-1])
@@ -112,10 +110,9 @@ if __name__ == "__main__":
     print("Drawing lowest trees start!!")
     for metric in step00.derivations:
         print("--", metric)
-        seaborn.set(context="poster", style="whitegrid")
-        fig, ax = matplotlib.pyplot.subplots(figsize=(24, 24))
+        fig, ax = matplotlib.pyplot.subplots(figsize=(36, 36))
         classifier.fit(data[best_features[:lowest_metrics[metric][0]]], data["LongStage"])
-        sklearn.tree.plot_tree(classifier.estimators_[0], ax=ax, class_names=data["LongStage"], filled=True)
+        sklearn.tree.plot_tree(classifier.estimators_[0], ax=ax, filled=True, class_names=data["LongStage"])
         matplotlib.pyplot.title("Lowest %s with %s feature(s) at %.3f" % ((metric,) + lowest_metrics[metric]))
         tar_files.append("lowest_" + metric + ".png")
         fig.savefig(tar_files[-1])
