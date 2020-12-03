@@ -81,9 +81,10 @@ if __name__ == "__main__":
         scores.append(tmp)
 
     # Draw Scores
+    print("Drawing scores start!!")
     score_data = pandas.DataFrame.from_records(scores, columns=["FeatureCount"] + list(step00.derivations))
-
     for metric in step00.derivations:
+        print("--", metric)
         seaborn.set(context="poster", style="whitegrid")
         fig, ax = matplotlib.pyplot.subplots(figsize=(32, 18))
         seaborn.lineplot(data=score_data, x="FeatureCount", y=metric, ax=ax)
@@ -92,6 +93,34 @@ if __name__ == "__main__":
         tar_files.append(metric + ".png")
         fig.savefig(tar_files[-1])
         matplotlib.pyplot.close(fig)
+    print("Drawing scores done!!")
+
+    # Draw Trees
+    print("Drawing highest trees start!!")
+    for metric in step00.derivations:
+        print("--", metric)
+        seaborn.set(context="poster", style="whitegrid")
+        fig, ax = matplotlib.pyplot.subplots(figsize=(24, 24))
+        classifier.fit(data[best_features[:highest_metrics[metric][0]]], data["LongStage"])
+        sklearn.tree.plot_tree(classifier.estimators_[0], ax=ax, class_names=data["LongStage"], filled=True)
+        matplotlib.pyplot.title("Highest %s with %s feature(s) at %.3f" % ((metric,) + highest_metrics[metric]))
+        tar_files.append("highest_" + metric + ".png")
+        fig.savefig(tar_files[-1])
+        matplotlib.pyplot.close(fig)
+    print("Drawing highest trees done!!")
+
+    print("Drawing lowest trees start!!")
+    for metric in step00.derivations:
+        print("--", metric)
+        seaborn.set(context="poster", style="whitegrid")
+        fig, ax = matplotlib.pyplot.subplots(figsize=(24, 24))
+        classifier.fit(data[best_features[:lowest_metrics[metric][0]]], data["LongStage"])
+        sklearn.tree.plot_tree(classifier.estimators_[0], ax=ax, class_names=data["LongStage"], filled=True)
+        matplotlib.pyplot.title("Lowest %s with %s feature(s) at %.3f" % ((metric,) + lowest_metrics[metric]))
+        tar_files.append("lowest_" + metric + ".png")
+        fig.savefig(tar_files[-1])
+        matplotlib.pyplot.close(fig)
+    print("Drawing lowest trees done!!")
 
     # Save data
     with tarfile.open(args.output, "w") as tar:
