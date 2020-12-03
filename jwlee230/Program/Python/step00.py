@@ -86,7 +86,7 @@ def consistency_taxonomy(taxonomy: str) -> str:
     return "; ".join(list(filter(lambda x: x != "__", list(map(lambda x: x.strip(), taxonomy.split(";"))))))
 
 
-derivations = ("sensitivity", "specificity", "precision", "negative_predictive_value", "miss_rate", "fall_out", "false_discovery_rate", "false_ommission_rate", "thread_score", "accuracy", "F1_score", "odds_ratio")
+derivations = ("sensitivity", "specificity", "precision", "negative_predictive_value", "miss_rate", "fall_out", "false_discovery_rate", "false_ommission_rate", "accuracy", "F1_score", "odds_ratio", "balanced_accuracy", "threat_score")
 
 
 def aggregate_confusion_matrix(confusion_matrix: numpy.ndarray, derivation: str = "") -> float:
@@ -98,5 +98,67 @@ def aggregate_confusion_matrix(confusion_matrix: numpy.ndarray, derivation: str 
 
     TP, FP, FN, TN = confusion_matrix[0][0], confusion_matrix[0][1], confusion_matrix[1][0], confusion_matrix[1][1]
 
-    with numpy.errstate(divide="ignore"):
-        return list(filter(lambda x: (x[0] == derivation), zip(derivations, (TP / (TP + FN) if (TP + FN) else numpy.nan, TN / (TN + FP) if (TN + FP) else numpy.nan, TP / (TP + FP) if (TP + FP) else numpy.nan, TN / (TN + FN) if (TN + FN) else numpy.nan, FN / (FN + TP) if (FN + TP) else numpy.nan, FP / (FP + TN) if (FP + TN) else numpy.nan, FP / (FP + TP) if (FP + TP) else numpy.nan, FN / (FN + TN) if (FN + TN) else numpy.nan, TP / (TP + FN + FP) if (TP + FN + FP) else numpy.nan, (TP + TN) / (TP + TN + FP + FN) if (TP + FP + FN) else numpy.nan, 2 * TP / (2 * TP + FP + FN) if (2 * TP + FP + FN) else numpy.nan, (TP / FP) / (FN / TN) if (FP and TN) else numpy.nan))))[0][1]
+    if derivation == derivations[0]:
+        if (TP + FN) == 0:
+            return numpy.nan
+        else:
+            return TP / (TP + FN)
+    elif derivation == derivations[1]:
+        if (TN + FP) == 0:
+            return numpy.nan
+        else:
+            return TN / (TN + FP)
+    elif derivation == derivations[2]:
+        if (TP + FP) == 0:
+            return numpy.nan
+        else:
+            return TP / (TP + FP)
+    elif derivation == derivations[3]:
+        if (TN + FN) == 0:
+            return numpy.nan
+        else:
+            return TN / (TN + FN)
+    elif derivation == derivations[4]:
+        if (FN + TP) == 0:
+            return numpy.nan
+        else:
+            return FN / (FN + TP)
+    elif derivation == derivations[5]:
+        if (FP + TN) == 0:
+            return numpy.nan
+        else:
+            return FP / (FP + TN)
+    elif derivation == derivations[6]:
+        if (FP + TP) == 0:
+            return numpy.nan
+        else:
+            return FP / (FP + TP)
+    elif derivation == derivations[7]:
+        if (FN + TN) == 0:
+            return numpy.nan
+        else:
+            return FN / (FN + TN)
+    elif derivation == derivations[8]:
+        return (TP + TN) / (TP + TN + FP + FN)
+    elif derivation == derivations[9]:
+        if (2 * TP + FP + FN) == 0:
+            return numpy.nan
+        else:
+            return 2 * TP / (2 * TP + FP + FN)
+    elif derivation == derivations[10]:
+        if (FP == 0) or (FN == 0):
+            return numpy.nan
+        else:
+            return (TP * TN) / (FP * FN)
+    elif derivation == derivations[11]:
+        if (TP + FN == 0) or (TN + FP == 0):
+            return numpy.nan
+        else:
+            return ((TP / (TP + FN)) + (TN / (TN + FP))) / 2
+    elif derivation == derivations[12]:
+        if (TP + FN + FP == 0):
+            return numpy.nan
+        else:
+            return TP / (TP + FN + FP)
+
+    raise ValueError(derivation)
