@@ -7,6 +7,7 @@ import typing
 import pandas
 import matplotlib
 import matplotlib.pyplot
+import numpy
 import seaborn
 import sklearn.ensemble
 import sklearn.metrics
@@ -42,6 +43,15 @@ if __name__ == "__main__":
     feature_importances = list(classifier.feature_importances_)
     best_features = list(map(lambda x: x[1], sorted(list(filter(lambda x: x[0] > 0, zip(feature_importances, train_columns))), reverse=True)))
 
+    # Save Features
+    tar_files.append("features.txt")
+    with open(tar_files[-1], "w") as f:
+        for i, feature in enumerate(best_features):
+            f.write(str(i))
+            f.write(" ")
+            f.write(feature)
+            f.write("\n")
+
     # Draw Feature Importances
     fig, ax = matplotlib.pyplot.subplots(figsize=(32, 18))
     seaborn.histplot(data=feature_importances, kde=False, ax=ax)
@@ -72,6 +82,9 @@ if __name__ == "__main__":
             score = step00.aggregate_confusion_matrix(confusion_matrix, metric)
             tmp.append(score)
 
+            if numpy.isnan(score):
+                continue
+
             if (highest_metrics[metric][0] == 0) or (highest_metrics[metric][1] < score):
                 highest_metrics[metric] = (i, score)
 
@@ -79,10 +92,11 @@ if __name__ == "__main__":
                 lowest_metrics[metric] = (i, score)
 
         scores.append(tmp)
+    score_data = pandas.DataFrame.from_records(scores, columns=["FeatureCount"] + list(step00.derivations))
+    print(score_data)
 
     # Draw Scores
     print("Drawing scores start!!")
-    score_data = pandas.DataFrame.from_records(scores, columns=["FeatureCount"] + list(step00.derivations))
     for metric in step00.derivations:
         print("--", metric)
         fig, ax = matplotlib.pyplot.subplots(figsize=(32, 18))
