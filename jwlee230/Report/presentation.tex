@@ -572,6 +572,29 @@
 
     \begin{frame}[allowframebreaks]
         \frametitle{RandomForest Classifier}
+
+        \begin{table}
+            \caption{Features Order by Importances}
+            \begin{tabular}{c|l}
+                Order & Taxonomy (Family Genus [Species]) \\ \hline
+                1 & \textit{Actinomycetaceae Actinomyces} \\
+                2 & \textit{Actinomycetaceae Actinomyces Schaalia-odontolytica} \\
+                3 & \textit{Prevotellaceae Prevotella Prevotella-intermedia} \\
+                4 & \textit{Peptostreptococcaceae Filifactor Filifactor-alocis} \\
+                5 & \textit{Lachnospiraceae Oribacterium} \\
+                6 & \textit{Tannerellaceae Tannerella Tannerella-forsythia} \\
+            \end{tabular}
+        \end{table}
+
+        \begin{figure}
+            \includegraphics[width=0.8 \linewidth]{figures/RandomForest/DADA-silva/balanced_accuracy.png}
+            \caption{Balanced Accuracy by Feature Count}
+        \end{figure}
+
+        \begin{figure}
+            \includegraphics[width=0.5 \linewidth]{figures/RandomForest/DADA-silva/highest_balanced_accuracy.png}
+            \caption{RandomForest Tree Plot}
+        \end{figure}
     \end{frame}
 
     \section{Discussion}
