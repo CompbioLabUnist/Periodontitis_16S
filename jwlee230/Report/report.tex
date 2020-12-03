@@ -162,12 +162,32 @@
                 Seaborn is a Python data visualization package which based on matplotlib, allows a high-level interface for displaying engaging and descriptive statistical graphics \cite{seaborn1}.
 
         \subsection{t-SNE}
-            t-SNE (t-distributed stochastic neighbor embedding) reveals high-dimensional data a location in two-dimensional map \cite{tSNE1}.
+            t-SNE (t-distributed stochastic neighbor embedding) reveals high-dimensional data a location in two-dimensional map \cite{tSNE1}. Figure \ref{fig:tsne-example} is example of t-SNE with hand-writing digits \cite{tSNE1}. In figure \ref{fig:tsne-example}, all 10 digits are grouped into 10 groups clearly; some hand-writings, however, are classified into wrong groups due to their similar shapes, such as 0 and 6.
 
             \begin{figure}[p]
                 \centering
                 \includegraphics[width=0.4 \linewidth]{figures/tSNE.png}
                 \caption{Visualization by t-SNE \protect\cite{tSNE1}}
+                \label{fig:tsne-example}
+            \end{figure}
+
+        \subsection{Classification}
+            In machine learning, Classification is one of supervised learning which identifies a class of a new observation, depends on given information which consist of training observations and their classes.
+
+            In this study, classification will be carried out as figure \ref{fig:classification}; and the third step in figure \ref{fig:classification} is demonstrated in minute detail as figure \ref{fig:deciding-best}. Note that the first step in figure \ref{fig:classification} is optional.
+
+            \begin{figure}[p]
+                \centering
+                \includegraphics[width=0.8 \linewidth]{figures/Classifier/classifier.pdf}
+                \caption{Workflow of Classification}
+                \label{fig:classification}
+            \end{figure}
+
+            \begin{figure}[p]
+                \centering
+                \includegraphics[width=0.6 \linewidth]{figures/Classifier/best.pdf}
+                \caption{Deciding the Best Features}
+                \label{fig:deciding-best}
             \end{figure}
 
     \section{Results}
@@ -667,22 +687,6 @@
                 \includegraphics[width=0.6 \linewidth]{figures/tSNE/ANCOM/ANCOM.Deblur.silva.png}
                 \caption{t-SNE Plot with ANCOM Selected Microbiome Data from Deblur and SILVA}
                 \label{fig:tsne-ANCOM-deblur-silva}
-            \end{figure}
-
-        \subsection{Classifications}
-
-            \begin{figure}[p]
-                \centering
-                \includegraphics[width=0.8 \linewidth]{figures/Classifier/classifier.pdf}
-                \caption{Workflow of Classification}
-                \label{fig:classification}
-            \end{figure}
-
-            \begin{figure}[p]
-                \centering
-                \includegraphics[width=0.6 \linewidth]{figures/Classifier/best.pdf}
-                \caption{Deciding the Best Features}
-                \label{fig:deciding-best}
             \end{figure}
 
         \subsection{RandomForest Classifier}
