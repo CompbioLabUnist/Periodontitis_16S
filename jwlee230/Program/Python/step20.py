@@ -18,6 +18,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument("input", type=str, help="Input TAR.gz file")
+    parser.add_argument("tsne", type=str, help="TSNE TAR.gz file")
     parser.add_argument("output", type=str, help="Output TAR file")
     parser.add_argument("--cpu", type=int, help="Number of CPU to use")
 
@@ -32,6 +33,8 @@ if __name__ == "__main__":
     matplotlib.rcParams.update({"font.size": 30})
 
     tar_files: typing.List[str] = list()
+
+    tsne_data = step00.read_pickle(args.tsne)
 
     data = step00.read_pickle(args.input)
     data.drop(labels="ShortStage", axis="columns", inplace=True)
@@ -113,8 +116,8 @@ if __name__ == "__main__":
     for metric in step00.derivations:
         print("--", metric)
         fig, ax = matplotlib.pyplot.subplots(figsize=(36, 36))
-        classifier.fit(data[best_features[:highest_metrics[metric][0]]], data["LongStage"])
-        sklearn.tree.plot_tree(classifier.estimators_[0], ax=ax, filled=True, class_names=sorted(set(data["LongStage"])))
+        x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(data[best_features[:highest_metrics[metric][0]]], data["LongStage"], test_size=0.1, random_state=0, stratify=data["LongStage"])
+        sklearn.tree.plot_tree(classifier.fit(x_train, y_train).estimators_[0], ax=ax, filled=True, class_names=sorted(set(data["LongStage"])))
         matplotlib.pyplot.title("Highest %s with %s feature(s) at %.3f" % ((metric,) + highest_metrics[metric]))
         tar_files.append("highest_" + metric + ".png")
         fig.savefig(tar_files[-1])
@@ -125,8 +128,8 @@ if __name__ == "__main__":
     for metric in step00.derivations:
         print("--", metric)
         fig, ax = matplotlib.pyplot.subplots(figsize=(36, 36))
-        classifier.fit(data[best_features[:lowest_metrics[metric][0]]], data["LongStage"])
-        sklearn.tree.plot_tree(classifier.estimators_[0], ax=ax, filled=True, class_names=sorted(set(data["LongStage"])))
+        x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(data[best_features[:lowest_metrics[metric][0]]], data["LongStage"], test_size=0.1, random_state=0, stratify=data["LongStage"])
+        sklearn.tree.plot_tree(classifier.fit(x_train, y_train).estimators_[0], ax=ax, filled=True, class_names=sorted(set(data["LongStage"])))
         matplotlib.pyplot.title("Lowest %s with %s feature(s) at %.3f" % ((metric,) + lowest_metrics[metric]))
         tar_files.append("lowest_" + metric + ".png")
         fig.savefig(tar_files[-1])
