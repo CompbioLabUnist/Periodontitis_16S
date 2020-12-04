@@ -41,7 +41,7 @@
         \node[block, right=1cm of 00] (01) {Order Features by Importances};
         \path[line] (00) -- (01);
 
-        \node[block, right=1cm of 01] (02) {Devide Train-Test set};
+        \node[block, right=1cm of 01] (02) {Devide Train and Test set};
         \path[line] (01) -- (02);
 
         \node[block, right=1cm of 02] (03) {Decide the Best Features};
@@ -49,5 +49,8 @@
 
         \node[block, right=1cm of 03] (04) {Get Final Classification Result};
         \path[line] (03) -- (04);
+
+        \node[block, right=1cm of 04] (05) {Aggregate Confusion Matrices};
+        \path[line] (04) -- (05);
     \end{tikzpicture}
 \end{document}
