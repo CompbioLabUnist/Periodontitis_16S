@@ -41,10 +41,13 @@
         \node[block, right=1cm of 00] (01) {Order Features by Importances};
         \path[line] (00) -- (01);
 
-        \node[block, right=1cm of 01] (02) {Decide the Best Features};
+        \node[block, right=1cm of 01] (02) {Devide Train-Test set};
         \path[line] (01) -- (02);
 
-        \node[block, right=1cm of 02] (03) {Get Final Classification Result};
+        \node[block, right=1cm of 02] (03) {Decide the Best Features};
         \path[line] (02) -- (03);
+
+        \node[block, right=1cm of 03] (04) {Get Final Classification Result};
+        \path[line] (03) -- (04);
     \end{tikzpicture}
 \end{document}
