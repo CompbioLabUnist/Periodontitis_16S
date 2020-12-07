@@ -344,20 +344,17 @@ step19: Output/Step19/whole.DADA2.gg.png Output/Step19/whole.DADA2.silva.png Out
 Output/Step20:
 	mkdir -p $@
 
-Output/Step20/whole.%.tar: Python/step20.py Output/Step16/whole.%.tar.gz | Output/Step20 build.log
-	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS)
-
 Output/Step20/ANCOM.%.tar: Python/step20.py Output/Step17/whole.%.tar.gz | Output/Step20 build.log
-	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS)
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) 1> $@.stdout 2> $@.stderr
 
 Output/Step20/one.%.tar: Python/step20.py Output/Step17/whole.%.tar.gz | Output/Step20 build.log
-	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --one
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --one 1> $@.stdout 2> $@.stderr
 
 Output/Step20/two.%.tar: Python/step20.py Output/Step17/whole.%.tar.gz | Output/Step20 build.log
-	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --two
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --two 1> $@.stdout 2> $@.stderr
 
 Output/Step20/one-two.%.tar: Python/step20.py Output/Step17/whole.%.tar.gz | Output/Step20 build.log
-	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --one --two
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --one --two 1> $@.stdout 2> $@.stderr
 
 step20: Output/Step20/ANCOM.DADA2.gg.tar Output/Step20/ANCOM.DADA2.silva.tar Output/Step20/ANCOM.Deblur.gg.tar Output/Step20/ANCOM.Deblur.silva.tar Output/Step20/one.DADA2.gg.tar Output/Step20/one.DADA2.silva.tar Output/Step20/one.Deblur.gg.tar Output/Step20/one.Deblur.silva.tar Output/Step20/two.DADA2.gg.tar Output/Step20/two.DADA2.silva.tar Output/Step20/two.Deblur.gg.tar Output/Step20/two.Deblur.silva.tar Output/Step20/one-two.DADA2.gg.tar Output/Step20/one-two.DADA2.silva.tar Output/Step20/one-two.Deblur.gg.tar Output/Step20/one-two.Deblur.silva.tar
 .PHONY += step20
