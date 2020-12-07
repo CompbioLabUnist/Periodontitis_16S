@@ -571,11 +571,11 @@
     \end{frame}
 
     \begin{frame}[allowframebreaks]
-        \frametitle{RandomForest Classifier}
+        \frametitle{Random Forest Classifier}
 
         \begin{figure}
             \includegraphics[width=0.8 \linewidth]{figures/RandomForest/whole.pdf}
-            \caption{RandomForest Classifier Workflow}
+            \caption{Random Forest Classifier Workflow}
         \end{figure}
 
         \textbf{DADA2 + SILVA} gives the best result with many metrics.
@@ -584,18 +584,23 @@
             \caption{Features Order by Importances}
             \begin{tabular}{c|l}
                 Order & Taxonomy (Genus [Species]) \\ \hline
-                1 & \textit{Actinomyces} \\
-                2 & \textit{Actinomyces Schaalia-odontolytica} \\
-                3 & \textit{Prevotella Prevotella-intermedia} \\
-                4 & \textit{Filifactor Filifactor-alocis} \\
-                5 & \textit{Oribacterium} \\
-                6 & \textit{Tannerella Tannerella-forsythia} \\
+                0 & \textit{Actinomyces} \\
+                1 & \textit{Actinomyces Schaalia-odontolytica} \\
+                2 & \textit{Prevotella Prevotella-intermedia} \\
+                3 & \textit{Filifactor Filifactor-alocis} \\
+                4 & \textit{Oribacterium} \\
+                5 & \textit{Tannerella Tannerella-forsythia} \\
             \end{tabular}
         \end{table}
 
         \begin{figure}
             \includegraphics[width=0.8 \linewidth]{figures/RandomForest/whole-DADA-silva/balanced_accuracy.png}
             \caption{Balanced Accuracy by Feature Count}
+        \end{figure}
+
+        \begin{figure}
+            \includegraphics[width=0.5 \linewidth]{figures/RandomForest/whole-DADA-silva/highest_balanced_accuracy.png}
+            \caption{Random Forest Tree Plot}
         \end{figure}
 
         \begin{figure}
@@ -608,15 +613,48 @@
             \end{array}$
             \caption{Violin Plot by Features}
         \end{figure}
-
-        \begin{figure}
-            \includegraphics[width=0.5 \linewidth]{figures/RandomForest/whole-DADA-silva/highest_balanced_accuracy.png}
-            \caption{RandomForest Tree Plot}
-        \end{figure}
     \end{frame}
 
     \begin{frame}[allowframebreaks]
-        \frametitle{RandomForest Classifier -- Merge Healthy+Early}
+        \frametitle{Random Forest Classifier -- Merge Healthy+Early}
+
+        \begin{figure}
+            \includegraphics[width=0.8 \linewidth]{figures/RandomForest/merge.pdf}
+            \caption{Random Forest Classifier with Merging Workflow}
+        \end{figure}
+
+        \textbf{DADA2 + GG} gives the best result with many metrics.
+
+        \begin{table}
+            \caption{Features Order by Importances}
+            \begin{tabular}{c|l}
+                Order & Taxonomy (Genus [Species]) \\ \hline
+                0 & \textit{Actinomyces} \\
+                1 & \textit{Filifactor} \\
+                2 & \textit{Prevotella intermedia} \\
+            \end{tabular}
+        \end{table}
+
+        \begin{figure}
+            \includegraphics[width=0.8 \linewidth]{figures/RandomForest/one-DADA-gg/balanced_accuracy.png}
+            \caption{Balanced Accuracy by Feature Count}
+        \end{figure}
+
+        \begin{figure}
+            \includegraphics[width=0.5 \linewidth]{figures/RandomForest/one-DADA-gg/highest_balanced_accuracy.png}
+            \caption{Random Forest Tree Plot}
+        \end{figure}
+
+        \begin{figure}
+            $\begin{array}{cc}
+                \includegraphics[width=0.4 \linewidth]{figures/RandomForest/one-DADA-gg/feature_1.png}
+                &
+                \includegraphics[width=0.4 \linewidth]{figures/RandomForest/one-DADA-gg/feature_2.png}
+                \\
+                \mbox{(a) \textit{Actinomyces}} & \mbox{(b) \textit{Filifactor}} \\
+            \end{array}$
+            \caption{Violin Plot by Features}
+        \end{figure}
     \end{frame}
 
     \section{Discussion}
