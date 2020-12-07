@@ -1,0 +1,24 @@
+Order,Taxonomy Classification
+0,Bacteria Actinobacteriota Actinobacteria Actinomycetales Actinomycetaceae Actinomyces
+1,Bacteria Actinobacteriota Actinobacteria Actinomycetales Actinomycetaceae Actinomyces Schaalia odontolytica
+2,Bacteria Bacteroidota Bacteroidia Bacteroidales Prevotellaceae Prevotella Prevotella intermedia
+3,Bacteria Firmicutes Clostridia Peptostreptococcales-Tissierellales Peptostreptococcaceae Filifactor Filifactor alocis
+4,Bacteria Firmicutes Clostridia Lachnospirales Lachnospiraceae Oribacterium
+5,Bacteria Bacteroidota Bacteroidia Bacteroidales Tannerellaceae Tannerella Tannerella forsythia
+6,Bacteria Bacteroidota Bacteroidia Bacteroidales Porphyromonadaceae Porphyromonas
+7,Bacteria Spirochaetota Spirochaetia Spirochaetales Spirochaetaceae Treponema Treponema denticola
+8,Bacteria Bacteroidota Bacteroidia Bacteroidales Porphyromonadaceae Porphyromonas Porphyromonas gingivalis
+9,Bacteria Actinobacteriota Actinobacteria Actinomycetales Actinomycetaceae Actinomyces Actinomyces graevenitzii
+10,Bacteria Spirochaetota Spirochaetia Spirochaetales Spirochaetaceae Treponema uncultured bacterium
+11,Bacteria Spirochaetota Spirochaetia Spirochaetales Spirochaetaceae Treponema Treponema medium
+12,Bacteria Spirochaetota Spirochaetia Spirochaetales Spirochaetaceae Treponema Treponema maltophilum
+13,Bacteria Bacteroidota Bacteroidia Bacteroidales Prevotellaceae
+14,Bacteria Campilobacterota Campylobacteria Campylobacterales Campylobacteraceae Campylobacter Campylobacter showae
+15,Bacteria Firmicutes Clostridia Peptostreptococcales-Tissierellales Anaerovoracaceae Eubacterium nodatum group Eubacterium nodatum
+16,Bacteria Actinobacteriota Actinobacteria Corynebacteriales Corynebacteriaceae Corynebacterium Corynebacterium durum
+17,Bacteria Synergistota Synergistia Synergistales Synergistaceae Fretibacterium
+18,Bacteria Firmicutes Clostridia Lachnospirales Defluviitaleaceae Defluviitaleaceae UCG-011 Lachnospiraceae bacterium
+19,Bacteria Firmicutes Bacilli Mycoplasmatales Mycoplasmataceae Mycoplasma Metamycoplasma faucium
+20,Bacteria Firmicutes Clostridia Peptostreptococcales-Tissierellales Anaerovoracaceae Eubacterium brachy group Eubacterium brachy
+21,Bacteria Spirochaetota Spirochaetia Spirochaetales Spirochaetaceae Treponema
+22,Bacteria Firmicutes Clostridia Peptostreptococcales-Tissierellales Anaerovoracaceae Eubacterium saphenum group Eubacterium saphenum

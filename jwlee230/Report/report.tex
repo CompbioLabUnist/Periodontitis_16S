@@ -694,7 +694,15 @@
                 \label{fig:tsne-ANCOM-deblur-silva}
             \end{figure}
 
-        \subsection{RandomForest Classifier}
+        \subsection{RandomForest Classifier with Every Class}
+
+            \begin{table}[p]
+                \centering
+                \caption{Taxa with DADA2 and GreenGeenes Ordered by Random Forest}
+                \label{tb:RF-whole-dada2-gg}
+
+                \csvreader[tabular=cp{10cm}, no head, column count=2, table head=\hline, late after first line=\\\hline, table foot=\hline]{csv/RandomForest/whole-DADA2-gg.txt}{}{\csvlinetotablerow}
+            \end{table}
 
     \section{Discussion}
 

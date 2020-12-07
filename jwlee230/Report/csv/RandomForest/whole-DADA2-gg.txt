@@ -1,0 +1,16 @@
+Order,Taxonomy Classification
+0,Bacteria Actinobacteria Actinobacteria Actinomycetales Actinomycetaceae Actinomyces
+1,Bacteria Firmicutes Clostridia Clostridiales Peptostreptococcaceae Filifactor
+2,Bacteria Bacteroidetes Bacteroidia Bacteroidales Prevotellaceae Prevotella intermedia
+3,Bacteria Bacteroidetes Bacteroidia Bacteroidales Porphyromonadaceae Porphyromonas
+4,Bacteria Bacteroidetes Bacteroidia Bacteroidales Porphyromonadaceae Porphyromonas endodontalis
+5,Bacteria Spirochaetes Spirochaetes Spirochaetales Spirochaetaceae Treponema amylovorum
+6,Bacteria Spirochaetes Spirochaetes Spirochaetales Spirochaetaceae Treponema
+7,Bacteria Firmicutes Clostridia Clostridiales Mogibacteriaceae
+8,Bacteria Bacteroidetes Bacteroidia Bacteroidales
+9,Bacteria Proteobacteria Epsilonproteobacteria Campylobacterales Campylobacteraceae Campylobacter
+10,Bacteria Synergistetes Synergistia Synergistales Dethiosulfovibrionaceae TG5
+11,Bacteria Bacteroidetes Bacteroidia Bacteroidales Porphyromonadaceae Tannerella
+12,Bacteria Tenericutes Mollicutes Mycoplasmatales Mycoplasmataceae Mycoplasma
+13,Bacteria Actinobacteria Actinobacteria Actinomycetales Corynebacteriaceae Corynebacterium durum
+14,Bacteria Firmicutes Clostridia Clostridiales Acidaminobacteraceae

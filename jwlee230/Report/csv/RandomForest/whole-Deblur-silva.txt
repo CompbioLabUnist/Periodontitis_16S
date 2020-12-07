@@ -1,0 +1,21 @@
+Order,Taxonomy Classification
+0,Bacteria Bacteroidota Bacteroidia Bacteroidales Porphyromonadaceae Porphyromonas Porphyromonas gingivalis
+1,Bacteria Spirochaetota Spirochaetia Spirochaetales Spirochaetaceae Treponema uncultured bacterium
+2,Bacteria Bacteroidota Bacteroidia Bacteroidales Prevotellaceae
+3,Bacteria Bacteroidota Bacteroidia Bacteroidales Prevotellaceae Prevotella Prevotella intermedia
+4,Bacteria Spirochaetota Spirochaetia Spirochaetales Spirochaetaceae Treponema Treponema medium
+5,Bacteria Spirochaetota Spirochaetia Spirochaetales Spirochaetaceae Treponema Treponema denticola
+6,Bacteria Spirochaetota Spirochaetia Spirochaetales Spirochaetaceae Treponema Treponema maltophilum
+7,Bacteria Spirochaetota Spirochaetia Spirochaetales Spirochaetaceae Treponema
+8,Bacteria Firmicutes Bacilli Mycoplasmatales Mycoplasmataceae Mycoplasma Metamycoplasma faucium
+9,Bacteria Firmicutes Bacilli Lactobacillales Streptococcaceae Streptococcus Streptococcus constellatus
+10,Bacteria Firmicutes Clostridia Peptostreptococcales-Tissierellales Anaerovoracaceae Eubacterium brachy group
+11,Bacteria Firmicutes Clostridia Peptostreptococcales-Tissierellales Peptostreptococcaceae Filifactor Filifactor alocis
+12,Bacteria Bacteroidota Bacteroidia Bacteroidales Porphyromonadaceae Porphyromonas Porphyromonas endodontalis
+13,Bacteria Bacteroidota Bacteroidia Bacteroidales Tannerellaceae Tannerella Tannerella forsythia
+14,Bacteria Bacteroidota Bacteroidia Bacteroidales Prevotellaceae Prevotella Prevotella dentalis
+15,Bacteria Firmicutes Clostridia Peptostreptococcales-Tissierellales Anaerovoracaceae Eubacterium nodatum group Eubacterium nodatum
+16,Bacteria Synergistota Synergistia Synergistales Synergistaceae Fretibacterium
+17,Bacteria Desulfobacterota Desulfobulbia Desulfobulbales Desulfobulbaceae Desulfobulbus
+18,Bacteria Firmicutes Clostridia Lachnospirales Defluviitaleaceae Defluviitaleaceae UCG-011 Lachnospiraceae bacterium
+19,Bacteria Firmicutes Clostridia Peptostreptococcales-Tissierellales Anaerovoracaceae Eubacterium saphenum group Eubacterium saphenum

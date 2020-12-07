@@ -1,0 +1,28 @@
+Order,Taxonomy Classification
+0,Bacteria Spirochaetes Spirochaetes Spirochaetales Spirochaetaceae Treponema
+1,Bacteria Firmicutes Clostridia Clostridiales Peptostreptococcaceae Filifactor
+2,Bacteria Actinobacteria Actinobacteria Actinomycetales Actinomycetaceae Actinomyces
+3,Bacteria Proteobacteria Betaproteobacteria Neisseriales Neisseriaceae Neisseria subflava
+4,Bacteria Bacteroidetes Bacteroidia Bacteroidales Porphyromonadaceae Porphyromonas
+5,Bacteria Proteobacteria Gammaproteobacteria Pasteurellales Pasteurellaceae Haemophilus parainfluenzae
+6,Bacteria Synergistetes Synergistia Synergistales Dethiosulfovibrionaceae TG5
+7,Bacteria Firmicutes Clostridia Clostridiales Lachnospiraceae Oribacterium
+8,Bacteria Spirochaetes Spirochaetes Spirochaetales Spirochaetaceae Treponema amylovorum
+9,Bacteria Firmicutes Clostridia Clostridiales Peptostreptococcaceae Peptostreptococcus
+10,Bacteria Tenericutes Mollicutes Mycoplasmatales Mycoplasmataceae Mycoplasma
+11,Bacteria Bacteroidetes Bacteroidia Bacteroidales Prevotellaceae Prevotella nanceiensis
+12,Bacteria Actinobacteria Actinobacteria Actinomycetales
+13,Bacteria Firmicutes Clostridia Clostridiales
+14,Bacteria Firmicutes Clostridia Clostridiales Mogibacteriaceae
+15,Bacteria Bacteroidetes Bacteroidia Bacteroidales Porphyromonadaceae Porphyromonas endodontalis
+16,Bacteria Firmicutes Clostridia Clostridiales Tissierellaceae
+17,Bacteria Firmicutes Clostridia Clostridiales Tissierellaceae Parvimonas
+18,Bacteria Proteobacteria Epsilonproteobacteria Campylobacterales Campylobacteraceae Campylobacter
+19,Bacteria Firmicutes Clostridia Clostridiales Mogibacteriaceae Mogibacterium
+20,Bacteria Firmicutes Clostridia Clostridiales Lachnospiraceae
+21,Bacteria Spirochaetes Spirochaetes Spirochaetales Spirochaetaceae Treponema socranskii
+22,Bacteria Bacteroidetes Bacteroidia Bacteroidales Prevotellaceae Prevotella intermedia
+23,Bacteria Bacteroidetes Bacteroidia Bacteroidales Porphyromonadaceae Tannerella
+24,Bacteria Proteobacteria Deltaproteobacteria Desulfobacterales Desulfobulbaceae Desulfobulbus
+25,Bacteria Bacteroidetes Bacteroidia Bacteroidales
+26,Bacteria Firmicutes Clostridia Clostridiales Acidaminobacteraceae
