@@ -86,6 +86,13 @@ def consistency_taxonomy(taxonomy: str) -> str:
     return "; ".join(list(filter(lambda x: x != "__", list(map(lambda x: x.strip(), taxonomy.split(";"))))))
 
 
+def simplified_taxonomy(taxonomy: str) -> str:
+    """
+    simplified_taxonomy: simplified taxonomy information for file name
+    """
+    return "_".join(list(filter(lambda x: x, list(map(lambda x: x.strip().replace("[", "").replace("]", "")[3:], taxonomy.split(";"))))))
+
+
 derivations = ("sensitivity", "specificity", "precision", "negative_predictive_value", "miss_rate", "fall_out", "false_discovery_rate", "false_ommission_rate", "accuracy", "F1_score", "odds_ratio", "balanced_accuracy", "threat_score")
 
 

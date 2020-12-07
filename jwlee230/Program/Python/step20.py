@@ -45,6 +45,8 @@ if __name__ == "__main__":
     if args.two:
         data["LongStage"] = list(map(lambda x: "Moderate+Severe" if (x == "Moderate") or (x == "Severe") else x, data["LongStage"]))
 
+    print(data)
+
     # Get Feature Importances
     classifier = sklearn.ensemble.RandomForestClassifier(max_features=None, n_jobs=args.cpu, random_state=0)
     classifier.fit(data[train_columns], data["LongStage"])
@@ -120,6 +122,10 @@ if __name__ == "__main__":
     print("Drawing highest trees start!!")
     for metric in step00.derivations:
         print("--", metric)
+
+        if highest_metrics[metric][0] == 0:
+            continue
+
         fig, ax = matplotlib.pyplot.subplots(figsize=(36, 36))
         x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(data[best_features[:highest_metrics[metric][0]]], data["LongStage"], test_size=0.1, random_state=0, stratify=data["LongStage"])
         sklearn.tree.plot_tree(classifier.fit(x_train, y_train).estimators_[0], ax=ax, filled=True, class_names=sorted(set(data["LongStage"])))
@@ -132,6 +138,10 @@ if __name__ == "__main__":
     print("Drawing lowest trees start!!")
     for metric in step00.derivations:
         print("--", metric)
+
+        if lowest_metrics[metric][0] == 0:
+            continue
+
         fig, ax = matplotlib.pyplot.subplots(figsize=(36, 36))
         x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(data[best_features[:lowest_metrics[metric][0]]], data["LongStage"], test_size=0.1, random_state=0, stratify=data["LongStage"])
         sklearn.tree.plot_tree(classifier.fit(x_train, y_train).estimators_[0], ax=ax, filled=True, class_names=sorted(set(data["LongStage"])))
@@ -140,6 +150,19 @@ if __name__ == "__main__":
         fig.savefig(tar_files[-1])
         matplotlib.pyplot.close(fig)
     print("Drawing lowest trees done!!")
+
+    # Draw Violin Plots
+    print("Drawing Violin plot start!!")
+    for feature in best_features:
+        print("--", feature)
+        seaborn.set(context="poster", style="whitegrid")
+        fig, ax = matplotlib.pyplot.subplots(figsize=(36, 36))
+        seaborn.violinplot(data=data, x="LongStage", y=feature, order=sorted(set(data["LongStage"])), ax=ax)
+        matplotlib.pyplot.title(" ".join(step00.simplified_taxonomy(feature).split("_")))
+        tar_files.append(step00.simplified_taxonomy(feature) + ".png")
+        fig.savefig(tar_files[-1])
+        matplotlib.pyplot.close(fig)
+    print("Drawing Violin Plot done!!")
 
     # Save data
     with tarfile.open(args.output, "w") as tar:
