@@ -2,16 +2,19 @@
 step20: Random Forest Classifier
 """
 import argparse
+import itertools
 import tarfile
 import typing
 import pandas
 import matplotlib
 import matplotlib.pyplot
 import numpy
+import scipy
 import seaborn
 import sklearn.ensemble
 import sklearn.metrics
 import sklearn.model_selection
+import statannot
 import step00
 
 if __name__ == "__main__":
@@ -113,6 +116,7 @@ if __name__ == "__main__":
         seaborn.lineplot(data=score_data, x="FeatureCount", y=metric, ax=ax)
         matplotlib.pyplot.grid(True)
         matplotlib.pyplot.title("Higest with %s feature(s) at %.3f; Lowest with %s feature(s) at %.3f" % (highest_metrics[metric] + lowest_metrics[metric]))
+        matplotlib.pyplot.ylim(0, 1)
         tar_files.append(metric + ".png")
         fig.savefig(tar_files[-1])
         matplotlib.pyplot.close(fig)
@@ -155,9 +159,17 @@ if __name__ == "__main__":
     print("Drawing Violin plot start!!")
     for feature in best_features:
         print("--", feature)
+
+        tmp = list(filter(lambda x: scipy.stats.ttest_ind(data.loc[(data["LongStage"] == x[0])][feature], data.loc[(data["LongStage"] == x[1])][feature], equal_var=False)[1] < 0.05, itertools.combinations(sorted(set(data["LongStage"])), 2)))
+        print(tmp)
         seaborn.set(context="poster", style="whitegrid")
+
         fig, ax = matplotlib.pyplot.subplots(figsize=(36, 36))
         seaborn.violinplot(data=data, x="LongStage", y=feature, order=sorted(set(data["LongStage"])), ax=ax)
+
+        if tmp:
+            statannot.add_stat_annotation(ax, data=data, x="LongStage", y=feature, order=sorted(set(data["LongStage"])), test="t-test_ind", box_pairs=tmp, text_format="star", loc="inside")
+
         matplotlib.pyplot.title(" ".join(step00.simplified_taxonomy(feature).split("_")))
         tar_files.append(step00.simplified_taxonomy(feature) + ".png")
         fig.savefig(tar_files[-1])
