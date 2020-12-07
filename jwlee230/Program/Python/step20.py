@@ -18,9 +18,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument("input", type=str, help="Input TAR.gz file")
-    parser.add_argument("tsne", type=str, help="TSNE TAR.gz file")
     parser.add_argument("output", type=str, help="Output TAR file")
     parser.add_argument("--cpu", type=int, help="Number of CPU to use")
+    parser.add_argument("--one", action="store_true", default=False, help="Merge Healthy+Early")
+    parser.add_argument("--two", action="store_true", default=False, help="Merge Moderate+Severe")
 
     args = parser.parse_args()
 
@@ -34,11 +35,15 @@ if __name__ == "__main__":
 
     tar_files: typing.List[str] = list()
 
-    tsne_data = step00.read_pickle(args.tsne)
-
     data = step00.read_pickle(args.input)
     data.drop(labels="ShortStage", axis="columns", inplace=True)
     train_columns = sorted(set(data.columns) - {"LongStage"})
+
+    if args.one:
+        data["LongStage"] = list(map(lambda x: "Healthy+Early" if (x == "Healthy") or (x == "Early") else x, data["LongStage"]))
+
+    if args.two:
+        data["LongStage"] = list(map(lambda x: "Moderate+Severe" if (x == "Moderate") or (x == "Severe") else x, data["LongStage"]))
 
     # Get Feature Importances
     classifier = sklearn.ensemble.RandomForestClassifier(max_features=None, n_jobs=args.cpu, random_state=0)
