@@ -574,7 +574,7 @@
         \frametitle{RandomForest Classifier}
 
         \begin{figure}
-            \includegraphics[width=0.8 \linewidth]{figures/RandomForest/workflow.pdf}
+            \includegraphics[width=0.8 \linewidth]{figures/RandomForest/whole.pdf}
             \caption{RandomForest Classifier Workflow}
         \end{figure}
 
@@ -583,19 +583,30 @@
         \begin{table}
             \caption{Features Order by Importances}
             \begin{tabular}{c|l}
-                Order & Taxonomy (Family Genus [Species]) \\ \hline
-                1 & \textit{Actinomycetaceae Actinomyces} \\
-                2 & \textit{Actinomycetaceae Actinomyces Schaalia-odontolytica} \\
-                3 & \textit{Prevotellaceae Prevotella Prevotella-intermedia} \\
-                4 & \textit{Peptostreptococcaceae Filifactor Filifactor-alocis} \\
-                5 & \textit{Lachnospiraceae Oribacterium} \\
-                6 & \textit{Tannerellaceae Tannerella Tannerella-forsythia} \\
+                Order & Taxonomy (Genus [Species]) \\ \hline
+                1 & \textit{Actinomyces} \\
+                2 & \textit{Actinomyces Schaalia-odontolytica} \\
+                3 & \textit{Prevotella Prevotella-intermedia} \\
+                4 & \textit{Filifactor Filifactor-alocis} \\
+                5 & \textit{Oribacterium} \\
+                6 & \textit{Tannerella Tannerella-forsythia} \\
             \end{tabular}
         \end{table}
 
         \begin{figure}
             \includegraphics[width=0.8 \linewidth]{figures/RandomForest/DADA-silva/balanced_accuracy.png}
             \caption{Balanced Accuracy by Feature Count}
+        \end{figure}
+
+        \begin{figure}
+            $\begin{array}{cc}
+                \includegraphics[width=0.4 \linewidth]{figures/RandomForest/DADA-silva/feature_1.png}
+                &
+                \includegraphics[width=0.4 \linewidth]{figures/RandomForest/DADA-silva/feature_2.png}
+                \\
+                \mbox{(a) \textit{Actinomyces}} & \mbox{(b) \textit{Actinomyces Schaalia-odontolytica}} \\
+            \end{array}$
+            \caption{Violin Plot by Features}
         \end{figure}
 
         \begin{figure}
