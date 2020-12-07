@@ -59,10 +59,13 @@ if __name__ == "__main__":
     # Save Features
     tar_files.append("features.txt")
     with open(tar_files[-1], "w") as f:
-        for i, feature in enumerate(best_features):
+        f.write("Order,Taxonomy Classification,Importances\n")
+        for i, (feature, importance) in enumerate(zip(best_features, feature_importances)):
             f.write(str(i))
             f.write(",")
             f.write(" ".join(step00.simplified_taxonomy(feature).split("_")))
+            f.write(",")
+            f.write(str(importance))
             f.write("\n")
 
     # Draw Feature Importances
