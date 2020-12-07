@@ -60,7 +60,7 @@ if __name__ == "__main__":
     tar_files.append("features.txt")
     with open(tar_files[-1], "w") as f:
         f.write("Order,Taxonomy Classification,Importances\n")
-        for i, (feature, importance) in enumerate(zip(best_features, sorted(feature_importances))):
+        for i, (feature, importance) in enumerate(zip(best_features, sorted(feature_importances, reverse=True))):
             f.write(str(i))
             f.write(",")
             f.write(" ".join(step00.simplified_taxonomy(feature).split("_")))
