@@ -1,0 +1,28 @@
+Order,Taxonomy Classification,Importances
+0,Bacteria Spirochaetes Spirochaetes Spirochaetales Spirochaetaceae Treponema,0.03451094212773195
+1,Bacteria Firmicutes Clostridia Clostridiales Peptostreptococcaceae Filifactor,0.07621908743808797
+2,Bacteria Actinobacteria Actinobacteria Actinomycetales Actinomycetaceae Actinomyces,0.015157227661648742
+3,Bacteria Bacteroidetes Bacteroidia Bacteroidales Porphyromonadaceae Porphyromonas,0.05885625931766189
+4,Bacteria Proteobacteria Gammaproteobacteria Pasteurellales Pasteurellaceae Haemophilus parainfluenzae,0.018201544581218553
+5,Bacteria Synergistetes Synergistia Synergistales Dethiosulfovibrionaceae TG5,0.012795023647379087
+6,Bacteria Firmicutes Clostridia Clostridiales Lachnospiraceae Oribacterium,0.016730906860048644
+7,Bacteria Actinobacteria Actinobacteria Actinomycetales,0.023201608420014418
+8,Bacteria Firmicutes Clostridia Clostridiales Peptostreptococcaceae Peptostreptococcus,0.022788071370498163
+9,Bacteria Proteobacteria Betaproteobacteria Neisseriales Neisseriaceae Neisseria subflava,0.014623736706693053
+10,Bacteria Tenericutes Mollicutes Mycoplasmatales Mycoplasmataceae Mycoplasma,0.04673595693872277
+11,Bacteria Bacteroidetes Bacteroidia Bacteroidales Prevotellaceae Prevotella nanceiensis,0.11992229156758133
+12,Bacteria Firmicutes Clostridia Clostridiales,0.03404542556843682
+13,Bacteria Firmicutes Clostridia Clostridiales Mogibacteriaceae,0.004217957146834167
+14,Bacteria Spirochaetes Spirochaetes Spirochaetales Spirochaetaceae Treponema amylovorum,0.022681087311914094
+15,Bacteria Bacteroidetes Bacteroidia Bacteroidales Porphyromonadaceae Porphyromonas endodontalis,0.013485365422216695
+16,Bacteria Firmicutes Clostridia Clostridiales Tissierellaceae,0.016898206441728597
+17,Bacteria Bacteroidetes Bacteroidia Bacteroidales Prevotellaceae Prevotella intermedia,0.012419588687400483
+18,Bacteria Bacteroidetes Bacteroidia Bacteroidales,0.031273563640370663
+19,Bacteria Firmicutes Clostridia Clostridiales Lachnospiraceae,0.012138894540188048
+20,Bacteria Proteobacteria Epsilonproteobacteria Campylobacterales Campylobacteraceae Campylobacter,0.014062731905609782
+21,Bacteria Firmicutes Clostridia Clostridiales Mogibacteriaceae Mogibacterium,0.04974300411284057
+22,Bacteria Bacteroidetes Bacteroidia Bacteroidales Porphyromonadaceae Tannerella,0.22494238495411115
+23,Bacteria Firmicutes Clostridia Clostridiales Tissierellaceae Parvimonas,0.021081312928279715
+24,Bacteria Proteobacteria Deltaproteobacteria Desulfobacterales Desulfobulbaceae Desulfobulbus,0.00909862939470734
+25,Bacteria Spirochaetes Spirochaetes Spirochaetales Spirochaetaceae Treponema socranskii,0.04685140887688597
+26,Bacteria Firmicutes Clostridia Clostridiales Acidaminobacteraceae,0.027317782431189284

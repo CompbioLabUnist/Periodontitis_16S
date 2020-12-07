@@ -1,0 +1,21 @@
+Order,Taxonomy Classification,Importances
+0,Bacteria Bacteroidota Bacteroidia Bacteroidales Porphyromonadaceae Porphyromonas Porphyromonas gingivalis,0.023151363993075897
+1,Bacteria Spirochaetota Spirochaetia Spirochaetales Spirochaetaceae Treponema Treponema denticola,0.4031949046856801
+2,Bacteria Spirochaetota Spirochaetia Spirochaetales Spirochaetaceae Treponema uncultured bacterium,0.024697259349598637
+3,Bacteria Firmicutes Bacilli Lactobacillales Streptococcaceae Streptococcus Streptococcus constellatus,0.022389445260037527
+4,Bacteria Firmicutes Bacilli Mycoplasmatales Mycoplasmataceae Mycoplasma Metamycoplasma faucium,0.03819194732725226
+5,Bacteria Spirochaetota Spirochaetia Spirochaetales Spirochaetaceae Treponema Treponema medium,0.01712749680798365
+6,Bacteria Bacteroidota Bacteroidia Bacteroidales Prevotellaceae Prevotella Prevotella intermedia,0.016755002394674298
+7,Bacteria Spirochaetota Spirochaetia Spirochaetales Spirochaetaceae Treponema Treponema maltophilum,0.042206788421850584
+8,Bacteria Spirochaetota Spirochaetia Spirochaetales Spirochaetaceae Treponema,0.042145500506113924
+9,Bacteria Firmicutes Clostridia Peptostreptococcales-Tissierellales Anaerovoracaceae Eubacterium nodatum group Eubacterium nodatum,0.024723656076908643
+10,Bacteria Firmicutes Clostridia Peptostreptococcales-Tissierellales Anaerovoracaceae Eubacterium saphenum group Eubacterium saphenum,0.019298131934997142
+11,Bacteria Synergistota Synergistia Synergistales Synergistaceae Fretibacterium,0.027953589404536083
+12,Bacteria Firmicutes Clostridia Lachnospirales Defluviitaleaceae Defluviitaleaceae UCG-011 Lachnospiraceae bacterium,0.02688318788913423
+13,Bacteria Bacteroidota Bacteroidia Bacteroidales Prevotellaceae,0.024451647845314735
+14,Bacteria Firmicutes Clostridia Peptostreptococcales-Tissierellales Peptostreptococcaceae Filifactor Filifactor alocis,0.02845747673023059
+15,Bacteria Bacteroidota Bacteroidia Bacteroidales Porphyromonadaceae Porphyromonas Porphyromonas endodontalis,0.05939001779623957
+16,Bacteria Bacteroidota Bacteroidia Bacteroidales Prevotellaceae Prevotella Prevotella dentalis,0.03647531598753172
+17,Bacteria Firmicutes Clostridia Peptostreptococcales-Tissierellales Anaerovoracaceae Eubacterium brachy group,0.03890956670215448
+18,Bacteria Bacteroidota Bacteroidia Bacteroidales Tannerellaceae Tannerella Tannerella forsythia,0.05822504150119327
+19,Bacteria Desulfobacterota Desulfobulbia Desulfobulbales Desulfobulbaceae Desulfobulbus,0.025372659385492543
