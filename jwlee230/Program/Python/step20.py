@@ -61,8 +61,8 @@ if __name__ == "__main__":
     with open(tar_files[-1], "w") as f:
         for i, feature in enumerate(best_features):
             f.write(str(i))
-            f.write(" ")
-            f.write(feature)
+            f.write(",")
+            f.write(" ".join(step00.simplified_taxonomy(feature).split("_")))
             f.write("\n")
 
     # Draw Feature Importances
@@ -157,7 +157,7 @@ if __name__ == "__main__":
 
     # Draw Violin Plots
     print("Drawing Violin plot start!!")
-    for feature in best_features:
+    for i, feature in enumerate(best_features):
         print("--", feature)
 
         tmp = list(filter(lambda x: scipy.stats.ttest_ind(data.loc[(data["LongStage"] == x[0])][feature], data.loc[(data["LongStage"] == x[1])][feature], equal_var=False)[1] < 0.05, itertools.combinations(sorted(set(data["LongStage"])), 2)))
@@ -171,7 +171,7 @@ if __name__ == "__main__":
             statannot.add_stat_annotation(ax, data=data, x="LongStage", y=feature, order=sorted(set(data["LongStage"])), test="t-test_ind", box_pairs=tmp, text_format="star", loc="inside")
 
         matplotlib.pyplot.title(" ".join(step00.simplified_taxonomy(feature).split("_")))
-        tar_files.append(step00.simplified_taxonomy(feature) + ".png")
+        tar_files.append("Feature_" + str(i) + ".png")
         fig.savefig(tar_files[-1])
         matplotlib.pyplot.close(fig)
     print("Drawing Violin Plot done!!")
