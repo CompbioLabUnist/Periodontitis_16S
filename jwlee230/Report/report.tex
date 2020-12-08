@@ -181,6 +181,28 @@
                 \item RandomForest Classification Algorithm \cite{RandomForest1, sklearn1}
             \end{itemize}
 
+            Moreover, evaluations of classification algorithm are carried out with derivations from confusion matrix as table \ref{tb:confusion-matrix}:
+
+            \begin{itemize}
+                \item Accuracy (ACC) $ = \frac{TP + TN}{TP + TN + FP + FN}$
+                \item Balanced Accuracy (BA) $ = \frac{TP}{2 \times (TP + FN)} + \frac{TN}{2 \times (TN + FP)}$
+                \item Sensitivity (SEN) $ = \frac{TP}{TP + FN}$
+                \item Specificity (SPE) $ = \frac{TN}{TN + FP}$
+                \item Precision (PRE) $ = \frac{TP}{TP + FP}$
+            \end{itemize}
+
+            \begin{table}[p]
+                \centering
+                \caption{Confusion Matrix}
+                \label{tb:confusion-matrix}
+                \begin{tabular}{c|c|cc}
+                    \multicolumn{2}{c|}{\multirow{2}{*}{}} & \multicolumn{2}{c}{Actual Class} \\ \cline{3-4}
+                    \multicolumn{2}{c|}{} & Positive & Negative \\ \hline
+                    \multirow{2}{*}{Predicted Class} & Positive & True Positive (TP) & False Positive (FP) \\
+                    & Negative & False Negative (FN) & True Negative (TN)
+                \end{tabular}
+            \end{table}
+
             \begin{figure}[p]
                 \centering
                 \includegraphics[width=0.8 \linewidth]{figures/Classifier/classifier.pdf}
