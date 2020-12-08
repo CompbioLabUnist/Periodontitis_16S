@@ -187,7 +187,7 @@ if __name__ == "__main__":
     # Draw scatter plot
     seaborn.set(context="poster", style="whitegrid")
     fig, ax = matplotlib.pyplot.subplots(figsize=(36, 36))
-    seaborn.scatterplot(data=tsne_data, x="TSNE1", y="TSNE2", hue="LongStage", style="LongStage", ax=ax, legend="full", hue_order=step00.long_stage_order, style_order=step00.long_stage_order)
+    seaborn.scatterplot(data=tsne_data, x="TSNE1", y="TSNE2", hue="LongStage", style="LongStage", ax=ax, legend="full")
     tar_files.append("scatter.png")
     fig.savefig(tar_files[-1])
     matplotlib.pyplot.close(fig)
