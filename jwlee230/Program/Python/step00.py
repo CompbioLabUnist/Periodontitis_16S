@@ -169,3 +169,7 @@ def aggregate_confusion_matrix(confusion_matrix: numpy.ndarray, derivation: str 
             return TP / (TP + FN + FP)
 
     raise ValueError(derivation)
+
+
+long_stage_order = ["Healthy", "Early", "Moderate", "Severe"]
+short_stage_order = ["H", "E", "M", "S"]

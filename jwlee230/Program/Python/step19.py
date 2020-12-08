@@ -26,7 +26,7 @@ if __name__ == "__main__":
     seaborn.set(context="poster", style="whitegrid")
     fig, ax = matplotlib.pyplot.subplots(figsize=(24, 24))
 
-    seaborn.scatterplot(data=data, x="TSNE1", y="TSNE2", hue="LongStage", style="LongStage", ax=ax, legend="full")
+    seaborn.scatterplot(data=data, x="TSNE1", y="TSNE2", hue="LongStage", style="LongStage", ax=ax, legend="full", hue_order=step00.long_stage_order, style_order=step00.long_stage_order)
 
     fig.savefig(args.output)
     matplotlib.pyplot.close(fig)

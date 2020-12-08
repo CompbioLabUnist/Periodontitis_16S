@@ -21,8 +21,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument("input", type=str, help="Input TAR.gz file")
+    parser.add_argument("tsne", type=str, help="t-SNE TAR.gz file")
     parser.add_argument("output", type=str, help="Output TAR file")
-    parser.add_argument("--cpu", type=int, help="Number of CPU to use")
+    parser.add_argument("--cpu", type=int, default=1, help="Number of CPU to use")
     parser.add_argument("--one", action="store_true", default=False, help="Merge Healthy+Early")
     parser.add_argument("--two", action="store_true", default=False, help="Merge Moderate+Severe")
 
@@ -38,16 +39,23 @@ if __name__ == "__main__":
 
     tar_files: typing.List[str] = list()
 
+    tsne_data = step00.read_pickle(args.tsne)
+    tsne_data["ShortStage"] = list(map(lambda x: x[0] if x[0] == "H" else x[2], tsne_data["ID"]))
+    tsne_data["LongStage"] = list(map(lambda x: {"H": "Healthy", "E": "Early", "M": "Moderate", "S": "Severe"}[x], tsne_data["ShortStage"]))
+
     data = step00.read_pickle(args.input)
     data.drop(labels="ShortStage", axis="columns", inplace=True)
     train_columns = sorted(set(data.columns) - {"LongStage"})
 
     if args.one:
         data["LongStage"] = list(map(lambda x: "Healthy+Early" if (x == "Healthy") or (x == "Early") else x, data["LongStage"]))
+        tsne_data["LongStage"] = list(map(lambda x: "Healthy+Early" if (x == "Healthy") or (x == "Early") else x, tsne_data["LongStage"]))
 
     if args.two:
         data["LongStage"] = list(map(lambda x: "Moderate+Severe" if (x == "Moderate") or (x == "Severe") else x, data["LongStage"]))
+        tsne_data["LongStage"] = list(map(lambda x: "Moderate+Severe" if (x == "Moderate") or (x == "Severe") else x, tsne_data["LongStage"]))
 
+    print(tsne_data)
     print(data)
 
     # Get Feature Importances
@@ -163,21 +171,26 @@ if __name__ == "__main__":
     for i, feature in enumerate(best_features):
         print("--", feature)
 
-        tmp = list(filter(lambda x: scipy.stats.ttest_ind(data.loc[(data["LongStage"] == x[0])][feature], data.loc[(data["LongStage"] == x[1])][feature], equal_var=False)[1] < 0.05, itertools.combinations(sorted(set(data["LongStage"])), 2)))
-        print(tmp)
         seaborn.set(context="poster", style="whitegrid")
 
         fig, ax = matplotlib.pyplot.subplots(figsize=(36, 36))
         seaborn.violinplot(data=data, x="LongStage", y=feature, order=sorted(set(data["LongStage"])), ax=ax)
 
-        if tmp:
-            statannot.add_stat_annotation(ax, data=data, x="LongStage", y=feature, order=sorted(set(data["LongStage"])), test="t-test_ind", box_pairs=tmp, text_format="star", loc="inside")
+        statannot.add_stat_annotation(ax, data=data, x="LongStage", y=feature, order=sorted(set(data["LongStage"])), test="t-test_ind", box_pairs=itertools.combinations(sorted(set(data["LongStage"])), 2), text_format="star", loc="inside", verbose=0)
 
         matplotlib.pyplot.title(" ".join(step00.simplified_taxonomy(feature).split("_")))
         tar_files.append("Feature_" + str(i) + ".png")
         fig.savefig(tar_files[-1])
         matplotlib.pyplot.close(fig)
     print("Drawing Violin Plot done!!")
+
+    # Draw scatter plot
+    seaborn.set(context="poster", style="whitegrid")
+    fig, ax = matplotlib.pyplot.subplots(figsize=(36, 36))
+    seaborn.scatterplot(data=tsne_data, x="TSNE1", y="TSNE2", hue="LongStage", style="LongStage", ax=ax, legend="full", hue_order=step00.long_stage_order, style_order=step00.long_stage_order)
+    tar_files.append("scatter.png")
+    fig.savefig(tar_files[-1])
+    matplotlib.pyplot.close(fig)
 
     # Save data
     with tarfile.open(args.output, "w") as tar:
