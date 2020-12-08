@@ -1,16 +1,16 @@
 Order,Taxonomy Classification,Importances
-0,Bacteria Actinobacteria Actinobacteria Actinomycetales Actinomycetaceae Actinomyces,0.0062767180064424045
-1,Bacteria Firmicutes Clostridia Clostridiales Peptostreptococcaceae Filifactor,0.0065746994952791
-2,Bacteria Bacteroidetes Bacteroidia Bacteroidales Prevotellaceae Prevotella intermedia,0.00968796062933499
-3,Bacteria Bacteroidetes Bacteroidia Bacteroidales Porphyromonadaceae Porphyromonas,0.009949470797943135
-4,Bacteria Spirochaetes Spirochaetes Spirochaetales Spirochaetaceae Treponema,0.013386579671158427
-5,Bacteria Bacteroidetes Bacteroidia Bacteroidales Porphyromonadaceae Porphyromonas endodontalis,0.017463217312104647
-6,Bacteria Firmicutes Clostridia Clostridiales Mogibacteriaceae,0.01784696120667692
+0,Bacteria Actinobacteria Actinobacteria Actinomycetales Actinomycetaceae Actinomyces,0.4499858804219476
+1,Bacteria Firmicutes Clostridia Clostridiales Peptostreptococcaceae Filifactor,0.21855971173990688
+2,Bacteria Bacteroidetes Bacteroidia Bacteroidales Prevotellaceae Prevotella intermedia,0.07886139477929545
+3,Bacteria Bacteroidetes Bacteroidia Bacteroidales Porphyromonadaceae Porphyromonas,0.05129584247228233
+4,Bacteria Spirochaetes Spirochaetes Spirochaetales Spirochaetaceae Treponema,0.03664523295323365
+5,Bacteria Bacteroidetes Bacteroidia Bacteroidales Porphyromonadaceae Porphyromonas endodontalis,0.030463252004905322
+6,Bacteria Firmicutes Clostridia Clostridiales Mogibacteriaceae,0.030170505494756722
 7,Bacteria Actinobacteria Actinobacteria Actinomycetales Corynebacteriaceae Corynebacterium durum,0.022832573014732384
-8,Bacteria Bacteroidetes Bacteroidia Bacteroidales Porphyromonadaceae Tannerella,0.030170505494756722
-9,Bacteria Spirochaetes Spirochaetes Spirochaetales Spirochaetaceae Treponema amylovorum,0.030463252004905322
-10,Bacteria Proteobacteria Epsilonproteobacteria Campylobacterales Campylobacteraceae Campylobacter,0.03664523295323365
-11,Bacteria Synergistetes Synergistia Synergistales Dethiosulfovibrionaceae TG5,0.05129584247228233
-12,Bacteria Bacteroidetes Bacteroidia Bacteroidales,0.07886139477929545
-13,Bacteria Tenericutes Mollicutes Mycoplasmatales Mycoplasmataceae Mycoplasma,0.21855971173990688
-14,Bacteria Firmicutes Clostridia Clostridiales Acidaminobacteraceae,0.4499858804219476
+8,Bacteria Bacteroidetes Bacteroidia Bacteroidales Porphyromonadaceae Tannerella,0.01784696120667692
+9,Bacteria Spirochaetes Spirochaetes Spirochaetales Spirochaetaceae Treponema amylovorum,0.017463217312104647
+10,Bacteria Proteobacteria Epsilonproteobacteria Campylobacterales Campylobacteraceae Campylobacter,0.013386579671158427
+11,Bacteria Synergistetes Synergistia Synergistales Dethiosulfovibrionaceae TG5,0.009949470797943135
+12,Bacteria Bacteroidetes Bacteroidia Bacteroidales,0.00968796062933499
+13,Bacteria Tenericutes Mollicutes Mycoplasmatales Mycoplasmataceae Mycoplasma,0.0065746994952791
+14,Bacteria Firmicutes Clostridia Clostridiales Acidaminobacteraceae,0.0062767180064424045
