@@ -704,6 +704,30 @@
                 \csvreader[tabular=cp{10cm}l, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline]{csv/RandomForest/whole-DADA2-gg.txt}{}{\csvlinetotablerow}
             \end{table}
 
+            \begin{table}[p]
+                \centering
+                \caption{Taxa with DADA2 and GreenGeenes Ordered by Random Forest}
+                \label{tb:RF-whole-dada2-silva}
+
+                \csvreader[tabular=cp{10cm}l, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline]{csv/RandomForest/whole-DADA2-silva.txt}{}{\csvlinetotablerow}
+            \end{table}
+
+            \begin{table}[p]
+                \centering
+                \caption{Taxa with DADA2 and GreenGeenes Ordered by Random Forest}
+                \label{tb:RF-whole-deblur-gg}
+
+                \csvreader[tabular=cp{10cm}l, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline]{csv/RandomForest/whole-Deblur-gg.txt}{}{\csvlinetotablerow}
+            \end{table}
+
+            \begin{table}[p]
+                \centering
+                \caption{Taxa with DADA2 and GreenGeenes Ordered by Random Forest}
+                \label{tb:RF-whole-Deblur-silva}
+
+                \csvreader[tabular=cp{10cm}l, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline]{csv/RandomForest/whole-Deblur-silva.txt}{}{\csvlinetotablerow}
+            \end{table}
+
     \section{Discussion}
 
     \bibliographystyle{apacite}
