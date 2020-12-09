@@ -717,6 +717,8 @@
             \end{figure}
 
         \subsection{Random Forest Classifier with Every Class}
+            As figures \ref{fig:denosing-workflow} and \ref{fig:taxonomy-workflow}, there are four combinations. Thus, classification algorithm is carried out on these four combinations.
+
             \subsubsection{DADA2 + Greengenes}
 
                 \begin{table}[p]
@@ -729,9 +731,23 @@
 
                 \begin{figure}[p]
                     \centering
-                    \includegraphics[width=0.8 \linewidth]{figures/RandomForest/ANCOM.DADA2.gg/importances.png}
+                    \includegraphics[width=0.7 \linewidth]{figures/RandomForest/ANCOM.DADA2.gg/importances.png}
                     \caption{Feature Importances with DADA2 and Greengenes}
                     \label{fig:importances-DADA2-gg}
+                \end{figure}
+
+                \begin{figure}[p]
+                    \centering
+                    \includegraphics[width=0.7 \linewidth]{figures/RandomForest/ANCOM.DADA2.gg/accuracy.png}
+                    \caption{Accuracy by Feature Count with DADA2 and Greengenes}
+                    \label{fig:ACC-DADA2-gg}
+                \end{figure}
+
+                \begin{figure}[p]
+                    \centering
+                    \includegraphics[width=0.7 \linewidth]{figures/RandomForest/ANCOM.DADA2.gg/balanced_accuracy.png}
+                    \caption{Balanced Accuracy by Feature Count with DADA2 and Greengenes}
+                    \label{fig:BA-DADA2-gg}
                 \end{figure}
 
             \subsubsection{DADA2 + SILVA}
@@ -746,9 +762,23 @@
 
                 \begin{figure}[p]
                     \centering
-                    \includegraphics[width=0.8 \linewidth]{figures/RandomForest/ANCOM.DADA2.silva/importances.png}
+                    \includegraphics[width=0.7 \linewidth]{figures/RandomForest/ANCOM.DADA2.silva/importances.png}
                     \caption{Feature Importances with DADA2 and SILVA}
                     \label{fig:importances-DADA2-silva}
+                \end{figure}
+
+                \begin{figure}[p]
+                    \centering
+                    \includegraphics[width=0.7 \linewidth]{figures/RandomForest/ANCOM.DADA2.silva/accuracy.png}
+                    \caption{Accuracy by Feature Count with DADA2 and SILVA}
+                    \label{fig:ACC-DADA2-silva}
+                \end{figure}
+
+                \begin{figure}[p]
+                    \centering
+                    \includegraphics[width=0.7 \linewidth]{figures/RandomForest/ANCOM.DADA2.silva/balanced_accuracy.png}
+                    \caption{Balanced Accuracy by Feature Count with DADA2 and SILVA}
+                    \label{fig:BA-DADA2-silva}
                 \end{figure}
 
             \subsubsection{Deblur + Greengenes}
@@ -763,9 +793,23 @@
 
                 \begin{figure}[p]
                     \centering
-                    \includegraphics[width=0.8 \linewidth]{figures/RandomForest/ANCOM.Deblur.gg/importances.png}
+                    \includegraphics[width=0.7 \linewidth]{figures/RandomForest/ANCOM.Deblur.gg/importances.png}
                     \caption{Feature Importances with Deblur and Greengenes}
                     \label{fig:importances-Deblur-gg}
+                \end{figure}
+
+                \begin{figure}[p]
+                    \centering
+                    \includegraphics[width=0.7 \linewidth]{figures/RandomForest/ANCOM.Deblur.gg/accuracy.png}
+                    \caption{Accuracy by Feature Count with Deblur and Greengenes}
+                    \label{fig:ACC-Deblur-gg}
+                \end{figure}
+
+                \begin{figure}[p]
+                    \centering
+                    \includegraphics[width=0.7 \linewidth]{figures/RandomForest/ANCOM.Deblur.gg/balanced_accuracy.png}
+                    \caption{Balanced Accuracy by Feature Count with Deblur and Greengenes}
+                    \label{fig:BA-Deblur-gg}
                 \end{figure}
 
             \subsubsection{Deblur + SILVA}
@@ -780,9 +824,23 @@
 
                 \begin{figure}[p]
                     \centering
-                    \includegraphics[width=0.8 \linewidth]{figures/RandomForest/ANCOM.Deblur.silva/importances.png}
+                    \includegraphics[width=0.7 \linewidth]{figures/RandomForest/ANCOM.Deblur.silva/importances.png}
                     \caption{Feature Importances with Deblur and SILVA}
                     \label{fig:importances-Deblur-silva}
+                \end{figure}
+
+                \begin{figure}[p]
+                    \centering
+                    \includegraphics[width=0.7 \linewidth]{figures/RandomForest/ANCOM.Deblur.silva/accuracy.png}
+                    \caption{Accuracy by Feature Count with Deblur and SILVA}
+                    \label{fig:ACC-Deblur-silva}
+                \end{figure}
+
+                \begin{figure}[p]
+                    \centering
+                    \includegraphics[width=0.7 \linewidth]{figures/RandomForest/ANCOM.Deblur.silva/balanced_accuracy.png}
+                    \caption{Balanced Accuracy by Feature Count with Deblur and SILVA}
+                    \label{fig:BA-Deblur-silva}
                 \end{figure}
 
         \subsection{Random Forest Classifier with Merging (Healthy+Early) Classes}
