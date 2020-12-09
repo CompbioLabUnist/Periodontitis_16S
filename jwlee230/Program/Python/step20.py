@@ -88,23 +88,22 @@ if __name__ == "__main__":
     matplotlib.pyplot.close(fig)
 
     # Calculate Metrics by Feature Counts
-    highest_metrics = {metric: (0, 0.0) for metric in step00.derivations}
-    lowest_metrics = {metric: (0, 0.0) for metric in step00.derivations}
+    highest_metrics = {metric: (0, 0.0) for metric in step00.selected_derivations}
+    lowest_metrics = {metric: (0, 0.0) for metric in step00.selected_derivations}
     scores = list()
 
     for i in range(1, len(best_features) + 1):
         print("With", i, "/", len(best_features), "features!!")
         used_columns = best_features[:i]
-        tmp: typing.List[typing.Union[int, float]] = [i]
 
         x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(data[used_columns], data["LongStage"], test_size=0.1, random_state=0, stratify=data["LongStage"])
 
         classifier.fit(x_train, y_train)
         confusion_matrix = sklearn.metrics.confusion_matrix(y_test, classifier.predict(x_test))
 
-        for metric in step00.derivations:
+        for metric in step00.selected_derivations:
             score = step00.aggregate_confusion_matrix(confusion_matrix, metric)
-            tmp.append(score)
+            scores.append((i, metric, score))
 
             if numpy.isnan(score):
                 continue
@@ -115,27 +114,21 @@ if __name__ == "__main__":
             if (lowest_metrics[metric][0] == 0) or (lowest_metrics[metric][1] > score):
                 lowest_metrics[metric] = (i, score)
 
-        scores.append(tmp)
-    score_data = pandas.DataFrame.from_records(scores, columns=["FeatureCount"] + list(step00.derivations))
+    score_data = pandas.DataFrame.from_records(scores, columns=["FeatureCount", "Metrics", "Value"])
     print(score_data)
 
-    # Draw Scores
-    print("Drawing scores start!!")
-    for metric in step00.derivations:
-        print("--", metric)
-        fig, ax = matplotlib.pyplot.subplots(figsize=(32, 18))
-        seaborn.lineplot(data=score_data, x="FeatureCount", y=metric, ax=ax)
-        matplotlib.pyplot.grid(True)
-        matplotlib.pyplot.title("Higest with %s feature(s) at %.3f; Lowest with %s feature(s) at %.3f" % (highest_metrics[metric] + lowest_metrics[metric]))
-        matplotlib.pyplot.ylim(0, 1)
-        tar_files.append(metric + ".png")
-        fig.savefig(tar_files[-1])
-        matplotlib.pyplot.close(fig)
-    print("Drawing scores done!!")
+    # Draw Metrics
+    fig, ax = matplotlib.pyplot.subplots(figsize=(32, 18))
+    seaborn.lineplot(data=score_data, x="FeatureCount", y="Value", hue="Metrics", style="Metrics", ax=ax, legend="full")
+    matplotlib.pyplot.grid(True)
+    matplotlib.pyplot.ylim(0, 1)
+    tar_files.append("metrics.png")
+    fig.savefig(tar_files[-1])
+    matplotlib.pyplot.close(fig)
 
     # Draw Trees
     print("Drawing highest trees start!!")
-    for metric in step00.derivations:
+    for metric in step00.selected_derivations:
         print("--", metric)
 
         if highest_metrics[metric][0] == 0:
@@ -150,25 +143,9 @@ if __name__ == "__main__":
         matplotlib.pyplot.close(fig)
     print("Drawing highest trees done!!")
 
-    print("Drawing lowest trees start!!")
-    for metric in step00.derivations:
-        print("--", metric)
-
-        if lowest_metrics[metric][0] == 0:
-            continue
-
-        fig, ax = matplotlib.pyplot.subplots(figsize=(36, 36))
-        x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(data[best_features[:lowest_metrics[metric][0]]], data["LongStage"], test_size=0.1, random_state=0, stratify=data["LongStage"])
-        sklearn.tree.plot_tree(classifier.fit(x_train, y_train).estimators_[0], ax=ax, filled=True, class_names=sorted(set(data["LongStage"])))
-        matplotlib.pyplot.title("Lowest %s with %s feature(s) at %.3f" % ((metric,) + lowest_metrics[metric]))
-        tar_files.append("lowest_" + metric + ".png")
-        fig.savefig(tar_files[-1])
-        matplotlib.pyplot.close(fig)
-    print("Drawing lowest trees done!!")
-
     # Draw Violin Plots
     print("Drawing Violin plot start!!")
-    for i, feature in enumerate(best_features):
+    for i, feature in enumerate(best_features[:4]):
         print("--", feature)
 
         seaborn.set(context="poster", style="whitegrid")

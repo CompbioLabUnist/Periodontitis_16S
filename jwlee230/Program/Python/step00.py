@@ -94,6 +94,7 @@ def simplified_taxonomy(taxonomy: str) -> str:
 
 
 derivations = ("sensitivity", "specificity", "precision", "negative_predictive_value", "miss_rate", "fall_out", "false_discovery_rate", "false_ommission_rate", "accuracy", "F1_score", "odds_ratio", "balanced_accuracy", "threat_score")
+selected_derivations = ("accuracy", "balanced_accuracy", "sensitivity", "specificity", "precision")
 
 
 def aggregate_confusion_matrix(confusion_matrix: numpy.ndarray, derivation: str = "") -> float:
