@@ -689,11 +689,59 @@
 
         \begin{figure}
             $\begin{array}{cc}
-                \includegraphics[width=0.4 \linewidth]{figures/RandomForest/one.DADA2.gg/feature_0.png}
+                \includegraphics[width=0.4 \linewidth]{figures/RandomForest/two.DADA2.gg/feature_0.png}
                 &
-                \includegraphics[width=0.4 \linewidth]{figures/RandomForest/one.DADA2.gg/feature_1.png}
+                \includegraphics[width=0.4 \linewidth]{figures/RandomForest/two.DADA2.gg/feature_1.png}
                 \\
                 \mbox{(a) \textit{Actinomyces}} & \mbox{(b) \textit{Filifactor}} \\
+            \end{array}$
+            \caption{Violin Plot by Features}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}[allowframebreaks]
+        \frametitle{Random Forest Classifier -- Merge (H + E) \& (M + S)}
+
+        \begin{figure}
+            \includegraphics[width=0.8 \linewidth]{figures/RandomForest/merge.pdf}
+            \caption{Random Forest Classifier with Merging Workflow}
+        \end{figure}
+
+        \textbf{Deblur + SILVA} gives the best result with balanced accuracy.
+
+        \begin{table}
+            \caption{Features Order by Importances}
+            \begin{tabular}{c|l}
+                Order & Taxonomy (Genus [Species]) \\ \hline
+                0 & \textit{Porphyromonas gingivalis} \\
+                1 & \textit{Treponema denticola} \\
+                2 & \textit{Treponema medium} \\
+                3 & \textit{Metamycoplasma faucium} \\
+                4 & \textit{Prevotella intermedia} \\
+                5 & \textit{Streptococcus constellatus} \\
+                6 & \textit{Eubacterium nodatum group Eubacterium nodatum} \\
+                7 & \textit{Treponema uncultured bacterium} \\
+                ... & ... \\
+            \end{tabular}
+        \end{table}
+
+        \begin{figure}
+            \includegraphics[width=0.8 \linewidth]{figures/RandomForest/one-two.Deblur.silva/metrics.png}
+            \caption{Metrics by Feature Count}
+        \end{figure}
+
+        \begin{figure}
+            \includegraphics[width=0.5 \linewidth]{figures/RandomForest/one-two.Deblur.silva/highest_balanced_accuracy.png}
+            \caption{Random Forest Tree Plot}
+        \end{figure}
+
+        \begin{figure}
+            $\begin{array}{cc}
+                \includegraphics[width=0.4 \linewidth]{figures/RandomForest/one-two.Deblur.silva/feature_0.png}
+                &
+                \includegraphics[width=0.4 \linewidth]{figures/RandomForest/one-two.Deblur.silva/feature_1.png}
+                \\
+                \mbox{(a) \textit{Porphyromonas gingivalis}} & \mbox{(b) \textit{Treponema denticola}} \\
             \end{array}$
             \caption{Violin Plot by Features}
         \end{figure}
@@ -715,6 +763,15 @@
         \begin{itemize}
             \item \textit{Filifactor} alocis – a new emerging periodontal pathogen \cite{filifactor1}
             \item \textit{In Situ} Anabolic Activity of Periodontal Pathogens \textit{Porphyromonas gingivalis} and \textit{Filifactor alocis} in Chronic Periodontitis \cite{filifactor2}
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{\textit{Porphyromonas} Genus}
+
+        \begin{itemize}
+            \item Antibody responses to \textit{Porphyromonas gingivalis} (\textit{P. gingivalis}) in subjects with rheumatoid arthritis and periodontitis \cite{porphyromonas1}
+            \item Contribution of \textit{Porphyromonas gingivalis} lipopolysachharide to periodontitis \cite{porphyromonas2}
         \end{itemize}
     \end{frame}
 
