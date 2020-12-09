@@ -126,6 +126,20 @@ if __name__ == "__main__":
     fig.savefig(tar_files[-1])
     matplotlib.pyplot.close(fig)
 
+    # Draw Each Metics
+    print("Drawing scores start!!")
+    for metric in step00.selected_derivations:
+        print("--", metric)
+        fig, ax = matplotlib.pyplot.subplots(figsize=(32, 18))
+        seaborn.lineplot(data=score_data.query("Metrics == '%s'" % metric,), x="FeatureCount", y="Value", ax=ax)
+        matplotlib.pyplot.grid(True)
+        matplotlib.pyplot.ylim(0, 1)
+        matplotlib.pyplot.title("Higest with %s feature(s) at %.3f; Lowest with %s feature(s) at %.3f" % (highest_metrics[metric] + lowest_metrics[metric]))
+        tar_files.append(metric + ".png")
+        fig.savefig(tar_files[-1])
+        matplotlib.pyplot.close(fig)
+    print("Drawing scores done!!")
+
     # Draw Trees
     print("Drawing highest trees start!!")
     for metric in step00.selected_derivations:
