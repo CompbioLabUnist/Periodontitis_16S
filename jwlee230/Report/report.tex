@@ -181,7 +181,7 @@
                 \item RandomForest Classification Algorithm \cite{RandomForest1, sklearn1}
             \end{itemize}
 
-            Moreover, evaluations of classification algorithm are carried out with derivations from confusion matrix as table \ref{tb:confusion-matrix}:
+            Moreover, evaluations of classification algorithm are carried out with derivations from confusion matrix (table \ref{tb:confusion-matrix}):
 
             \begin{itemize}
                 \item Accuracy (ACC) $ = \frac{TP + TN}{TP + TN + FP + FN}$
@@ -717,42 +717,84 @@
             \end{figure}
 
         \subsection{Random Forest Classifier with Every Class}
+            \subsubsection{DADA2 + Greengenes}
 
-            \begin{table}[p]
-                \centering
-                \caption{Taxa with DADA2 and GreenGeenes Ordered by Random Forest}
-                \label{tb:RF-whole-dada2-gg}
+                \begin{table}[p]
+                    \centering
+                    \caption{Taxa with DADA2 and Greengenes Ordered by Random Forest}
+                    \label{tb:RF-whole-dada2-gg}
 
-                \csvreader[tabular=cp{10cm}l, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline]{csv/RandomForest/whole-DADA2-gg.txt}{}{\csvlinetotablerow}
-            \end{table}
+                    \csvreader[tabular=cp{10cm}l, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline]{csv/RandomForest/whole-DADA2-gg.txt}{}{\csvlinetotablerow}
+                \end{table}
 
-            \begin{table}[p]
-                \centering
-                \caption{Taxa with DADA2 and GreenGeenes Ordered by Random Forest}
-                \label{tb:RF-whole-dada2-silva}
+                \begin{figure}[p]
+                    \centering
+                    \includegraphics[width=0.8 \linewidth]{figures/RandomForest/ANCOM.DADA2.gg/importances.png}
+                    \caption{Feature Importances with DADA2 and Greengenes}
+                    \label{fig:importances-DADA2-gg}
+                \end{figure}
 
-                \csvreader[tabular=cp{10cm}l, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline]{csv/RandomForest/whole-DADA2-silva.txt}{}{\csvlinetotablerow}
-            \end{table}
+            \subsubsection{DADA2 + SILVA}
 
-            \begin{table}[p]
-                \centering
-                \caption{Taxa with DADA2 and GreenGeenes Ordered by Random Forest}
-                \label{tb:RF-whole-deblur-gg}
+                \begin{table}[p]
+                    \centering
+                    \caption{Taxa with DADA2 and SILVA Ordered by Random Forest}
+                    \label{tb:RF-whole-dada2-silva}
 
-                \csvreader[tabular=cp{10cm}l, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline]{csv/RandomForest/whole-Deblur-gg.txt}{}{\csvlinetotablerow}
-            \end{table}
+                    \csvreader[tabular=cp{10cm}l, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline]{csv/RandomForest/whole-DADA2-silva.txt}{}{\csvlinetotablerow}
+                \end{table}
 
-            \begin{table}[p]
-                \centering
-                \caption{Taxa with DADA2 and GreenGeenes Ordered by Random Forest}
-                \label{tb:RF-whole-Deblur-silva}
+                \begin{figure}[p]
+                    \centering
+                    \includegraphics[width=0.8 \linewidth]{figures/RandomForest/ANCOM.DADA2.silva/importances.png}
+                    \caption{Feature Importances with DADA2 and SILVA}
+                    \label{fig:importances-DADA2-silva}
+                \end{figure}
 
-                \csvreader[tabular=cp{10cm}l, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline]{csv/RandomForest/whole-Deblur-silva.txt}{}{\csvlinetotablerow}
-            \end{table}
+            \subsubsection{Deblur + Greengenes}
+
+                \begin{table}[p]
+                    \centering
+                    \caption{Taxa with Deblur and Greengenes Ordered by Random Forest}
+                    \label{tb:RF-whole-deblur-gg}
+
+                    \csvreader[tabular=cp{10cm}l, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline]{csv/RandomForest/whole-Deblur-gg.txt}{}{\csvlinetotablerow}
+                \end{table}
+
+                \begin{figure}[p]
+                    \centering
+                    \includegraphics[width=0.8 \linewidth]{figures/RandomForest/ANCOM.Deblur.gg/importances.png}
+                    \caption{Feature Importances with Deblur and Greengenes}
+                    \label{fig:importances-Deblur-gg}
+                \end{figure}
+
+            \subsubsection{Deblur + SILVA}
+
+                \begin{table}[p]
+                    \centering
+                    \caption{Taxa with Deblur and SILVA Ordered by Random Forest}
+                    \label{tb:RF-whole-Deblur-silva}
+
+                    \csvreader[tabular=cp{10cm}l, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline]{csv/RandomForest/whole-Deblur-silva.txt}{}{\csvlinetotablerow}
+                \end{table}
+
+                \begin{figure}[p]
+                    \centering
+                    \includegraphics[width=0.8 \linewidth]{figures/RandomForest/ANCOM.Deblur.silva/importances.png}
+                    \caption{Feature Importances with Deblur and SILVA}
+                    \label{fig:importances-Deblur-silva}
+                \end{figure}
 
         \subsection{Random Forest Classifier with Merging (Healthy+Early) Classes}
 
     \section{Discussion}
+        \subsection{Alpha-diversity}
+
+        \subsection{Beta-diversity}
+
+        \subsection{t-SNE Plot}
+
+        \subsection{Random Forest Classifier with Every Class}
 
     \bibliographystyle{apacite}
     \bibliography{reference}
