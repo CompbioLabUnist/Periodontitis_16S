@@ -119,24 +119,24 @@
             \subsubsection{Alpha-diversity}
                 Alpha-diversity is a metric which shows the richness of taxa at a single community. There are four alpha-diversity indices which provided from QIIME2:
                 \begin{itemize}
-                    \item Evenness index.
-                    \item Faith's phylogenetic diversity (Faith PD).
+                    \item Evenness index \cite{evenness1}.
+                    \item Faith's phylogenetic diversity (Faith PD) \cite{faith1}.
                     \item Observed features.
-                    \item Shannon's diversity index.
+                    \item Shannon's diversity index \cite{shannon1}.
                 \end{itemize}
 
-                Shannon's diversity index shows a quantitative measure of community richness; Observed features, however, is a qualitative measure of community richness. Faith's phylogenetic diversity index indicates a qualitative measure of community richness which assimilates phylogenetic relationship among features. Finally, evenness index, as its name, shows a measure of community evenness.
+                Evenness index shows a measurement of diversity in different type at community \cite{evenness1}; Faith's phylogenetic diversity, however, indicates a qualitative measurement of community richness which priorities for species conservation which incorporates with taxic diversity \cite{faith1}. Observed features, as its name, is a number of observed features in microbiome. Moreover, Shannon's diversity index means a significant aspect of community richness \cite{shannon1}.
 
             \subsubsection{Beta-diversity}
                 Beta-diversity is a metric which indicates the taxonomic differentiation between multiple communities. There are four beta-diversity indices which provided from QIIME2:
                 \begin{itemize}
-                    \item Bray-Curtis distance.
-                    \item Jaccard distance.
-                    \item Unweighted UniFrac distance.
-                    \item Weighted UniFrac distance.
+                    \item Bray-Curtis distance index \cite{bray1}.
+                    \item Jaccard distance index \cite{jaccard1}.
+                    \item Unweighted UniFrac distance index \cite{unifrac1}.
+                    \item Weighted UniFrac distance index \cite{unifrac1}.
                 \end{itemize}
 
-                Bray-Curtis distance shows a quantitative of community dissimilarity; Jaccard distance, however, indicates a qualitative measure of community dissimilarity. UniFrac distances reveal a measure of community dissimilarity which consolidates phylogenetic relationship among features. Difference between unweighted UniFrac distance and weighted UniFrac distance is a qualitative and a quantitative, respectively.
+                Bray-Curtis distance index shows a quantitative measurement of community dissimilarity \cite{bray1}; Jaccard distance index, however, indicates a measurement of local distribution among communities. UniFrac distance indices reveal measurements of phylogenetic distances \cite{unifrac1}. Difference between unweighted UniFrac distance index and weighted UniFrac distance index is a qualitative and a quantitative, respectively.
 
             \subsubsection{ANCOM}
                 ANCOM (Analysis of composition of microbiomes) can be used for analyzing the composition of microbiome in multiple populations \cite{ANCOM1}. Example ANCOM volcano plot is shows as figure \ref{fig:ancom-example}. In figure \ref{fig:ancom-example}, two metrics are clearly shown: clr and W. clr stands for centered $\log$ ratio, and W is a count of the number of sub-hypothesis which have passed for given species.
@@ -413,6 +413,13 @@
 
             \begin{figure}[p]
                 \centering
+                \includegraphics[width=0.6 \linewidth]{figures/BetaDiversity/DADA2.bray_curtis.png}
+                \caption{t-SNE Plot from Bray-Curtis Distance Index with DADA2}
+                \label{fig:tsne-bray-dada2}
+            \end{figure}
+
+            \begin{figure}[p]
+                \centering
                 $\begin{array}{cc}
                     \includegraphics[width=0.4 \linewidth]{figures/BetaDiversity/DADA2/Bray/Healthy.pdf}
                     &
@@ -428,6 +435,13 @@
                 \end{array}$
                 \caption{Bray-Curtis Distance Index with DADA2}
                 \label{fig:bray-dada2}
+            \end{figure}
+
+            \begin{figure}[p]
+                \centering
+                \includegraphics[width=0.6 \linewidth]{figures/BetaDiversity/DADA2.jaccard.png}
+                \caption{t-SNE Plot from Jaccard Distance Index with DADA2}
+                \label{fig:tsne-jaccard-dada2}
             \end{figure}
 
             \begin{figure}[p]
@@ -451,6 +465,13 @@
 
             \begin{figure}[p]
                 \centering
+                \includegraphics[width=0.6 \linewidth]{figures/BetaDiversity/DADA2.unweighted_unifrac.png}
+                \caption{t-SNE Plot from Unweighted UniFrac Distance Index with DADA2}
+                \label{fig:tsne-unweighted-dada2}
+            \end{figure}
+
+            \begin{figure}[p]
+                \centering
                 $\begin{array}{cc}
                     \includegraphics[width=0.4 \linewidth]{figures/BetaDiversity/DADA2/UnweightedUnifrac/Healthy.pdf}
                     &
@@ -464,8 +485,15 @@
                     \\
                     \mbox{(c) Moderate} & \mbox{(d) Severe} \\
                 \end{array}$
-                \caption{Unweighted Unifrac Distance Index with DADA2}
+                \caption{Unweighted UniFrac Distance Index with DADA2}
                 \label{fig:unweighted-dada2}
+            \end{figure}
+
+            \begin{figure}[p]
+                \centering
+                \includegraphics[width=0.6 \linewidth]{figures/BetaDiversity/DADA2.weighted_unifrac.png}
+                \caption{t-SNE Plot from Weighted UniFrac Distance Index with DADA2}
+                \label{fig:tsne-weighted-dada2}
             \end{figure}
 
             \begin{figure}[p]
@@ -483,7 +511,7 @@
                     \\
                     \mbox{(c) Moderate} & \mbox{(d) Severe} \\
                 \end{array}$
-                \caption{Weighted Unifrac Distance Index with DADA2}
+                \caption{Weighted UniFrac Distance Index with DADA2}
                 \label{fig:weighted-dada2}
             \end{figure}
 
@@ -517,6 +545,13 @@
 
             \begin{figure}[p]
                 \centering
+                \includegraphics[width=0.6 \linewidth]{figures/BetaDiversity/Deblur.bray_curtis.png}
+                \caption{t-SNE Plot from Bray-Curtis Distance Index with Deblur}
+                \label{fig:tsne-bray-deblur}
+            \end{figure}
+
+            \begin{figure}[p]
+                \centering
                 $\begin{array}{cc}
                     \includegraphics[width=0.4 \linewidth]{figures/BetaDiversity/Deblur/Bray/Healthy.pdf}
                     &
@@ -532,6 +567,13 @@
                 \end{array}$
                 \caption{Bray-Curtis Distance Index with Deblur}
                 \label{fig:bray-deblur}
+            \end{figure}
+
+            \begin{figure}[p]
+                \centering
+                \includegraphics[width=0.6 \linewidth]{figures/BetaDiversity/Deblur.jaccard.png}
+                \caption{t-SNE Plot from Jaccard Distance Index with Deblur}
+                \label{fig:tsne-jaccard-deblur}
             \end{figure}
 
             \begin{figure}[p]
@@ -555,6 +597,13 @@
 
             \begin{figure}[p]
                 \centering
+                \includegraphics[width=0.6 \linewidth]{figures/BetaDiversity/Deblur.unweighted_unifrac.png}
+                \caption{t-SNE Plot from Unweighted UniFrac Distance Index with Deblur}
+                \label{fig:tsne-unweighted-deblur}
+            \end{figure}
+
+            \begin{figure}[p]
+                \centering
                 $\begin{array}{cc}
                     \includegraphics[width=0.4 \linewidth]{figures/BetaDiversity/Deblur/UnweightedUnifrac/Healthy.pdf}
                     &
@@ -568,8 +617,15 @@
                     \\
                     \mbox{(c) Moderate} & \mbox{(d) Severe} \\
                 \end{array}$
-                \caption{Unweighted Unifrac Distance Index with Deblur}
+                \caption{Unweighted UniFrac Distance Index with Deblur}
                 \label{fig:unweighted-deblur}
+            \end{figure}
+
+            \begin{figure}[p]
+                \centering
+                \includegraphics[width=0.6 \linewidth]{figures/BetaDiversity/Deblur.weighted_unifrac.png}
+                \caption{t-SNE Plot from Weighted UniFrac Distance Index with Deblur}
+                \label{fig:tsne-weighted-deblur}
             \end{figure}
 
             \begin{figure}[p]
@@ -587,7 +643,7 @@
                     \\
                     \mbox{(c) Moderate} & \mbox{(d) Severe} \\
                 \end{array}$
-                \caption{Weighted Unifrac Distance Index with Deblur}
+                \caption{Weighted UniFrac Distance Index with Deblur}
                 \label{fig:weighted-deblur}
             \end{figure}
 
