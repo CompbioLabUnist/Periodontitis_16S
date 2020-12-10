@@ -174,7 +174,7 @@ if __name__ == "__main__":
         seaborn.set(context="poster", style="whitegrid")
 
         fig, ax = matplotlib.pyplot.subplots(figsize=(36, 36))
-        seaborn.violinplot(data=data, x="LongStage", y=feature, order=sorted(set(data["LongStage"])), ax=ax)
+        seaborn.violinplot(data=data, x="LongStage", y=feature, order=sorted(set(data["LongStage"])), ax=ax, inner="box")
 
         statannot.add_stat_annotation(ax, data=data, x="LongStage", y=feature, order=sorted(set(data["LongStage"])), test="t-test_ind", box_pairs=itertools.combinations(sorted(set(data["LongStage"])), 2), text_format="star", loc="inside", verbose=0)
 
