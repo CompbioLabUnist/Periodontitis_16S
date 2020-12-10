@@ -92,14 +92,14 @@ if __name__ == "__main__":
     lowest_metrics = {metric: (0, 0.0) for metric in step00.selected_derivations}
     scores = list()
 
+    k_fold = sklearn.model_selection.StratifiedKFold(n_splits=10)
     for i in range(1, len(best_features) + 1):
         print("With", i, "/", len(best_features), "features!!")
         used_columns = best_features[:i]
 
-        k_fold = sklearn.model_selection.StratifiedKFold(n_splits=10, random_state=0)
         for train_index, test_index in k_fold.split(data[used_columns], data["LongStage"]):
-            x_train, x_test = data[used_columns][train_index], data[used_columns][test_index]
-            y_train, y_test = data["LongStage"][train_index], data["LongStage"][test_index]
+            x_train, x_test = data.iloc[train_index][used_columns], data.iloc[test_index][used_columns]
+            y_train, y_test = data.iloc[train_index]["LongStage"], data.iloc[test_index]["LongStage"]
 
             classifier.fit(x_train, y_train)
             confusion_matrix = sklearn.metrics.confusion_matrix(y_test, classifier.predict(x_test))
