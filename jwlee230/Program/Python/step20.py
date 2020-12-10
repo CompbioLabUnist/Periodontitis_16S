@@ -96,23 +96,26 @@ if __name__ == "__main__":
         print("With", i, "/", len(best_features), "features!!")
         used_columns = best_features[:i]
 
-        x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(data[used_columns], data["LongStage"], test_size=0.1, random_state=0, stratify=data["LongStage"])
+        k_fold = sklearn.model_selection.StratifiedKFold(n_splits=10, random_state=0)
+        for train_index, test_index in k_fold.split(data[used_columns], data["LongStage"]):
+            x_train, x_test = data[used_columns][train_index], data[used_columns][test_index]
+            y_train, y_test = data["LongStage"][train_index], data["LongStage"][test_index]
 
-        classifier.fit(x_train, y_train)
-        confusion_matrix = sklearn.metrics.confusion_matrix(y_test, classifier.predict(x_test))
+            classifier.fit(x_train, y_train)
+            confusion_matrix = sklearn.metrics.confusion_matrix(y_test, classifier.predict(x_test))
 
-        for metric in step00.selected_derivations:
-            score = step00.aggregate_confusion_matrix(confusion_matrix, metric)
-            scores.append((i, metric, score))
+            for metric in step00.selected_derivations:
+                score = step00.aggregate_confusion_matrix(confusion_matrix, metric)
+                scores.append((i, metric, score))
 
-            if numpy.isnan(score):
-                continue
+                if numpy.isnan(score):
+                    continue
 
-            if (highest_metrics[metric][0] == 0) or (highest_metrics[metric][1] < score):
-                highest_metrics[metric] = (i, score)
+                if (highest_metrics[metric][0] == 0) or (highest_metrics[metric][1] < score):
+                    highest_metrics[metric] = (i, score)
 
-            if (lowest_metrics[metric][0] == 0) or (lowest_metrics[metric][1] > score):
-                lowest_metrics[metric] = (i, score)
+                if (lowest_metrics[metric][0] == 0) or (lowest_metrics[metric][1] > score):
+                    lowest_metrics[metric] = (i, score)
 
     score_data = pandas.DataFrame.from_records(scores, columns=["FeatureCount", "Metrics", "Value"])
     print(score_data)
@@ -149,8 +152,7 @@ if __name__ == "__main__":
             continue
 
         fig, ax = matplotlib.pyplot.subplots(figsize=(36, 36))
-        x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(data[best_features[:highest_metrics[metric][0]]], data["LongStage"], test_size=0.1, random_state=0, stratify=data["LongStage"])
-        sklearn.tree.plot_tree(classifier.fit(x_train, y_train).estimators_[0], ax=ax, filled=True, class_names=sorted(set(data["LongStage"])))
+        sklearn.tree.plot_tree(classifier.fit(data[best_features[:highest_metrics[metric][0]]], data["LongStage"]).estimators_[0], ax=ax, filled=True, class_names=sorted(set(data["LongStage"])))
         matplotlib.pyplot.title("Highest %s with %s feature(s) at %.3f" % ((metric,) + highest_metrics[metric]))
         tar_files.append("highest_" + metric + ".png")
         fig.savefig(tar_files[-1])
