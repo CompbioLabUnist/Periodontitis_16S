@@ -360,3 +360,28 @@ Output/Step20/one-two.%.tar: Python/step20.py Output/Step17/whole.%.tar.gz Outpu
 
 step20: Output/Step20/ANCOM.DADA2.gg.tar Output/Step20/ANCOM.DADA2.silva.tar Output/Step20/ANCOM.DADA2.homd.tar Output/Step20/ANCOM.Deblur.gg.tar Output/Step20/ANCOM.Deblur.silva.tar Output/Step20/ANCOM.Deblur.homd.tar Output/Step20/one.DADA2.gg.tar Output/Step20/one.DADA2.silva.tar Output/Step20/one.DADA2.homd.tar Output/Step20/one.Deblur.gg.tar Output/Step20/one.Deblur.silva.tar Output/Step20/one.Deblur.homd.tar Output/Step20/two.DADA2.gg.tar Output/Step20/two.DADA2.silva.tar Output/Step20/two.DADA2.homd.tar Output/Step20/two.Deblur.gg.tar Output/Step20/two.Deblur.silva.tar Output/Step20/two.Deblur.homd.tar Output/Step20/one-two.DADA2.gg.tar Output/Step20/one-two.DADA2.silva.tar Output/Step20/one-two.DADA2.homd.tar Output/Step20/one-two.Deblur.gg.tar Output/Step20/one-two.Deblur.silva.tar Output/Step20/one-two.Deblur.homd.tar
 .PHONY += step20
+
+# Step 21 (Extract TSV from Beta-diversity)
+Output/Step21:
+	mkdir -p $@
+
+Output/Step21/DADA2.%.tsv: Output/Step10/DADA2/whole.%_distance_matrix.qza | Output/Step21 build.log
+	$(DOCKER) qiime tools export --input-path $(addprefix /,$(word 1,$^)) --output-path $(addprefix /,$(@D))
+	$(DOCKER) mv $(addprefix /,$(@D))/distance-matrix.tsv $(addprefix /,$@)
+
+Output/Step21/Deblur.%.tsv: Output/Step10/Deblur/whole.%_distance_matrix.qza | Output/Step21 build.log
+	$(DOCKER) qiime tools export --input-path $(addprefix /,$(word 1,$^)) --output-path $(addprefix /,$(@D))
+	$(DOCKER) mv $(addprefix /,$(@D))/distance-matrix.tsv $(addprefix /,$@)
+
+step21: Output/Step21/DADA2.unweighted_unifrac.tsv Output/Step21/DADA2.weighted_unifrac.tsv Output/Step21/DADA2.jaccard.tsv Output/Step21/DADA2.bray_curtis.tsv Output/Step21/Deblur.unweighted_unifrac.tsv Output/Step21/Deblur.weighted_unifrac.tsv Output/Step21/Deblur.jaccard.tsv Output/Step21/Deblur.bray_curtis.tsv
+.PHONY += step21
+
+# Step 22 (Draw t-SNE from Beta-diversity TSV)
+Output/Step22:
+	mkdir -p $@
+
+Output/Step22/%.png: Python/step22.py Output/Step21/%.tsv | Output/Step22 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) 1> $@.stdout 2> $@.stderr
+
+step22: Output/Step22/DADA2.unweighted_unifrac.png Output/Step22/DADA2.weighted_unifrac.png Output/Step22/DADA2.jaccard.png Output/Step22/DADA2.bray_curtis.png Output/Step22/Deblur.unweighted_unifrac.png Output/Step22/Deblur.weighted_unifrac.png Output/Step22/Deblur.jaccard.png Output/Step22/Deblur.bray_curtis.png
+.PHONY += step22
