@@ -94,7 +94,7 @@
                 \end{figure}
 
             \subsubsection{Taxonomy Classification}
-                There are two taxonomy classification databases which provided by QIIME2: Greengenes (GG) \cite{greengenes1} and SILVA \cite{silva1}. Major difference between Greengenes and SILVA is resolution. Resolution of Greengenes is from kingdom to species; however, resolution of SILVA is from domain to genus. Note that a higher accuracy at taxonomic levels above genus level; but accuracy drops at species level \cite{performance1}.
+                There are three taxonomy classification databases: Greengenes (GG) \cite{greengenes1}, SILVA \cite{silva1} and Human Oral Microbiome Database (HOMD) \cite{homd1}. Major difference among these databases is resolution. Resolution of GG and HOMD is from kingdom to species; however, resolution of SILVA is from domain to genus. Previous research have found that a higher accuracy at taxonomic levels above genus level; but accuracy drops at species level \cite{performance1}.
 
                 \begin{figure}[p]
                     \centering
@@ -235,7 +235,7 @@
             \end{figure}
 
         \subsection{Rarefaction}
-            Sampling depth should be decided for rarefaction. Gold-standard method for determining sampling depth is minimum frequency in the samples. Hence, sampling depth with DADA2 is 3786 (Figure \ref{fig:frequency-sample-dada2}), and sampling depth with Deblur is 7253 (Figure \ref{fig:frequency-sample-deblur}).
+            Sampling depth should be decided for rarefaction. Gold-standard method for determining sampling depth is minimum frequency in the samples. Hence, sampling depth with DADA2 is 3,786 (Figure \ref{fig:frequency-sample-dada2}), and sampling depth with Deblur is 7,253 (Figure \ref{fig:frequency-sample-deblur}).
 
             \begin{figure}[p]
                 \centering
@@ -592,11 +592,11 @@
             \end{figure}
 
         \subsection{ANCOM}
-            Statistically significant different taxa and volcano plots by ANCOM were derived: DADA2 and Greengenes (Table \ref{tb:ANCOM-dada2-gg} and Figure \ref{fig:volcano-dada2-gg}), DADA2 and SILVA (Table \ref{tb:ANCOM-dada2-silva} and Figure \ref{fig:volcano-dada2-silva}), Deblur and Greengenes (Table \ref{tb:ANCOM-deblur-gg} and Figure \ref{fig:volcano-deblur-gg}) and Deblur and SILVA (Table \ref{tb:ANCOM-deblur-silva} and Figure \ref{fig:volcano-deblur-silva}).
+            Statistically significant different taxa and volcano plots by ANCOM were derived: DADA2 and GG (Table \ref{tb:ANCOM-dada2-gg} and Figure \ref{fig:volcano-dada2-gg}), DADA2 and SILVA (Table \ref{tb:ANCOM-dada2-silva} and Figure \ref{fig:volcano-dada2-silva}), DADA2 and HOMD (Table \ref{tb:ANCOM-dada2-homd} and Figure \ref{fig:volcano-dada2-homd}), Deblur and GG (Table \ref{tb:ANCOM-deblur-gg} and Figure \ref{fig:volcano-deblur-gg}), Deblur and SILVA (Table \ref{tb:ANCOM-deblur-silva} and Figure \ref{fig:volcano-deblur-silva}) and Deblur and HOMD (Table \ref{tb:ANCOM-deblur-homd} and Figure \ref{fig:volcano-deblur-homd}).
 
             \begin{table}[p]
                 \centering
-                \caption{ANCOM Significant Taxa with DADA2 and Greengenes}
+                \caption{ANCOM Significant Taxa with DADA2 and GG}
                 \label{tb:ANCOM-dada2-gg}
 
                 \csvreader[tabular=p{10cm}cc, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline, respect underscore]{csv/ANCOM/DADA2.gg.csv}{}{\csvlinetotablerow}
@@ -605,7 +605,7 @@
             \begin{figure}[p]
                 \centering
                 \includegraphics[width=0.8 \linewidth]{figures/ANCOM/DADA2.gg.png}
-                \caption{ANCOM Volcano Plot with DADA2 and Greengenes}
+                \caption{ANCOM Volcano Plot with DADA2 and GG}
                 \label{fig:volcano-dada2-gg}
             \end{figure}
 
@@ -620,13 +620,28 @@
             \begin{figure}[p]
                 \centering
                 \includegraphics[width=0.8 \linewidth]{figures/ANCOM/DADA2.silva.png}
-                \caption{ANCOM Volcano Plot with DADA2 and SILVA}
+                \caption{ANCOM Volcano Plot with DADA2 and HOMD}
                 \label{fig:volcano-dada2-silva}
             \end{figure}
 
             \begin{table}[p]
                 \centering
-                \caption{ANCOM Significant Taxa with Deblur and Greengenes}
+                \caption{ANCOM Significant Taxa with DADA2 and HOMD}
+                \label{tb:ANCOM-dada2-homd}
+
+                \csvreader[tabular=p{10cm}cc, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline, respect underscore]{csv/ANCOM/DADA2.homd.csv}{}{\csvlinetotablerow}
+            \end{table}
+
+            \begin{figure}[p]
+                \centering
+                \includegraphics[width=0.8 \linewidth]{figures/ANCOM/DADA2.homd.png}
+                \caption{ANCOM Volcano Plot with DADA2 and SILVA}
+                \label{fig:volcano-dada2-homd}
+            \end{figure}
+
+            \begin{table}[p]
+                \centering
+                \caption{ANCOM Significant Taxa with Deblur and GG}
                 \label{tb:ANCOM-deblur-gg}
 
                 \csvreader[tabular=p{10cm}cc, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline, respect underscore]{csv/ANCOM/Deblur.gg.csv}{}{\csvlinetotablerow}
@@ -635,13 +650,13 @@
             \begin{figure}[p]
                 \centering
                 \includegraphics[width=0.8 \linewidth]{figures/ANCOM/Deblur.gg.png}
-                \caption{ANCOM Volcano Plot with Deblur and Greengenes}
+                \caption{ANCOM Volcano Plot with Deblur and GG}
                 \label{fig:volcano-deblur-gg}
             \end{figure}
 
             \begin{table}[p]
                 \centering
-                \caption{ANCOM Significant Taxa with DADA2 and SILVA}
+                \caption{ANCOM Significant Taxa with Deblur and SILVA}
                 \label{tb:ANCOM-deblur-silva}
 
                 \csvreader[tabular=p{10cm}cc, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline, respect underscore]{csv/ANCOM/DADA2.silva.csv}{}{\csvlinetotablerow}
@@ -654,13 +669,28 @@
                 \label{fig:volcano-deblur-silva}
             \end{figure}
 
+            \begin{table}[p]
+                \centering
+                \caption{ANCOM Significant Taxa with Deblur and HOMD}
+                \label{tb:ANCOM-deblur-homd}
+
+                \csvreader[tabular=p{10cm}cc, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline, respect underscore]{csv/ANCOM/Deblur.homd.csv}{}{\csvlinetotablerow}
+            \end{table}
+
+            \begin{figure}[p]
+                \centering
+                \includegraphics[width=0.8 \linewidth]{figures/ANCOM/Deblur.homd.png}
+                \caption{ANCOM Volcano Plot with Deblur and HOMD}
+                \label{fig:volcano-deblur-homd}
+            \end{figure}
+
         \subsection{t-SNE Plot with Whole Microbiome}
-            As mentioned herein-before, t-SNE is a technique which reduce multi-dimensional data into two-dimension. Whole microbiome data are multi-dimensional data, which have \textit{circa} 600 columns, so the data should be reduced their dimension for readability. Hence, by the grace of t-SNE, the microbiome data have been deflated their dimension: 328 taxa from DADA2 and Greengenes (Figure \ref{fig:tsne-whole-dada2-gg}), 633 taxa from DADA2 and SILVA (Figure \ref{fig:tsne-whole-dada2-silva}), 232 taxa from Deblur and Greengenes (Figure \ref{fig:tsne-whole-deblur-gg}) and 414 taxa from Deblur and SILVA (Figure \ref{fig:tsne-whole-deblur-silva}).
+            As mentioned herein-before, t-SNE is a technique which reduce multi-dimensional data into two-dimension. Whole microbiome data are multi-dimensional data, which have \textit{circa} 600 columns, so the data should be reduced their dimension for readability. Hence, by the grace of t-SNE, the microbiome data have been deflated their dimension: 328 taxa from DADA2 and GG (Figure \ref{fig:tsne-whole-dada2-gg}), 633 taxa from DADA2 and SILVA (Figure \ref{fig:tsne-whole-dada2-silva}), 425 taxa from DADA2 and HOMD (Figure \ref{fig:tsne-whole-dada2-homd}), 232 taxa from Deblur and GG (Figure \ref{fig:tsne-whole-deblur-gg}), 414 taxa from Deblur and SILVA (Figure \ref{fig:tsne-whole-deblur-silva}) and 235 taxa from Deblur and HOMD (Figure \ref{fig:tsne-whole-deblur-homd}).
 
             \begin{figure}[p]
                 \centering
                 \includegraphics[width=0.6 \linewidth]{figures/tSNE/Whole/whole.DADA2.gg.png}
-                \caption{t-SNE Plot with Whole Microbiome from DADA2 and Greengenes}
+                \caption{t-SNE Plot with Whole Microbiome from DADA2 and GG}
                 \label{fig:tsne-whole-dada2-gg}
             \end{figure}
 
@@ -673,8 +703,15 @@
 
             \begin{figure}[p]
                 \centering
+                \includegraphics[width=0.6 \linewidth]{figures/tSNE/Whole/whole.DADA2.homd.png}
+                \caption{t-SNE Plot with Whole Microbiome from DADA2 and HOMD}
+                \label{fig:tsne-whole-dada2-homd}
+            \end{figure}
+
+            \begin{figure}[p]
+                \centering
                 \includegraphics[width=0.6 \linewidth]{figures/tSNE/Whole/whole.Deblur.gg.png}
-                \caption{t-SNE Plot with Whole Microbiome from Deblur and Greengenes}
+                \caption{t-SNE Plot with Whole Microbiome from Deblur and GG}
                 \label{fig:tsne-whole-deblur-gg}
             \end{figure}
 
@@ -685,13 +722,20 @@
                 \label{fig:tsne-whole-deblur-silva}
             \end{figure}
 
+            \begin{figure}[p]
+                \centering
+                \includegraphics[width=0.6 \linewidth]{figures/tSNE/Whole/whole.Deblur.homd.png}
+                \caption{t-SNE Plot with Whole Microbiome from Deblur and HOMD}
+                \label{fig:tsne-whole-deblur-homd}
+            \end{figure}
+
         \subsection{t-SNE Plot with ANCOM Selected Microbiome Data}
-            As whole microbiome data, ANCOM selected microbiome data are also multi-dimensional data, even though their columns are selected by ANCOM. Hence, with t-SNE, ANCOM selected microbiome data have also been deflated their dimension: 15 taxa (as Table \ref{tb:ANCOM-dada2-gg}) from DADA2 and Greengenes (Figure \ref{fig:tsne-ANCOM-dada2-gg}), 23 taxa (as Table \ref{tb:ANCOM-dada2-silva}) from DADA2 and SILVA (Figure \ref{fig:tsne-ANCOM-dada2-silva}), 27 taxa (as Table \ref{tb:ANCOM-deblur-gg}) from Deblur and Greengenes (Figure \ref{fig:tsne-whole-deblur-gg}) and 20 taxa (as Table \ref{tb:ANCOM-deblur-silva}) from Deblur and SILVA (Figure \ref{fig:tsne-ANCOM-deblur-silva}).
+            As whole microbiome data, ANCOM selected microbiome data are also multi-dimensional data, even though their columns are selected by ANCOM. Hence, with t-SNE, ANCOM selected microbiome data have also been deflated their dimension: 15 taxa (as Table \ref{tb:ANCOM-dada2-gg}) from DADA2 and GG (Figure \ref{fig:tsne-ANCOM-dada2-gg}), 23 taxa (as Table \ref{tb:ANCOM-dada2-silva}) from DADA2 and SILVA (Figure \ref{fig:tsne-ANCOM-dada2-silva}), 20 taxa (as Table \ref{tb:ANCOM-dada2-homd}) from DADA2 and HOMD (Figure \ref{fig:tsne-ANCOM-dada2-homd}), 27 taxa (as Table \ref{tb:ANCOM-deblur-gg}) from Deblur and GG (Figure \ref{fig:tsne-whole-deblur-gg}), 20 taxa (as Table \ref{tb:ANCOM-deblur-silva}) from Deblur and SILVA (Figure \ref{fig:tsne-ANCOM-deblur-silva}) and 28 taxa (as Table \ref{tb:ANCOM-deblur-homd}) from Deblur and HOMD (Figure \ref{fig:tsne-ANCOM-deblur-homd}).
 
             \begin{figure}[p]
                 \centering
                 \includegraphics[width=0.6 \linewidth]{figures/tSNE/ANCOM/ANCOM.DADA2.gg.png}
-                \caption{t-SNE Plot with ANCOM Selected Microbiome Data from DADA2 and Greengenes}
+                \caption{t-SNE Plot with ANCOM Selected Microbiome Data from DADA2 and GG}
                 \label{fig:tsne-ANCOM-dada2-gg}
             \end{figure}
 
@@ -704,8 +748,15 @@
 
             \begin{figure}[p]
                 \centering
+                \includegraphics[width=0.6 \linewidth]{figures/tSNE/ANCOM/ANCOM.DADA2.homd.png}
+                \caption{t-SNE Plot with ANCOM Selected Microbiome Data from DADA2 and HOMD}
+                \label{fig:tsne-ANCOM-dada2-homd}
+            \end{figure}
+
+            \begin{figure}[p]
+                \centering
                 \includegraphics[width=0.6 \linewidth]{figures/tSNE/ANCOM/ANCOM.Deblur.gg.png}
-                \caption{t-SNE Plot with ANCOM Selected Microbiome Data from Deblur and Greengenes}
+                \caption{t-SNE Plot with ANCOM Selected Microbiome Data from Deblur and GG}
                 \label{fig:tsne-ANCOM-deblur-gg}
             \end{figure}
 
@@ -716,14 +767,21 @@
                 \label{fig:tsne-ANCOM-deblur-silva}
             \end{figure}
 
-        \subsection{Random Forest Classifier with Every Class}
-            As figures \ref{fig:denosing-workflow} and \ref{fig:taxonomy-workflow}, there are four combinations. Thus, classification algorithm is carried out on these four combinations.
+            \begin{figure}[p]
+                \centering
+                \includegraphics[width=0.6 \linewidth]{figures/tSNE/ANCOM/ANCOM.Deblur.homd.png}
+                \caption{t-SNE Plot with ANCOM Selected Microbiome Data from Deblur and HOMD}
+                \label{fig:tsne-ANCOM-deblur-homd}
+            \end{figure}
 
-            \subsubsection{DADA2 + Greengenes}
+        \subsection{Random Forest Classifier with Every Class}
+            As figures \ref{fig:denosing-workflow} and \ref{fig:taxonomy-workflow}, there are six combinations. Thus, classification algorithm is carried out on these six combinations.
+
+            \subsubsection{DADA2 + GG}
 
                 \begin{table}[p]
                     \centering
-                    \caption{Taxa with DADA2 and Greengenes Ordered by Random Forest}
+                    \caption{Taxa with DADA2 and GG Ordered by Random Forest}
                     \label{tb:RF-whole-dada2-gg}
 
                     \csvreader[tabular=cp{10cm}l, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline]{csv/RandomForest/whole-DADA2-gg.txt}{}{\csvlinetotablerow}
@@ -732,14 +790,14 @@
                 \begin{figure}[p]
                     \centering
                     \includegraphics[width=0.7 \linewidth]{figures/RandomForest/ANCOM.DADA2.gg/importances.png}
-                    \caption{Feature Importances with DADA2 and Greengenes}
+                    \caption{Feature Importances with DADA2 and GG}
                     \label{fig:importances-DADA2-gg}
                 \end{figure}
 
                 \begin{figure}[p]
                     \centering
                     \includegraphics[width=0.7 \linewidth]{figures/RandomForest/ANCOM.DADA2.gg/metrics.png}
-                    \caption{Metrics by Feature Count with DADA2 and Greengenes}
+                    \caption{Metrics by Feature Count with DADA2 and GG}
                     \label{fig:metrics-DADA2-gg}
                 \end{figure}
 
@@ -767,11 +825,11 @@
                     \label{fig:metrics-DADA2-silva}
                 \end{figure}
 
-            \subsubsection{Deblur + Greengenes}
+            \subsubsection{Deblur + GG}
 
                 \begin{table}[p]
                     \centering
-                    \caption{Taxa with Deblur and Greengenes Ordered by Random Forest}
+                    \caption{Taxa with Deblur and GG Ordered by Random Forest}
                     \label{tb:RF-whole-deblur-gg}
 
                     \csvreader[tabular=cp{10cm}l, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline]{csv/RandomForest/whole-Deblur-gg.txt}{}{\csvlinetotablerow}
@@ -780,14 +838,14 @@
                 \begin{figure}[p]
                     \centering
                     \includegraphics[width=0.7 \linewidth]{figures/RandomForest/ANCOM.Deblur.gg/importances.png}
-                    \caption{Feature Importances with Deblur and Greengenes}
+                    \caption{Feature Importances with Deblur and GG}
                     \label{fig:importances-Deblur-gg}
                 \end{figure}
 
                 \begin{figure}[p]
                     \centering
                     \includegraphics[width=0.7 \linewidth]{figures/RandomForest/ANCOM.Deblur.gg/metrics.png}
-                    \caption{Metrics by Feature Count with Deblur and Greengenes}
+                    \caption{Metrics by Feature Count with Deblur and GG}
                     \label{fig:metrics-Deblur-gg}
                 \end{figure}
 
@@ -816,11 +874,11 @@
                 \end{figure}
 
         \subsection{Random Forest Classifier with Merging (Healthy+Early) Classes}
-            \subsubsection{DADA2 + Greengenes}
+            \subsubsection{DADA2 + GG}
 
             \subsubsection{DADA2 + SILVA}
 
-            \subsubsection{Deblur + Greengenes}
+            \subsubsection{Deblur + GG}
 
             \subsubsection{Deblur + SILVA}
 
