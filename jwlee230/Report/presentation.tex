@@ -587,45 +587,50 @@
     \end{frame}
 
     \begin{frame}[allowframebreaks]
-        \frametitle{Random Forest Classifier}
+        \frametitle{Random Forest Classifier -- Every Classes}
 
         \begin{figure}
             \includegraphics[width=0.8 \linewidth]{figures/RandomForest/whole.pdf}
             \caption{Random Forest Classifier Workflow}
         \end{figure}
 
-        \textbf{DADA2 + SILVA} gives the best result with balanced accuracy.
+        \textbf{Deblur + HOMD} gives the best result with balanced accuracy (0.778).
 
         \begin{table}
             \caption{Features Order by Importances}
             \begin{tabular}{c|l}
                 Order & Taxonomy (Genus [Species]) \\ \hline
-                0 & \textit{Actinomyces} \\
-                1 & \textit{Actinomyces Schaalia-odontolytica} \\
-                2 & \textit{Prevotella Prevotella-intermedia} \\
-                3 & \textit{Filifactor Filifactor-alocis} \\
-                4 & \textit{Oribacterium} \\
-                5 & \textit{Tannerella Tannerella-forsythia} \\
+                0 & \textit{Porphyromonas gingivalis} \\
+                1 & \textit{Actinomyces} \\
+                2 & \textit{Pasteurellaceae} \\
+                3 & \textit{Veillonella denticariosi} \\
+                4 & \textit{Oribacterium sinus} \\
+                5 & \textit{Peptostreptococcus anaerobius} \\
+                6 & \textit{Prevotella nanceiensis} \\
+                7 & \textit{Treponema} \\
+                8 & \textit{Parvimonas sp. HMT 393} \\
+                9 & \textit{Filifactor alocis} \\
+                ... & ... \\
             \end{tabular}
         \end{table}
 
         \begin{figure}
-            \includegraphics[width=0.8 \linewidth]{figures/RandomForest/ANCOM.DADA2.silva/metrics.png}
+            \includegraphics[width=0.8 \linewidth]{figures/RandomForest/ANCOM.Deblur.homd/metrics.png}
             \caption{Metrics by Feature Count}
         \end{figure}
 
         \begin{figure}
-            \includegraphics[width=0.5 \linewidth]{figures/RandomForest/ANCOM.DADA2.silva/highest_balanced_accuracy.png}
+            \includegraphics[width=0.5 \linewidth]{figures/RandomForest/ANCOM.Deblur.homd/highest_balanced_accuracy.png}
             \caption{Random Forest Tree Plot}
         \end{figure}
 
         \begin{figure}
             $\begin{array}{cc}
-                \includegraphics[width=0.4 \linewidth]{figures/RandomForest/ANCOM.DADA2.silva/feature_0.png}
+                \includegraphics[width=0.4 \linewidth]{figures/RandomForest/ANCOM.Deblur.homd/feature_0.png}
                 &
-                \includegraphics[width=0.4 \linewidth]{figures/RandomForest/ANCOM.DADA2.silva/feature_1.png}
+                \includegraphics[width=0.4 \linewidth]{figures/RandomForest/ANCOM.Deblur.homd/feature_1.png}
                 \\
-                \mbox{(a) \textit{Actinomyces}} & \mbox{(b) \textit{Actinomyces Schaalia-odontolytica}} \\
+                \mbox{(a) \textit{Porphyromonas gingivalis}} & \mbox{(b) \textit{Actinomyces}} \\
             \end{array}$
             \caption{Violin Plot by Features}
         \end{figure}
@@ -639,35 +644,43 @@
             \caption{Random Forest Classifier with Merging Workflow}
         \end{figure}
 
-        \textbf{DADA2 + GG} gives the best result with balanced accuracy.
+        \textbf{DADA2 + HOMD} gives the best result with balanced accuracy (0.938).
 
         \begin{table}
             \caption{Features Order by Importances}
             \begin{tabular}{c|l}
                 Order & Taxonomy (Genus [Species]) \\ \hline
-                0 & \textit{Actinomyces} \\
-                1 & \textit{Filifactor} \\
+                0 & \textit{Porphyromonas gingivalis} \\
+                1 & \textit{Actinomyces} \\
                 2 & \textit{Prevotella intermedia} \\
+                3 & \textit{Filifactor alocis} \\
+                4 & \textit{Treponema sp. HMT 260} \\
+                5 & \textit{Campylobacter showae} \\
+                6 & \textit{Porphyromonas sp. HMT 285} \\
+                7 & \textit{Peptostreptococcaceae XIG-6 nodatum} \\
+                8 & \textit{Prevotella sp. HMT 304} \\
+                9 & \textit{Actinomyces graevenitzii} \\
+                10 & \textit{Tannerella forsythia} \\
             \end{tabular}
         \end{table}
 
         \begin{figure}
-            \includegraphics[width=0.8 \linewidth]{figures/RandomForest/one.DADA2.gg/metrics.png}
+            \includegraphics[width=0.8 \linewidth]{figures/RandomForest/one.DADA2.homd/metrics.png}
             \caption{Metrics by Feature Count}
         \end{figure}
 
         \begin{figure}
-            \includegraphics[width=0.5 \linewidth]{figures/RandomForest/one.DADA2.gg/highest_balanced_accuracy.png}
+            \includegraphics[width=0.5 \linewidth]{figures/RandomForest/one.DADA2.homd/highest_balanced_accuracy.png}
             \caption{Random Forest Tree Plot}
         \end{figure}
 
         \begin{figure}
             $\begin{array}{cc}
-                \includegraphics[width=0.4 \linewidth]{figures/RandomForest/one.DADA2.gg/feature_0.png}
+                \includegraphics[width=0.4 \linewidth]{figures/RandomForest/one.DADA2.homd/feature_0.png}
                 &
-                \includegraphics[width=0.4 \linewidth]{figures/RandomForest/one.DADA2.gg/feature_1.png}
+                \includegraphics[width=0.4 \linewidth]{figures/RandomForest/one.DADA2.homd/feature_1.png}
                 \\
-                \mbox{(a) \textit{Actinomyces}} & \mbox{(b) \textit{Filifactor}} \\
+                \mbox{(a) \textit{Porphyromonas gingivalis}} & \mbox{(b) \textit{Actinomyces}} \\
             \end{array}$
             \caption{Violin Plot by Features}
         \end{figure}
@@ -681,35 +694,43 @@
             \caption{Random Forest Classifier with Merging Workflow}
         \end{figure}
 
-        \textbf{DADA2 + GG} gives the best result with balanced accuracy.
+        \textbf{Deblur + HOMD} gives the best result with balanced accuracy (0.777).
 
         \begin{table}
             \caption{Features Order by Importances}
             \begin{tabular}{c|l}
                 Order & Taxonomy (Genus [Species]) \\ \hline
-                0 & \textit{Actinomyces} \\
-                1 & \textit{Filifactor} \\
-                2 & \textit{Prevotella intermedia} \\
+                0 & \textit{Porphyromonas gingivalis} \\
+                1 & \textit{Actinomyces} \\
+                2 & \textit{Pasteurellaceae} \\
+                3 & \textit{Veillonella denticariosi} \\
+                4 & \textit{Oribacterium sinus} \\
+                5 & \textit{Peptostreptococcus anaerobius} \\
+                6 & \textit{Treponema} \\
+                7 & \textit{Prevotella nanceiensis} \\
+                8 & \textit{Porphyromonas sp. HMT 285} \\
+                9 & \textit{Parvimonas sp. HMT 393} \\
+                ... & ... \\
             \end{tabular}
         \end{table}
 
         \begin{figure}
-            \includegraphics[width=0.8 \linewidth]{figures/RandomForest/two.DADA2.gg/metrics.png}
+            \includegraphics[width=0.8 \linewidth]{figures/RandomForest/two.Deblur.homd/metrics.png}
             \caption{Metrics by Feature Count}
         \end{figure}
 
         \begin{figure}
-            \includegraphics[width=0.5 \linewidth]{figures/RandomForest/two.DADA2.gg/highest_balanced_accuracy.png}
+            \includegraphics[width=0.5 \linewidth]{figures/RandomForest/two.Deblur.homd/highest_balanced_accuracy.png}
             \caption{Random Forest Tree Plot}
         \end{figure}
 
         \begin{figure}
             $\begin{array}{cc}
-                \includegraphics[width=0.4 \linewidth]{figures/RandomForest/two.DADA2.gg/feature_0.png}
+                \includegraphics[width=0.4 \linewidth]{figures/RandomForest/two.Deblur.homd/feature_0.png}
                 &
-                \includegraphics[width=0.4 \linewidth]{figures/RandomForest/two.DADA2.gg/feature_1.png}
+                \includegraphics[width=0.4 \linewidth]{figures/RandomForest/two.Deblur.homd/feature_1.png}
                 \\
-                \mbox{(a) \textit{Actinomyces}} & \mbox{(b) \textit{Filifactor}} \\
+                \mbox{(a) \textit{Porphyromonas gingivalis}} & \mbox{(b) \textit{Actinomyces}} \\
             \end{array}$
             \caption{Violin Plot by Features}
         \end{figure}
@@ -723,41 +744,43 @@
             \caption{Random Forest Classifier with Merging Workflow}
         \end{figure}
 
-        \textbf{Deblur + SILVA} gives the best result with balanced accuracy.
+        \textbf{DADA2 + SILVA} gives the best result with balanced accuracy.
 
         \begin{table}
             \caption{Features Order by Importances}
             \begin{tabular}{c|l}
                 Order & Taxonomy (Genus [Species]) \\ \hline
-                0 & \textit{Porphyromonas gingivalis} \\
+                0 & \textit{Actinomyces} \\
                 1 & \textit{Treponema denticola} \\
-                2 & \textit{Treponema medium} \\
-                3 & \textit{Metamycoplasma faucium} \\
-                4 & \textit{Prevotella intermedia} \\
-                5 & \textit{Streptococcus constellatus} \\
-                6 & \textit{Eubacterium nodatum group Eubacterium nodatum} \\
-                7 & \textit{Treponema uncultured bacterium} \\
+                2 & \textit{Porphyromonas gingivalis} \\
+                3 & \textit{Prevotella intermedia} \\
+                4 & \textit{Filifactor alocis} \\
+                5 & \textit{Schaalia odontolytica} \\
+                6 & \textit{Tannerella forsythia} \\
+                7 & \textit{Eubacterium nodatum} \\
+                8 & \textit{Corynebacterium durum} \\
+                9 & \textit{Oribacterium} \\
                 ... & ... \\
             \end{tabular}
         \end{table}
 
         \begin{figure}
-            \includegraphics[width=0.8 \linewidth]{figures/RandomForest/one-two.Deblur.silva/metrics.png}
+            \includegraphics[width=0.8 \linewidth]{figures/RandomForest/one-two.DADA2.silva/metrics.png}
             \caption{Metrics by Feature Count}
         \end{figure}
 
         \begin{figure}
-            \includegraphics[width=0.5 \linewidth]{figures/RandomForest/one-two.Deblur.silva/highest_balanced_accuracy.png}
+            \includegraphics[width=0.5 \linewidth]{figures/RandomForest/one-two.DADA2.silva/highest_balanced_accuracy.png}
             \caption{Random Forest Tree Plot}
         \end{figure}
 
         \begin{figure}
             $\begin{array}{cc}
-                \includegraphics[width=0.4 \linewidth]{figures/RandomForest/one-two.Deblur.silva/feature_0.png}
+                \includegraphics[width=0.4 \linewidth]{figures/RandomForest/one-two.DADA2.silva/feature_0.png}
                 &
-                \includegraphics[width=0.4 \linewidth]{figures/RandomForest/one-two.Deblur.silva/feature_1.png}
+                \includegraphics[width=0.4 \linewidth]{figures/RandomForest/one-two.DADA2.silva/feature_1.png}
                 \\
-                \mbox{(a) \textit{Porphyromonas gingivalis}} & \mbox{(b) \textit{Treponema denticola}} \\
+                \mbox{(a) \textit{Actinomyces}} & \mbox{(b) \textit{Treponema denticola}} \\
             \end{array}$
             \caption{Violin Plot by Features}
         \end{figure}
