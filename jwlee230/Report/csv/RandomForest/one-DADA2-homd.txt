@@ -1,0 +1,21 @@
+Order,Taxonomy Classification,Importances
+0,Bacteria Bacteroidetes Bacteroidia Bacteroidales Porphyromonadaceae Porphyromonas gingivalis,0.3492215094954864
+1,Bacteria Actinobacteria Actinobacteria Actinomycetales Actinomycetaceae Actinomyces,0.2053680101280024
+2,Bacteria Bacteroidetes Bacteroidia Bacteroidales Prevotellaceae Prevotella intermedia,0.046910132999688776
+3,Bacteria Firmicutes Clostridia Clostridiales Peptostreptococcaceae XI Filifactor alocis,0.04537783279841328
+4,Bacteria Spirochaetes Spirochaetia Spirochaetales Spirochaetaceae Treponema sp. HMT 260,0.03995303090221915
+5,Bacteria Proteobacteria Epsilonproteobacteria Campylobacterales Campylobacteraceae Campylobacter showae,0.036126247249477515
+6,Bacteria Bacteroidetes Bacteroidia Bacteroidales Porphyromonadaceae Porphyromonas sp. HMT 285,0.030505434425849725
+7,Bacteria Firmicutes Clostridia Clostridiales Peptostreptococcaceae XI Peptostreptococcaceae XIG-6 nodatum,0.02574268888684369
+8,Bacteria Bacteroidetes Bacteroidia Bacteroidales Prevotellaceae Prevotella sp. HMT 304,0.025653960507079653
+9,Bacteria Actinobacteria Actinobacteria Actinomycetales Actinomycetaceae Actinomyces graevenitzii,0.021694782458252272
+10,Bacteria Bacteroidetes Bacteroidia Bacteroidales Porphyromonadaceae Tannerella forsythia,0.02139528465263749
+11,Bacteria Firmicutes Clostridia Clostridiales Peptostreptococcaceae XI Peptostreptococcaceae XIG-9 brachy,0.019849874772476486
+12,Bacteria Actinobacteria Actinobacteria Corynebacteriales Corynebacteriaceae Corynebacterium durum,0.01925997572442972
+13,Bacteria Spirochaetes Spirochaetia Spirochaetales Spirochaetaceae Treponema putidum,0.019089810584091933
+14,Bacteria Spirochaetes Spirochaetia Spirochaetales Spirochaetaceae Treponema,0.018026952071605436
+15,Bacteria Bacteroidetes Bacteroidia Bacteroidales Prevotellaceae Prevotella sp. HMT 526,0.01773296746323165
+16,Bacteria Firmicutes Clostridia Clostridiales Peptostreptococcaceae XI Peptostreptococcaceae XIG-5 saphenum,0.017477689904220505
+17,Bacteria Synergistetes Synergistia Synergistales Synergistaceae Fretibacterium,0.016853985437158086
+18,Bacteria Firmicutes Mollicutes Mycoplasmatales Mycoplasmataceae Mycoplasma faucium,0.014880940813824687
+19,Bacteria Firmicutes Clostridia Clostridiales Lachnospiraceae XIV Lachnospiraceae G-8 bacterium HMT 500,0.008878888725011094

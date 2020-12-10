@@ -1,0 +1,21 @@
+Order,Taxonomy Classification,Importances
+0,Bacteria Actinobacteria Actinobacteria Actinomycetales Actinomycetaceae Actinomyces,0.2563358219539378
+1,Bacteria Bacteroidetes Bacteroidia Bacteroidales Porphyromonadaceae Porphyromonas gingivalis,0.23196557322229505
+2,Bacteria Firmicutes Clostridia Clostridiales Peptostreptococcaceae XI Filifactor alocis,0.05939593656609779
+3,Bacteria Bacteroidetes Bacteroidia Bacteroidales Prevotellaceae Prevotella intermedia,0.047788324527495964
+4,Bacteria Actinobacteria Actinobacteria Actinomycetales Actinomycetaceae Actinomyces graevenitzii,0.0436241876822214
+5,Bacteria Bacteroidetes Bacteroidia Bacteroidales Porphyromonadaceae Porphyromonas sp. HMT 285,0.04330230979636331
+6,Bacteria Proteobacteria Epsilonproteobacteria Campylobacterales Campylobacteraceae Campylobacter showae,0.041507035664934466
+7,Bacteria Spirochaetes Spirochaetia Spirochaetales Spirochaetaceae Treponema sp. HMT 260,0.035914066247796333
+8,Bacteria Actinobacteria Actinobacteria Corynebacteriales Corynebacteriaceae Corynebacterium durum,0.028488659124825007
+9,Bacteria Bacteroidetes Bacteroidia Bacteroidales Porphyromonadaceae Tannerella forsythia,0.02755242782877868
+10,Bacteria Spirochaetes Spirochaetia Spirochaetales Spirochaetaceae Treponema putidum,0.02407253635910223
+11,Bacteria Spirochaetes Spirochaetia Spirochaetales Spirochaetaceae Treponema,0.023393398798141077
+12,Bacteria Firmicutes Clostridia Clostridiales Lachnospiraceae XIV Lachnospiraceae G-8 bacterium HMT 500,0.021534750022711564
+13,Bacteria Firmicutes Clostridia Clostridiales Peptostreptococcaceae XI Peptostreptococcaceae XIG-9 brachy,0.021026493991759487
+14,Bacteria Synergistetes Synergistia Synergistales Synergistaceae Fretibacterium,0.017748489962311726
+15,Bacteria Bacteroidetes Bacteroidia Bacteroidales Prevotellaceae Prevotella sp. HMT 526,0.01743345729576584
+16,Bacteria Firmicutes Clostridia Clostridiales Peptostreptococcaceae XI Peptostreptococcaceae XIG-6 nodatum,0.016063177113771455
+17,Bacteria Bacteroidetes Bacteroidia Bacteroidales Prevotellaceae Prevotella sp. HMT 304,0.01592053147101768
+18,Bacteria Firmicutes Clostridia Clostridiales Peptostreptococcaceae XI Peptostreptococcaceae XIG-5 saphenum,0.01446869437546418
+19,Bacteria Firmicutes Mollicutes Mycoplasmatales Mycoplasmataceae Mycoplasma faucium,0.012464127995209072

@@ -1,0 +1,29 @@
+Order,Taxonomy Classification,Importances
+0,Bacteria Bacteroidetes Bacteroidia Bacteroidales Porphyromonadaceae Porphyromonas gingivalis,0.41125515865215273
+1,Bacteria Actinobacteria Actinobacteria Actinomycetales Actinomycetaceae Actinomyces,0.06378153124993774
+2,Bacteria Proteobacteria Gammaproteobacteria Pasteurellales Pasteurellaceae,0.05196540839370839
+3,Bacteria Firmicutes Clostridia Clostridiales Lachnospiraceae XIV Oribacterium sinus,0.04008808122711738
+4,Bacteria Spirochaetes Spirochaetia Spirochaetales Spirochaetaceae Treponema,0.03458095074116177
+5,Bacteria Firmicutes Clostridia Clostridiales Peptostreptococcaceae XI Peptostreptococcus anaerobius,0.03384528186576715
+6,Bacteria Firmicutes Mollicutes Mycoplasmatales Mycoplasmataceae Mycoplasma,0.029796512006797487
+7,Bacteria Firmicutes Clostridia Clostridiales Peptostreptococcaceae XI Peptostreptococcaceae XIG-6 nodatum,0.02397477403830387
+8,Bacteria Firmicutes Clostridia Clostridiales Lachnospiraceae XIV Catonella sp. HMT 164,0.021229890512071744
+9,Bacteria Bacteroidetes Bacteroidetes C-1 Bacteroidetes O-1 Bacteroidetes F-1 Bacteroidetes G-3,0.02076312355179804
+10,Bacteria Firmicutes Negativicutes Veillonellales Veillonellaceae Veillonella denticariosi,0.01999470850214282
+11,Bacteria Synergistetes Synergistia Synergistales Synergistaceae Fretibacterium,0.019164757948883806
+12,Bacteria Spirochaetes Spirochaetia Spirochaetales Spirochaetaceae Treponema sp. HMT 260,0.019041458116433395
+13,Bacteria Firmicutes Clostridia Clostridiales Peptostreptococcaceae XI Mogibacterium,0.0184923889371212
+14,Bacteria Bacteroidetes Bacteroidia Bacteroidales Porphyromonadaceae Porphyromonas sp. HMT 285,0.01796213600159265
+15,Bacteria Firmicutes Clostridia Clostridiales Peptoniphilaceae Parvimonas sp. HMT 393,0.017747508559462277
+16,Bacteria Firmicutes Clostridia Clostridiales Lachnospiraceae XIV Lachnospiraceae G-8 bacterium HMT 500,0.01716695716844132
+17,Bacteria Firmicutes Clostridia Clostridiales Peptostreptococcaceae XI Filifactor alocis,0.015614729285278286
+18,Bacteria Spirochaetes Spirochaetia Spirochaetales Spirochaetaceae Treponema sp. HMT 258,0.014577352393288017
+19,Bacteria Bacteroidetes Bacteroidia Bacteroidales Prevotellaceae Prevotella nanceiensis,0.01448283214970534
+20,Bacteria Firmicutes Clostridia Clostridiales Peptostreptococcaceae XI Peptostreptococcaceae XIG-5 saphenum,0.014215723158051854
+21,Bacteria Firmicutes Clostridia Clostridiales Peptostreptococcaceae XI Peptostreptococcaceae XIG-9 brachy,0.014014969932268868
+22,Bacteria Bacteroidetes Bacteroidia Bacteroidales Prevotellaceae Prevotella dentalis,0.0138073550075584
+23,Bacteria Bacteroidetes Bacteroidia Bacteroidales Porphyromonadaceae Tannerella forsythia,0.012723253885895344
+24,Bacteria Firmicutes Clostridia Clostridiales Clostridiales F-1 Clostridiales F-1G-1 bacterium HMT 093,0.011779169473611241
+25,Bacteria Proteobacteria Deltaproteobacteria Desulfobacterales Desulfobulbaceae Desulfobulbus sp. HMT 041,0.011386788073902964
+26,Bacteria Firmicutes Clostridia Clostridiales Lachnospiraceae XIV Johnsonella sp. HMT 166,0.010378295240887838
+27,Bacteria Firmicutes Clostridia Clostridiales Peptostreptococcaceae XI Peptostreptococcaceae XIG-4 bacterium HMT 369,0.006168903926657988
