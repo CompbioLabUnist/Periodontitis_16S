@@ -9,7 +9,6 @@ import pandas
 import matplotlib
 import matplotlib.pyplot
 import numpy
-import scipy
 import seaborn
 import sklearn.ensemble
 import sklearn.metrics
@@ -96,6 +95,7 @@ if __name__ == "__main__":
     for i in range(1, len(best_features) + 1):
         print("With", i, "/", len(best_features), "features!!")
         used_columns = best_features[:i]
+        score_by_metric: typing.Dict[str, typing.List[float]] = dict()
 
         for train_index, test_index in k_fold.split(data[used_columns], data["LongStage"]):
             x_train, x_test = data.iloc[train_index][used_columns], data.iloc[test_index][used_columns]
@@ -106,23 +106,30 @@ if __name__ == "__main__":
 
             for metric in step00.selected_derivations:
                 score = step00.aggregate_confusion_matrix(confusion_matrix, metric)
-                scores.append((i, metric, score))
 
                 if numpy.isnan(score):
                     continue
 
-                if (highest_metrics[metric][0] == 0) or (highest_metrics[metric][1] < score):
-                    highest_metrics[metric] = (i, score)
+                scores.append((i, metric, score))
 
-                if (lowest_metrics[metric][0] == 0) or (lowest_metrics[metric][1] > score):
-                    lowest_metrics[metric] = (i, score)
+                if metric in score_by_metric:
+                    score_by_metric[metric].append(score)
+                else:
+                    score_by_metric[metric] = [score]
+
+        for metric in step00.selected_derivations:
+            if (highest_metrics[metric][0] == 0) or (highest_metrics[metric][1] < numpy.mean(score_by_metric[metric])):
+                highest_metrics[metric] = (i, numpy.mean(score_by_metric[metric]))
+
+            if (lowest_metrics[metric][0] == 0) or (lowest_metrics[metric][1] > numpy.mean(score_by_metric[metric])):
+                lowest_metrics[metric] = (i, numpy.mean(score_by_metric[metric]))
 
     score_data = pandas.DataFrame.from_records(scores, columns=["FeatureCount", "Metrics", "Value"])
     print(score_data)
 
     # Draw Metrics
     fig, ax = matplotlib.pyplot.subplots(figsize=(32, 18))
-    seaborn.lineplot(data=score_data, x="FeatureCount", y="Value", hue="Metrics", style="Metrics", ax=ax, legend="full")
+    seaborn.lineplot(data=score_data, x="FeatureCount", y="Value", hue="Metrics", style="Metrics", ax=ax, legend="full", markers=True)
     matplotlib.pyplot.grid(True)
     matplotlib.pyplot.ylim(0, 1)
     tar_files.append("metrics.png")
