@@ -226,23 +226,41 @@ Output/Step13/%.Deblur.silva.qza: Output/Step13/silva.qza Output/Step05/%.seq.qz
 Output/Step13/%.Deblur.gg.qza: Output/Step13/gg.qza Output/Step05/%.seq.qza | build.log
 	$(DOCKER) qiime feature-classifier classify-sklearn --i-classifier $(addprefix /,$(word 1,$^)) --i-reads $(addprefix /,$(word 2,$^)) --p-n-jobs $(CPUS) --o-classification $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
 
-step13: Output/Step13/whole.DADA2.silva.qza Output/Step13/whole.DADA2.gg.qza Output/Step13/whole.Deblur.silva.qza Output/Step13/whole.Deblur.gg.qza
+Output/Step13/homd.fasta: | Output/Step13 build.log
+	wget "http://www.homd.org/ftp/16S_rRNA_refseq/HOMD_16S_rRNA_RefSeq/V15.21/HOMD_16S_rRNA_RefSeq_V15.21.fasta" -O $@
+
+Output/Step13/homd.txt: | Output/Step13 build.log
+	wget "http://www.homd.org/ftp/16S_rRNA_refseq/HOMD_16S_rRNA_RefSeq/V15.21/HOMD_16S_rRNA_RefSeq_V15.21.qiime.taxonomy" -O $@
+
+Output/Step13/homd_fasta.qza: Output/Step13/homd.fasta | build.log
+	$(DOCKER) qiime tools import --type "FeatureData[Sequence]" --input-path $(addprefix /,$<) --output-path $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
+
+Output/Step13/homd_taxo.qza: Output/Step13/homd.txt | build.log
+	$(DOCKER) qiime tools import --type "FeatureData[Taxonomy]" --input-format "HeaderlessTSVTaxonomyFormat" --input-path $(addprefix /,$<) --output-path $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
+
+Output/Step13/homd_seqs.qza: Output/Step13/homd_fasta.qza | build.log
+	$(DOCKER) qiime feature-classifier extract-reads --i-sequences $(addprefix /,$<) --p-f-primer "GTGCCAGCMGCCGCGGTAA" --p-r-primer "GGACTACHVGGGTWTCTAAT" --o-reads $(addprefix /,$@) --p-n-jobs $(CPUS) 1> $@.stdout 2> $@.stderr
+
+Output/Step13/homd.qza: Output/Step13/homd_seqs.qza Output/Step13/homd_taxo.qza | build.log
+	$(DOCKER) qiime feature-classifier fit-classifier-naive-bayes --i-reference-reads $(addprefix /,$(word 1,$^)) --i-reference-taxonomy $(addprefix /,$(word 2,$^)) --o-classifier $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
+
+Output/Step13/%.DADA2.homd.qza: Output/Step13/homd.qza Output/Step04/%.seq.qza | build.log
+	$(DOCKER) qiime feature-classifier classify-sklearn --i-classifier $(addprefix /,$(word 1,$^)) --i-reads $(addprefix /,$(word 2,$^)) --p-n-jobs $(CPUS) --o-classification $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
+
+Output/Step13/%.Deblur.homd.qza: Output/Step13/homd.qza Output/Step05/%.seq.qza | build.log
+	$(DOCKER) qiime feature-classifier classify-sklearn --i-classifier $(addprefix /,$(word 1,$^)) --i-reads $(addprefix /,$(word 2,$^)) --p-n-jobs $(CPUS) --o-classification $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
+
+step13: Output/Step13/whole.DADA2.silva.qza Output/Step13/whole.DADA2.gg.qza Output/Step13/whole.Deblur.silva.qza Output/Step13/whole.Deblur.gg.qza Output/Step13/whole.DADA2.homd.qza Output/Step13/whole.Deblur.homd.qza
 .PHONY += step13
 
 # Step 14 (Run ANCOM)
 Output/Step14:
 	mkdir -p $@
 
-Output/Step14/%.DADA2.silva.qza: Output/Step04/%.table.qza Output/Step13/%.DADA2.silva.qza | Output/Step14 build.log
+Output/Step14/whole.DADA2.%.qza: Output/Step04/whole.table.qza Output/Step13/whole.DADA2.%.qza | Output/Step14 build.log
 	$(DOCKER) qiime taxa collapse --i-table $(addprefix /,$(word 1,$^)) --i-taxonomy $(addprefix /,$(word 2,$^)) --p-level 7 --o-collapsed-table $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
 
-Output/Step14/%.DADA2.gg.qza: Output/Step04/%.table.qza Output/Step13/%.DADA2.gg.qza | Output/Step14 build.log
-	$(DOCKER) qiime taxa collapse --i-table $(addprefix /,$(word 1,$^)) --i-taxonomy $(addprefix /,$(word 2,$^)) --p-level 7 --o-collapsed-table $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
-
-Output/Step14/%.Deblur.silva.qza: Output/Step05/%.table.qza Output/Step13/%.Deblur.silva.qza | Output/Step14 build.log
-	$(DOCKER) qiime taxa collapse --i-table $(addprefix /,$(word 1,$^)) --i-taxonomy $(addprefix /,$(word 2,$^)) --p-level 7 --o-collapsed-table $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
-
-Output/Step14/%.Deblur.gg.qza: Output/Step05/%.table.qza Output/Step13/%.Deblur.gg.qza | Output/Step14 build.log
+Output/Step14/whole.Deblur.%.qza: Output/Step05/whole.table.qza Output/Step13/whole.Deblur.%.qza | Output/Step14 build.log
 	$(DOCKER) qiime taxa collapse --i-table $(addprefix /,$(word 1,$^)) --i-taxonomy $(addprefix /,$(word 2,$^)) --p-level 7 --o-collapsed-table $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
 
 Output/Step14/%.pseudocount.qza: Output/Step14/%.qza | build.log
@@ -255,14 +273,14 @@ Output/Step14/%/ancom.tsv: Output/Step14/%.qzv | build.log
 	$(DOCKER) rm -rfv $(addprefix /,$(@D))
 	$(DOCKER) qiime tools export --input-path $(addprefix /,$(word 1,$^)) --output-path $(addprefix /,$(@D))
 
-step14: Output/Step14/whole.DADA2.gg.pseudocount.site.qzv Output/Step14/whole.DADA2.silva.pseudocount.site.qzv Output/Step14/whole.Deblur.gg.pseudocount.site.qzv Output/Step14/whole.Deblur.silva.pseudocount.site.qzv Output/Step14/whole.DADA2.gg.pseudocount.site/ancom.tsv Output/Step14/whole.DADA2.silva.pseudocount.site/ancom.tsv Output/Step14/whole.Deblur.gg.pseudocount.site/ancom.tsv Output/Step14/whole.Deblur.silva.pseudocount.site/ancom.tsv
+step14: Output/Step14/whole.DADA2.gg.pseudocount.site.qzv Output/Step14/whole.DADA2.silva.pseudocount.site.qzv Output/Step14/whole.DADA2.homd.pseudocount.site.qzv Output/Step14/whole.Deblur.gg.pseudocount.site.qzv Output/Step14/whole.Deblur.silva.pseudocount.site.qzv Output/Step14/whole.Deblur.homd.pseudocount.site.qzv Output/Step14/whole.DADA2.gg.pseudocount.site/ancom.tsv Output/Step14/whole.DADA2.silva.pseudocount.site/ancom.tsv Output/Step14/whole.DADA2.homd.pseudocount.site/ancom.tsv Output/Step14/whole.Deblur.gg.pseudocount.site/ancom.tsv Output/Step14/whole.Deblur.silva.pseudocount.site/ancom.tsv Output/Step14/whole.Deblur.homd.pseudocount.site/ancom.tsv
 .PHONY += step14
 
 # Step 15 (Get TSV files)
 Output/Step15:
 	mkdir -p $@
 
-Output/Step15/whole.DADA2.gg.tsv: Output/Step04/whole.table.qza Output/Step13/whole.DADA2.gg.qza | Output/Step15 build.log
+Output/Step15/whole.DADA2.%.tsv: Output/Step04/whole.table.qza Output/Step13/whole.DADA2.%.qza | Output/Step15 build.log
 	$(DOCKER) qiime tools export --input-path $(addprefix /,$(word 1,$^)) --output-path /Output/Step15/tmp
 	$(DOCKER) qiime tools export --input-path $(addprefix /,$(word 2,$^)) --output-path /Output/Step15/tmp
 	$(DOCKER) sed --in-place "1c#OTU ID\ttaxonomy\tconfidence" /Output/Step15/tmp/taxonomy.tsv
@@ -270,7 +288,7 @@ Output/Step15/whole.DADA2.gg.tsv: Output/Step04/whole.table.qza Output/Step13/wh
 	$(DOCKER) biom convert --input-fp /Output/Step15/tmp/tmp.biom --output-fp $(addprefix /,$@) --to-tsv --process-obs-metadata "taxonomy" --tsv-metadata-formatter "sc_separated" --header-key "taxonomy"
 	$(DOCKER) rm -rfv /Output/Step15/tmp
 
-Output/Step15/whole.DADA2.silva.tsv: Output/Step04/whole.table.qza Output/Step13/whole.DADA2.silva.qza | Output/Step15 build.log
+Output/Step15/whole.Deblur.%.tsv: Output/Step05/whole.table.qza Output/Step13/whole.Deblur.%.qza | Output/Step15 build.log
 	$(DOCKER) qiime tools export --input-path $(addprefix /,$(word 1,$^)) --output-path /Output/Step15/tmp
 	$(DOCKER) qiime tools export --input-path $(addprefix /,$(word 2,$^)) --output-path /Output/Step15/tmp
 	$(DOCKER) sed --in-place "1c#OTU ID\ttaxonomy\tconfidence" /Output/Step15/tmp/taxonomy.tsv
@@ -278,23 +296,7 @@ Output/Step15/whole.DADA2.silva.tsv: Output/Step04/whole.table.qza Output/Step13
 	$(DOCKER) biom convert --input-fp /Output/Step15/tmp/tmp.biom --output-fp $(addprefix /,$@) --to-tsv --process-obs-metadata "taxonomy" --tsv-metadata-formatter "sc_separated" --header-key "taxonomy"
 	$(DOCKER) rm -rfv /Output/Step15/tmp
 
-Output/Step15/whole.Deblur.gg.tsv: Output/Step05/whole.table.qza Output/Step13/whole.Deblur.gg.qza | Output/Step15 build.log
-	$(DOCKER) qiime tools export --input-path $(addprefix /,$(word 1,$^)) --output-path /Output/Step15/tmp
-	$(DOCKER) qiime tools export --input-path $(addprefix /,$(word 2,$^)) --output-path /Output/Step15/tmp
-	$(DOCKER) sed --in-place "1c#OTU ID\ttaxonomy\tconfidence" /Output/Step15/tmp/taxonomy.tsv
-	$(DOCKER) biom add-metadata --input-fp /Output/Step15/tmp/feature-table.biom --observation-metadata-fp /Output/Step15/tmp/taxonomy.tsv --output-fp /Output/Step15/tmp/tmp.biom --sc-separated "taxonomy"
-	$(DOCKER) biom convert --input-fp /Output/Step15/tmp/tmp.biom --output-fp $(addprefix /,$@) --to-tsv --process-obs-metadata "taxonomy" --tsv-metadata-formatter "sc_separated" --header-key "taxonomy"
-	$(DOCKER) rm -rfv /Output/Step15/tmp
-
-Output/Step15/whole.Deblur.silva.tsv: Output/Step05/whole.table.qza Output/Step13/whole.Deblur.silva.qza | Output/Step15 build.log
-	$(DOCKER) qiime tools export --input-path $(addprefix /,$(word 1,$^)) --output-path /Output/Step15/tmp
-	$(DOCKER) qiime tools export --input-path $(addprefix /,$(word 2,$^)) --output-path /Output/Step15/tmp
-	$(DOCKER) sed --in-place "1c#OTU ID\ttaxonomy\tconfidence" /Output/Step15/tmp/taxonomy.tsv
-	$(DOCKER) biom add-metadata --input-fp /Output/Step15/tmp/feature-table.biom --observation-metadata-fp /Output/Step15/tmp/taxonomy.tsv --output-fp /Output/Step15/tmp/tmp.biom --sc-separated "taxonomy"
-	$(DOCKER) biom convert --input-fp /Output/Step15/tmp/tmp.biom --output-fp $(addprefix /,$@) --to-tsv --process-obs-metadata "taxonomy" --tsv-metadata-formatter "sc_separated" --header-key "taxonomy"
-	$(DOCKER) rm -rfv /Output/Step15/tmp
-
-step15: Output/Step15/whole.DADA2.gg.tsv Output/Step15/whole.DADA2.silva.tsv Output/Step15/whole.Deblur.gg.tsv Output/Step15/whole.Deblur.silva.tsv
+step15: Output/Step15/whole.DADA2.gg.tsv Output/Step15/whole.DADA2.silva.tsv Output/Step15/whole.DADA2.homd.tsv Output/Step15/whole.Deblur.gg.tsv Output/Step15/whole.Deblur.silva.tsv Output/Step15/whole.Deblur.homd.tsv
 .PHONY += step15
 
 # Step 16 (Clearify raw TSV into pandas)
@@ -304,7 +306,7 @@ Output/Step16:
 Output/Step16/%.tar.gz: Python/step16.py Output/Step15/%.tsv | Output/Step16 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
 
-step16: Output/Step16/whole.DADA2.gg.tar.gz Output/Step16/whole.DADA2.silva.tar.gz Output/Step16/whole.Deblur.gg.tar.gz Output/Step16/whole.Deblur.silva.tar.gz
+step16: Output/Step16/whole.DADA2.gg.tar.gz Output/Step16/whole.DADA2.silva.tar.gz Output/Step16/whole.DADA2.homd.tar.gz Output/Step16/whole.Deblur.gg.tar.gz Output/Step16/whole.Deblur.silva.tar.gz Output/Step16/whole.Deblur.homd.tar.gz
 .PHONY += step16
 
 # Step 17 (Select by ANCOM)
@@ -314,7 +316,7 @@ Output/Step17:
 Output/Step17/%.tar.gz: Python/step17.py Output/Step16/%.tar.gz Output/Step14/%.pseudocount.site/ancom.tsv | Output/Step17 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
 
-step17: Output/Step17/whole.DADA2.gg.tar.gz Output/Step17/whole.DADA2.silva.tar.gz Output/Step17/whole.Deblur.gg.tar.gz Output/Step17/whole.Deblur.silva.tar.gz
+step17: Output/Step17/whole.DADA2.gg.tar.gz Output/Step17/whole.DADA2.silva.tar.gz Output/Step17/whole.DADA2.homd.tar.gz Output/Step17/whole.Deblur.gg.tar.gz Output/Step17/whole.Deblur.silva.tar.gz Output/Step17/whole.Deblur.homd.tar.gz
 .PHONY += step17
 
 # Step 18 (Make t-SNE)
@@ -327,7 +329,7 @@ Output/Step18/whole.%.tar.gz: Python/step18.py Output/Step16/whole.%.tar.gz | Ou
 Output/Step18/ANCOM.%.tar.gz: Python/step18.py Output/Step17/whole.%.tar.gz | Output/Step18 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) 1> $@.stdout 2> $@.stderr
 
-step18: Output/Step18/whole.DADA2.gg.tar.gz Output/Step18/whole.DADA2.silva.tar.gz Output/Step18/whole.Deblur.gg.tar.gz Output/Step18/whole.Deblur.silva.tar.gz Output/Step18/ANCOM.DADA2.gg.tar.gz Output/Step18/ANCOM.DADA2.silva.tar.gz Output/Step18/ANCOM.Deblur.gg.tar.gz Output/Step18/ANCOM.Deblur.silva.tar.gz
+step18: Output/Step18/whole.DADA2.gg.tar.gz Output/Step18/whole.DADA2.silva.tar.gz Output/Step18/whole.DADA2.homd.tar.gz Output/Step18/whole.Deblur.gg.tar.gz Output/Step18/whole.Deblur.silva.tar.gz Output/Step18/whole.Deblur.homd.tar.gz Output/Step18/ANCOM.DADA2.gg.tar.gz Output/Step18/ANCOM.DADA2.silva.tar.gz Output/Step18/ANCOM.DADA2.homd.tar.gz Output/Step18/ANCOM.Deblur.gg.tar.gz Output/Step18/ANCOM.Deblur.silva.tar.gz Output/Step18/ANCOM.Deblur.homd.tar.gz
 .PHONY += step18
 
 # Step 19 (Draw default t-SNE)
@@ -337,7 +339,7 @@ Output/Step19:
 Output/Step19/%.png: Python/step19.py Output/Step18/%.tar.gz | Output/Step19 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
 
-step19: Output/Step19/whole.DADA2.gg.png Output/Step19/whole.DADA2.silva.png Output/Step19/whole.Deblur.gg.png Output/Step19/whole.Deblur.silva.png Output/Step19/ANCOM.DADA2.gg.png Output/Step19/ANCOM.DADA2.silva.png Output/Step19/ANCOM.Deblur.gg.png Output/Step19/ANCOM.Deblur.silva.png
+step19: Output/Step19/whole.DADA2.gg.png Output/Step19/whole.DADA2.silva.png Output/Step19/whole.DADA2.homd.png Output/Step19/whole.Deblur.gg.png Output/Step19/whole.Deblur.silva.png Output/Step19/whole.Deblur.homd.png Output/Step19/ANCOM.DADA2.gg.png Output/Step19/ANCOM.DADA2.silva.png Output/Step19/ANCOM.DADA2.homd.png Output/Step19/ANCOM.Deblur.gg.png Output/Step19/ANCOM.Deblur.silva.png Output/Step19/ANCOM.Deblur.homd.png
 .PHONY += step19
 
 # Step 20 (Random Forest Classifier)
@@ -356,5 +358,5 @@ Output/Step20/two.%.tar: Python/step20.py Output/Step17/whole.%.tar.gz Output/St
 Output/Step20/one-two.%.tar: Python/step20.py Output/Step17/whole.%.tar.gz Output/Step18/ANCOM.%.tar.gz | Output/Step20 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --one --two 1> $@.stdout 2> $@.stderr
 
-step20: Output/Step20/ANCOM.DADA2.gg.tar Output/Step20/ANCOM.DADA2.silva.tar Output/Step20/ANCOM.Deblur.gg.tar Output/Step20/ANCOM.Deblur.silva.tar Output/Step20/one.DADA2.gg.tar Output/Step20/one.DADA2.silva.tar Output/Step20/one.Deblur.gg.tar Output/Step20/one.Deblur.silva.tar Output/Step20/two.DADA2.gg.tar Output/Step20/two.DADA2.silva.tar Output/Step20/two.Deblur.gg.tar Output/Step20/two.Deblur.silva.tar Output/Step20/one-two.DADA2.gg.tar Output/Step20/one-two.DADA2.silva.tar Output/Step20/one-two.Deblur.gg.tar Output/Step20/one-two.Deblur.silva.tar
+step20: Output/Step20/ANCOM.DADA2.gg.tar Output/Step20/ANCOM.DADA2.silva.tar Output/Step20/ANCOM.DADA2.homd.tar Output/Step20/ANCOM.Deblur.gg.tar Output/Step20/ANCOM.Deblur.silva.tar Output/Step20/ANCOM.Deblur.homd.tar Output/Step20/one.DADA2.gg.tar Output/Step20/one.DADA2.silva.tar Output/Step20/one.DADA2.homd.tar Output/Step20/one.Deblur.gg.tar Output/Step20/one.Deblur.silva.tar Output/Step20/one.Deblur.homd.tar Output/Step20/two.DADA2.gg.tar Output/Step20/two.DADA2.silva.tar Output/Step20/two.DADA2.homd.tar Output/Step20/two.Deblur.gg.tar Output/Step20/two.Deblur.silva.tar Output/Step20/two.Deblur.homd.tar Output/Step20/one-two.DADA2.gg.tar Output/Step20/one-two.DADA2.silva.tar Output/Step20/one-two.DADA2.homd.tar Output/Step20/one-two.Deblur.gg.tar Output/Step20/one-two.Deblur.silva.tar Output/Step20/one-two.Deblur.homd.tar
 .PHONY += step20
