@@ -176,11 +176,6 @@
 
             In this study, classification will be carried out as figure \ref{fig:classification}; and the third step in figure \ref{fig:classification} is demonstrated in minute detail as figure \ref{fig:deciding-best}. Note that the first step in figure \ref{fig:classification} is optional: due to tables herein-after, such as table\ref{tb:alpha-evenness-dada2}, show that no statistically significant differences between healthy samples and early periodontitis samples and between moderate periodontitis samples and severe periodontitis samples.
 
-            Moreover, in this study, followed classification algorithms are used:
-            \begin{itemize}
-                \item RandomForest Classification Algorithm \cite{RandomForest1, sklearn1}
-            \end{itemize}
-
             Moreover, evaluations of classification algorithm are carried out with derivations from confusion matrix (table \ref{tb:confusion-matrix}):
 
             \begin{itemize}
@@ -216,6 +211,23 @@
                 \caption{Deciding the Best Features}
                 \label{fig:deciding-best}
             \end{figure}
+
+            \subsubsection{Random Forest Classification}
+                As figure \ref{fig:classification}, importance of features have to be derived by classifier. Random Forest classifier \cite{RandomForest1} can get this information, and is used frequently by researchers. Hence, Random Forest classifier will be carried out with every class (Figure \ref{fig:RF-whole-workflow}) or with merged classes (Figure \ref{fig:RF-merging-workflow}).
+
+                \begin{figure}[p]
+                    \centering
+                    \includegraphics[width=0.6 \linewidth]{figures/RandomForest/whole.pdf}
+                    \caption{Random Forest Classifier Workflow}
+                    \label{fig:RF-whole-workflow}
+                \end{figure}
+
+                \begin{figure}[p]
+                    \centering
+                    \includegraphics[width=0.6 \linewidth]{figures/RandomForest/merge.pdf}
+                    \caption{Random Forest Classifier Workflow with Merging}
+                    \label{fig:RF-merging-workflow}
+                \end{figure}
 
     \section{Results}
         \subsection{Quality Filter}
@@ -831,7 +843,7 @@
             \end{figure}
 
         \subsection{Random Forest Classifier with Every Class}
-            As figures \ref{fig:denosing-workflow} and \ref{fig:taxonomy-workflow}, there are six combinations. Thus, classification algorithm is carried out on these six combinations.
+            As figure \ref{fig:denosing-workflow} and figure \ref{fig:taxonomy-workflow}, there are six combinations. Thus, classification algorithm is carried out on these six combinations (Figure \ref{fig:RF-whole-workflow}). Among these six combinations, Deblur and HOMD pair gives the best result in terms of balanced accuracy. Features which are ordered by importance are table \ref{tb:RF-every-Deblur-homd}. Also, five metrics by feature count are shown as figure \ref{fig:RF-every-metrics-Deblur-homd}; then, the highest value of balanced accuracy is 0.778 with using 13 taxa. Moreover, violin plots from two most important taxa, \textit{Porphyromonas gingivalis} and {(b) \textit{Actinomyces}, are in figure \ref{fig:RF-every-important-Deblur-homd}.
 
             \begin{table}[p]
                 \centering
@@ -920,7 +932,7 @@
             \begin{table}[p]
                 \centering
                 \caption{Taxa with Deblur and GG Ordered by Random Forest}
-                \label{tb:RF-every-deblur-gg}
+                \label{tb:RF-every-Deblur-gg}
 
                 \csvreader[tabular=cp{10cm}l, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline]{csv/RandomForest/whole-Deblur-gg.txt}{}{\csvlinetotablerow}
             \end{table}
@@ -1189,8 +1201,10 @@
 
             Bray-Curtis distance index with Deblur has no statistically significant differences between (Healthy and Early) classes and (Moderate and Severe) classes (Table \ref{tb:bray-deblur}, Figure \ref{fig:tsne-bray-deblur} and Figure \ref{fig:bray-deblur}). Moreover, Jaccard distance index with Deblur has no statistically significant difference between (Moderate and Severe) classes (Table \ref{tb:jaccard-deblur}, Figure \ref{fig:tsne-jaccard-deblur} and Figure \ref{fig:jaccard-deblur}). Additionally, unweighted UniFrac distance index with Deblur has no statistically significant difference between (Moderate and Severe) classes (Table \ref{tb:unweighted-deblur}, Figure \ref{fig:tsne-unweighted-deblur} and Figure \ref{fig:unweighted-deblur}). Furthermore, weighted UniFrac distance index with Deblur has no statistically significant difference between (Healthy and Early) classes (Table \ref{fig:weighted-deblur}, Figure \ref{fig:tsne-weighted-deblur} and Figure \ref{fig:weighted-deblur}).
 
+            As results of alpha-diversity indices, (Healthy and Early) classes and (Moderate and Severe) classes will be merged. Mercifully, alternative fact does totally not sustained by beta-divesity indices. Hence, (Healthy and Early) classes and (Moderate and Severe) classes, as mentioned herein-before, will be merged in classification.
+
         \subsection{t-SNE Plot}
-            Overall distribution of taxa from each sample can be realized by t-SNE plot. If each class is evenly distributed on t-SNE plot, then the data might be difficult for classifying. In this manner, t-SNE plots with whole microbiome (Figure \ref{fig:tsne-whole-dada2-gg}, Figure \ref{fig:tsne-whole-dada2-silva}, Figure \ref{fig:tsne-whole-dada2-homd}, Figure \ref{fig:tsne-whole-deblur-gg}, Figure \ref{fig:tsne-whole-deblur-silva} and Figure \ref{fig:tsne-whole-deblur-homd}) are more evenly distributed, whereas t-SNE plots with ANCOM selected microbiome data (Figure \ref{fig:tsne-ANCOM-dada2-gg}, Figure \ref{fig:tsne-ANCOM-dada2-silva}, Figure \ref{fig:tsne-ANCOM-dada2-homd}, Figure \ref{fig:tsne-ANCOM-deblur-gg}, Figure \ref{fig:tsne-ANCOM-deblur-silva} and Figure \ref{fig:tsne-ANCOM-deblur-homd}) are biased by classes. \textit{Id est}, data with ANCOM selected microbiome could result better in classifying.
+            Overall distribution of taxa from each sample can be realized by t-SNE plot. If each class is evenly distributed on t-SNE plot, then the data might be difficult for classifying. In this manner, t-SNE plots with whole microbiome (Figure \ref{fig:tsne-whole-dada2-gg}, Figure \ref{fig:tsne-whole-dada2-silva}, Figure \ref{fig:tsne-whole-dada2-homd}, Figure \ref{fig:tsne-whole-deblur-gg}, Figure \ref{fig:tsne-whole-deblur-silva} and Figure \ref{fig:tsne-whole-deblur-homd}) are more evenly distributed, whereas t-SNE plots with ANCOM selected microbiome data (Figure \ref{fig:tsne-ANCOM-dada2-gg}, Figure \ref{fig:tsne-ANCOM-dada2-silva}, Figure \ref{fig:tsne-ANCOM-dada2-homd}, Figure \ref{fig:tsne-ANCOM-deblur-gg}, Figure \ref{fig:tsne-ANCOM-deblur-silva} and Figure \ref{fig:tsne-ANCOM-deblur-homd}) are biased by classes. \textit{Id est}, data with ANCOM selected microbiome could result better in classifying. Hence, ANCOM selected taxa will be used in classification.
 
         \subsection{Random Forest Classifier}
 
