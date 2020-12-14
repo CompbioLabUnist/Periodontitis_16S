@@ -843,12 +843,14 @@
             \end{figure}
 
         \subsection{Random Forest Classifier with Every Class}
-            As figure \ref{fig:denosing-workflow} and figure \ref{fig:taxonomy-workflow}, there are six combinations. Thus, classification algorithm is carried out on these six combinations (Figure \ref{fig:RF-whole-workflow}). Among these six combinations, Deblur and HOMD pair gives the best result in terms of balanced accuracy. Features which are ordered by importance are table \ref{tb:RF-every-Deblur-homd}. Also, five metrics by feature count are shown as figure \ref{fig:RF-every-metrics-Deblur-homd}; then, the highest value of balanced accuracy is 0.778 with using 13 taxa. Moreover, violin plots from two most important taxa, \textit{Porphyromonas gingivalis} and {(b) \textit{Actinomyces}, are in figure \ref{fig:RF-every-important-Deblur-homd}.
+            As figure \ref{fig:denosing-workflow} and figure \ref{fig:taxonomy-workflow}, there are six combinations. Thus, classification algorithm is carried out on these six combinations (Figure \ref{fig:RF-whole-workflow}). Features are ordered by importance in every combination (Table \ref{tb:RF-every-DADA2-gg}, Table \ref{tb:RF-every-DADA2-silva}, Table \ref{tb:RF-every-DADA2-homd}, Table \ref{tb:RF-every-Deblur-gg}, Table \ref{tb:RF-every-Deblur-silva} and Table \ref{tb:RF-every-Deblur-homd}); metrics changed by feature count in every combination are displayed (Figure \ref{fig:RF-every-metrics-DADA2-gg}, Figure \ref{fig:RF-every-metrics-DADA2-silva}, Figure \ref{fig:RF-every-metrics-DADA2-homd}, Figure \ref{fig:RF-every-metrics-Deblur-gg}, Figure \ref{fig:RF-every-metrics-Deblur-silva} and Figure \ref{fig:RF-every-metrics-DADA2-homd}); and violin plots from the most two important features in every class are shown (Figure \ref{fig:RF-every-important-DADA2-gg}, Figure \ref{fig:RF-every-important-DADA2-silva}, Figure \ref{fig:RF-every-important-DADA2-homd}, Figure \ref{fig:RF-every-important-Deblur-gg}, Figure \ref{fig:RF-every-important-Deblur-silva} and Figure \ref{fig:RF-every-important-Deblur-homd}).
+
+            Among these six combinations, Deblur and HOMD pair gives the best result in terms of balanced accuracy. Features which are ordered by importance are table \ref{tb:RF-every-Deblur-homd}. Also, five metrics by feature count are shown as figure \ref{fig:RF-every-metrics-Deblur-homd}; then, the highest value of balanced accuracy is 0.778 with using 13 taxa. Moreover, violin plots from two most important taxa, \textit{Porphyromonas gingivalis} and {(b) \textit{Actinomyces}, are in figure \ref{fig:RF-every-important-Deblur-homd}.
 
             \begin{table}[p]
                 \centering
                 \caption{Taxa with DADA2 and GG Ordered by Random Forest}
-                \label{tb:RF-every-dada2-gg}
+                \label{tb:RF-every-DADA2-gg}
 
                 \csvreader[tabular=cp{10cm}l, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline]{csv/RandomForest/whole-DADA2-gg.txt}{}{\csvlinetotablerow}
             \end{table}
@@ -876,7 +878,7 @@
             \begin{table}[p]
                 \centering
                 \caption{Taxa with DADA2 and SILVA Ordered by Random Forest}
-                \label{tb:RF-every-dada2-silva}
+                \label{tb:RF-every-DADA2-silva}
 
                 \csvreader[tabular=cp{10cm}l, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline]{csv/RandomForest/whole-DADA2-silva.txt}{}{\csvlinetotablerow}
             \end{table}
@@ -904,7 +906,7 @@
             \begin{table}[p]
                 \centering
                 \caption{Taxa with DADA2 and HOMD Ordered by Random Forest}
-                \label{tb:RF-whole-dada2-homd}
+                \label{tb:RF-every-DADA2-homd}
 
                 \csvreader[tabular=cp{10cm}l, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline]{csv/RandomForest/whole-DADA2-homd.txt}{}{\csvlinetotablerow}
             \end{table}
@@ -1014,7 +1016,7 @@
             \end{figure}
 
         \subsection{Random Forest Classifier with Merging (Healthy+Early) Classes}
-            As figures \ref{fig:denosing-workflow} and \ref{fig:taxonomy-workflow}, there are six combinations. However, in table \ref{tb:alpha-evenness-dada2}, there is no significant difference between Healthy and Early classes. Thus, classification algorithm is carried out on these six combinations with merging Healthy and Early classes.
+            As figures \ref{fig:denosing-workflow} and \ref{fig:taxonomy-workflow}, there are six combinations. However, there is no significant difference between Healthy and Early classes. Thus, classification algorithm is carried out on these six combinations with merging Healthy and Early classes. In every combination, results were derived (Figure \ref{fig:RF-merging-workflow}): Features which are ordered by importance (Table \ref{tb:RF-HE-DADA2-gg}, Table \ref{tb:RF-HE-DADA2-silva}, Table \ref{tb:RF-HE-DADA2-homd}, Table \ref{tb:RF-HE-DADA2-gg}, Table \ref{tb:RF-HE-Deblur-silva} and Table \ref{tb:RF-HE-Deblur-homd}), metrics changed by feature count (Figure \ref{fig:RF-HE-metrics-DADA2-gg}, Figure \ref{fig:RF-HE-metrics-DADA2-silva}, Figure \ref{fig:RF-HE-metrics-DADA2-homd}, Figure \ref{fig:RF-HE-metrics-Deblur-gg}, Figure \ref{fig:RF-HE-metrics-Deblur-silva} and Figure \ref{fig:RF-HE-metrics-Deblur-homd}) and violin plots from the most two important features (Figure \ref{fig:RF-HE-important-DADA2-gg}, Figure \ref{fig:RF-HE-important-DADA2-silva}, Figure \ref{fig:RF-HE-important-DADA2-homd}, Figure \ref{fig:RF-HE-important-Deblur-gg}, Figure \ref{fig:RF-HE-important-Deblur-silva} and Figure \ref{fig:RF-HE-important-Deblur-homd}).
 
             \begin{table}[p]
                 \centering
