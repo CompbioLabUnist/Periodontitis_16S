@@ -843,7 +843,7 @@
             \end{figure}
 
         \subsection{Random Forest Classifier with Every Class}
-            As figure \ref{fig:denosing-workflow} and figure \ref{fig:taxonomy-workflow}, there are six combinations. Thus, classification algorithm is carried out on these six combinations (Figure \ref{fig:RF-whole-workflow}). Among these six combinations, Deblur and HOMD pair gives the best result in terms of balanced accuracy. Features which are ordered by importance are table \ref{tb:RF-every-Deblur-homd}. Also, five metrics by feature count are shown as figure \ref{fig:RF-every-metrics-Deblur-homd}; then, the highest value of balanced accuracy is 0.778 with using 13 taxa. Moreover, violin plots from two most important taxa, \textit{Porphyromonas gingivalis} and {(b) \textit{Actinomyces}, are in figure \ref{fig:RF-every-important-Deblur-homd}.
+            As figure \ref{fig:denosing-workflow} and figure \ref{fig:taxonomy-workflow}, there are six combinations. Thus, classification algorithm is carried out on these six combinations (Figure \ref{fig:RF-whole-workflow}). Among these six combinations, Deblur and HOMD pair gives the best result in terms of balanced accuracy. Features which are ordered by importance are in table \ref{tb:RF-every-Deblur-homd}. Also, five metrics by feature count are shown as figure \ref{fig:RF-every-metrics-Deblur-homd}; then, the highest value of balanced accuracy is 0.778 with using 13 taxa. Moreover, violin plots from the two most important taxa, \textit{Porphyromonas gingivalis} and \textit{Actinomyces}, are in figure \ref{fig:RF-every-important-Deblur-homd}.
 
             \begin{table}[p]
                 \centering
@@ -874,7 +874,7 @@
             \end{figure}
 
         \subsection{Random Forest Classifier with Merging (Healthy+Early) Classes}
-            As figures \ref{fig:denosing-workflow} and \ref{fig:taxonomy-workflow}, there are six combinations. However, there is no significant difference between Healthy and Early classes. Thus, classification algorithm is carried out on these six combinations with merging Healthy and Early classes. Among these six combinations, DADA2 and HOMD pair gives the best result in terms of balanced accuracy.
+            As figure \ref{fig:denosing-workflow} and figure \ref{fig:taxonomy-workflow}, there are six combinations. However, there is no statistically significant difference between Healthy and Early classes. Thus, classification algorithm is carried out on these six combinations with merging Healthy and Early classes. Among these six combinations, DADA2 and HOMD pair gives the best result in terms of balanced accuracy. Features which are ordered by importance are in table \ref{tb:RF-HE-DADA2-homd}. Also, five metrics by feature count are shown as figure \ref{fig:RF-HE-metrics-DADA2-homd}; then, the highest value of balanced accuracy is 0.938 with using 11 taxa. Moreover, violin plots from the two most important taxa, \textit{Porphyromonas gingivalis} and \textit{Actinomyces}, are in figure \ref{fig:RF-HE-important-DADA2-homd}.
 
             \begin{table}[p]
                 \centering
@@ -905,6 +905,7 @@
             \end{figure}
 
         \subsection{Random Forest Classifier with Merging (Moderate+Severe) Classes}
+            As figure \ref{fig:denosing-workflow} and figure \ref{fig:taxonomy-workflow}, there are six combinations. However, there is no statistically significant difference between Moderate and Severe classes. Thus, classification algorithm is carried out on these six combinations with merging Moderate and Severe classes. Among these six combinations, Deblur and HOMD pair gives the best result in terms of balanced accuracy. Features which are ordered by importance are in table \ref{tb:RF-MS-Deblur-homd}. Also, five metrics by feature count are shown as figure \ref{fig:RF-MS-metrics-Deblur-homd}; then, the highest value of balanced accuracy is 0.777 with using 28 taxa. Moreover, violin plots from the two most important taxa, \textit{Porphyromonas gingivalis} and \textit{Actinomyces}, are in figure \ref{fig:RF-MS-important-Deblur-homd}.
 
             \begin{table}[p]
                 \centering
@@ -935,6 +936,7 @@
             \end{figure}
 
         \subsection{Random Forest Classifier with Merging (Healthy+Early) \& (Moderate+Severe) Classes}
+            As figure \ref{fig:denosing-workflow} and figure \ref{fig:taxonomy-workflow}, there are six combinations. However, there are not statistically significant difference between (Healthy and Early) classes and between (Moderate and Severe) classes. Thus, classification algorithm is carried out on these six combinations with merging (Healthy and Early) classes and (Moderate and Severe) classes. Among these six combinations, DADA2 and SILVA pair gives the best result in terms of balanced accuracy. Features which are ordered by importance are in talbe \ref{tb:RF-HEMS-DADA2-silva}. Also, five metrics by feature count are shown as figure \ref{fig:RF-HEMS-metrics-DADA2-silva}; then, the highest value of balanced accuracy is 0.934 with using 15 taxa. Moreover, violin plots from the two most important taxa, \textit{Porphyromonas gingivalis} and \textit{Treponema denticola}, are in figure \ref{fig:RF-HEMS-important-DADA2-silva}.
 
             \begin{table}[p]
                 \centering
@@ -960,11 +962,39 @@
                     \\
                     \mbox{(a) \textit{Porphyromonas gingivalis}} & \mbox{(b) \textit{Treponema denticola}} \\
                 \end{array}$
-                \caption{Most and Second Most Important Features with Deblur and HOMD for Merging (Healthy+Early) \& (Moderate+Severe) Classes}
+                \caption{Most and Second Most Important Features with DADA2 and HOMD for Merging (Healthy+Early) \& (Moderate+Severe) Classes}
                 \label{fig:RF-HEMS-important-DADA2-silva}
             \end{figure}
 
         \subsection{Random Forest Classifier with Healthy Class and Early Class Only}
+
+            \begin{table}[p]
+                \centering
+                \caption{Taxa with DADA2 and HOMD Ordered by Random Forest for Healthy Class and Early Class Only}
+                \label{tb:RF-HEonly-DADA2-homd}
+
+                \csvreader[tabular=cp{10cm}l, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline]{csv/RandomForest/HE-DADA2-homd.txt}{}{\csvlinetotablerow}
+            \end{table}
+
+            \begin{figure}[p]
+                \centering
+                \includegraphics[width=0.7 \linewidth]{figures/RandomForest/HE.DADA2.homd/metrics.png}
+                \caption{Metrics by Feature Count with DADA2 and HOMD for Healthy Class and Early Class Only}
+                \label{fig:RF-HEonly-metrics-DADA2-homd}
+            \end{figure}
+
+            \begin{figure}[p]
+                \centering
+                $\begin{array}{cc}
+                    \includegraphics[width=0.4 \linewidth]{figures/RandomForest/HE.DADA2.homd/Feature_0.png}
+                    &
+                    \includegraphics[width=0.4 \linewidth]{figures/RandomForest/HE.DADA2.homd/Feature_1.png}
+                    \\
+                    \mbox{(a) \textit{Porphyromonas gingivalis}} & \mbox{(b) \textit{Treponema denticola}} \\
+                \end{array}$
+                \caption{Most and Second Most Important Features with DADA2 and HOMD for Healthy Class and Early Class Only}
+                \label{fig:RF-HEonly-important-DADA2-homd}
+            \end{figure}
 
     \section{Discussion}
         \subsection{Alpha-diversity}
