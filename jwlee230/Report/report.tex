@@ -843,149 +843,7 @@
             \end{figure}
 
         \subsection{Random Forest Classifier with Every Class}
-            As figure \ref{fig:denosing-workflow} and figure \ref{fig:taxonomy-workflow}, there are six combinations. Thus, classification algorithm is carried out on these six combinations (Figure \ref{fig:RF-whole-workflow}). Features are ordered by importance in every combination (Table \ref{tb:RF-every-DADA2-gg}, Table \ref{tb:RF-every-DADA2-silva}, Table \ref{tb:RF-every-DADA2-homd}, Table \ref{tb:RF-every-Deblur-gg}, Table \ref{tb:RF-every-Deblur-silva} and Table \ref{tb:RF-every-Deblur-homd}); metrics changed by feature count in every combination are displayed (Figure \ref{fig:RF-every-metrics-DADA2-gg}, Figure \ref{fig:RF-every-metrics-DADA2-silva}, Figure \ref{fig:RF-every-metrics-DADA2-homd}, Figure \ref{fig:RF-every-metrics-Deblur-gg}, Figure \ref{fig:RF-every-metrics-Deblur-silva} and Figure \ref{fig:RF-every-metrics-DADA2-homd}); and violin plots from the most two important features in every class are shown (Figure \ref{fig:RF-every-important-DADA2-gg}, Figure \ref{fig:RF-every-important-DADA2-silva}, Figure \ref{fig:RF-every-important-DADA2-homd}, Figure \ref{fig:RF-every-important-Deblur-gg}, Figure \ref{fig:RF-every-important-Deblur-silva} and Figure \ref{fig:RF-every-important-Deblur-homd}).
-
-            Among these six combinations, Deblur and HOMD pair gives the best result in terms of balanced accuracy. Features which are ordered by importance are table \ref{tb:RF-every-Deblur-homd}. Also, five metrics by feature count are shown as figure \ref{fig:RF-every-metrics-Deblur-homd}; then, the highest value of balanced accuracy is 0.778 with using 13 taxa. Moreover, violin plots from two most important taxa, \textit{Porphyromonas gingivalis} and {(b) \textit{Actinomyces}, are in figure \ref{fig:RF-every-important-Deblur-homd}.
-
-            \begin{table}[p]
-                \centering
-                \caption{Taxa with DADA2 and GG Ordered by Random Forest}
-                \label{tb:RF-every-DADA2-gg}
-
-                \csvreader[tabular=cp{10cm}l, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline]{csv/RandomForest/whole-DADA2-gg.txt}{}{\csvlinetotablerow}
-            \end{table}
-
-            \begin{figure}[p]
-                \centering
-                \includegraphics[width=0.7 \linewidth]{figures/RandomForest/ANCOM.DADA2.gg/metrics.png}
-                \caption{Metrics by Feature Count with DADA2 and GG}
-                \label{fig:RF-every-metrics-DADA2-gg}
-            \end{figure}
-
-            \begin{figure}[p]
-                \centering
-                $\begin{array}{cc}
-                    \includegraphics[width=0.4 \linewidth]{figures/RandomForest/ANCOM.DADA2.gg/Feature_0.png}
-                    &
-                    \includegraphics[width=0.4 \linewidth]{figures/RandomForest/ANCOM.DADA2.gg/Feature_1.png}
-                    \\
-                    \mbox{(a) \textit{Actinomyce}} & \mbox{(b) \textit{Filifactor}} \\
-                \end{array}$
-                \caption{Most and Second Most Important Features with DADA2 and GG}
-                \label{fig:RF-every-important-DADA2-gg}
-            \end{figure}
-
-            \begin{table}[p]
-                \centering
-                \caption{Taxa with DADA2 and SILVA Ordered by Random Forest}
-                \label{tb:RF-every-DADA2-silva}
-
-                \csvreader[tabular=cp{10cm}l, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline]{csv/RandomForest/whole-DADA2-silva.txt}{}{\csvlinetotablerow}
-            \end{table}
-
-            \begin{figure}[p]
-                \centering
-                \includegraphics[width=0.7 \linewidth]{figures/RandomForest/ANCOM.DADA2.silva/metrics.png}
-                \caption{Metrics by Feature Count with DADA2 and SILVA}
-                \label{fig:RF-every-metrics-DADA2-silva}
-            \end{figure}
-
-            \begin{figure}[p]
-                \centering
-                $\begin{array}{cc}
-                    \includegraphics[width=0.4 \linewidth]{figures/RandomForest/ANCOM.DADA2.silva/Feature_0.png}
-                    &
-                    \includegraphics[width=0.4 \linewidth]{figures/RandomForest/ANCOM.DADA2.silva/Feature_1.png}
-                    \\
-                    \mbox{(a) \textit{Actinomyces}} & \mbox{(b) \textit{Schaalia odontolytica}} \\
-                \end{array}$
-                \caption{Most and Second Most Important Features with DADA2 and SILVA}
-                \label{fig:RF-every-important-DADA2-silva}
-            \end{figure}
-
-            \begin{table}[p]
-                \centering
-                \caption{Taxa with DADA2 and HOMD Ordered by Random Forest}
-                \label{tb:RF-every-DADA2-homd}
-
-                \csvreader[tabular=cp{10cm}l, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline]{csv/RandomForest/whole-DADA2-homd.txt}{}{\csvlinetotablerow}
-            \end{table}
-
-            \begin{figure}[p]
-                \centering
-                \includegraphics[width=0.7 \linewidth]{figures/RandomForest/ANCOM.DADA2.homd/metrics.png}
-                \caption{Metrics by Feature Count with DADA2 and HOMD}
-                \label{fig:RF-every-metrics-DADA2-homd}
-            \end{figure}
-
-            \begin{figure}[p]
-                \centering
-                $\begin{array}{cc}
-                    \includegraphics[width=0.4 \linewidth]{figures/RandomForest/ANCOM.DADA2.homd/Feature_0.png}
-                    &
-                    \includegraphics[width=0.4 \linewidth]{figures/RandomForest/ANCOM.DADA2.homd/Feature_1.png}
-                    \\
-                    \mbox{(a) \textit{Actinomyces}} & \mbox{(b) \textit{Porphyromonas gingivalis}} \\
-                \end{array}$
-                \caption{Most and Second Most Important Features with DADA2 and HOMD}
-                \label{fig:RF-every-important-DADA2-homd}
-            \end{figure}
-
-            \begin{table}[p]
-                \centering
-                \caption{Taxa with Deblur and GG Ordered by Random Forest}
-                \label{tb:RF-every-Deblur-gg}
-
-                \csvreader[tabular=cp{10cm}l, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline]{csv/RandomForest/whole-Deblur-gg.txt}{}{\csvlinetotablerow}
-            \end{table}
-
-            \begin{figure}[p]
-                \centering
-                \includegraphics[width=0.7 \linewidth]{figures/RandomForest/ANCOM.Deblur.gg/metrics.png}
-                \caption{Metrics by Feature Count with Deblur and GG}
-                \label{fig:RF-every-metrics-Deblur-gg}
-            \end{figure}
-
-            \begin{figure}[p]
-                \centering
-                $\begin{array}{cc}
-                    \includegraphics[width=0.4 \linewidth]{figures/RandomForest/ANCOM.Deblur.gg/Feature_0.png}
-                    &
-                    \includegraphics[width=0.4 \linewidth]{figures/RandomForest/ANCOM.Deblur.gg/Feature_1.png}
-                    \\
-                    \mbox{(a) \textit{Treponema}} & \mbox{(b) \textit{Filifactor}} \\
-                \end{array}$
-                \caption{Most and Second Most Important Features with Deblur and GG}
-                \label{fig:RF-every-important-Deblur-gg}
-            \end{figure}
-
-            \begin{table}[p]
-                \centering
-                \caption{Taxa with Deblur and SILVA Ordered by Random Forest}
-                \label{tb:RF-every-Deblur-silva}
-
-                \csvreader[tabular=cp{10cm}l, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline]{csv/RandomForest/whole-Deblur-silva.txt}{}{\csvlinetotablerow}
-            \end{table}
-
-            \begin{figure}[p]
-                \centering
-                \includegraphics[width=0.7 \linewidth]{figures/RandomForest/ANCOM.Deblur.silva/metrics.png}
-                \caption{Metrics by Feature Count with Deblur and SILVA}
-                \label{fig:RF-every-metrics-Deblur-silva}
-            \end{figure}
-
-            \begin{figure}[p]
-                \centering
-                $\begin{array}{cc}
-                    \includegraphics[width=0.4 \linewidth]{figures/RandomForest/ANCOM.Deblur.silva/Feature_0.png}
-                    &
-                    \includegraphics[width=0.4 \linewidth]{figures/RandomForest/ANCOM.Deblur.silva/Feature_1.png}
-                    \\
-                    \mbox{(a) \textit{Porphyromonas gingivalis}} & \mbox{(b) \textit{Treponema uncultured bacterium}} \\
-                \end{array}$
-                \caption{Most and Second Most Important Features with Deblur and SILVA}
-                \label{fig:RF-every-important-Deblur-silva}
-            \end{figure}
+            As figure \ref{fig:denosing-workflow} and figure \ref{fig:taxonomy-workflow}, there are six combinations. Thus, classification algorithm is carried out on these six combinations (Figure \ref{fig:RF-whole-workflow}). Among these six combinations, Deblur and HOMD pair gives the best result in terms of balanced accuracy. Features which are ordered by importance are table \ref{tb:RF-every-Deblur-homd}. Also, five metrics by feature count are shown as figure \ref{fig:RF-every-metrics-Deblur-homd}; then, the highest value of balanced accuracy is 0.778 with using 13 taxa. Moreover, violin plots from two most important taxa, \textit{Porphyromonas gingivalis} and {(b) \textit{Actinomyces}, are in figure \ref{fig:RF-every-important-Deblur-homd}.
 
             \begin{table}[p]
                 \centering
@@ -1016,63 +874,7 @@
             \end{figure}
 
         \subsection{Random Forest Classifier with Merging (Healthy+Early) Classes}
-            As figures \ref{fig:denosing-workflow} and \ref{fig:taxonomy-workflow}, there are six combinations. However, there is no significant difference between Healthy and Early classes. Thus, classification algorithm is carried out on these six combinations with merging Healthy and Early classes. In every combination, results were derived (Figure \ref{fig:RF-merging-workflow}): Features which are ordered by importance (Table \ref{tb:RF-HE-DADA2-gg}, Table \ref{tb:RF-HE-DADA2-silva}, Table \ref{tb:RF-HE-DADA2-homd}, Table \ref{tb:RF-HE-DADA2-gg}, Table \ref{tb:RF-HE-Deblur-silva} and Table \ref{tb:RF-HE-Deblur-homd}), metrics changed by feature count (Figure \ref{fig:RF-HE-metrics-DADA2-gg}, Figure \ref{fig:RF-HE-metrics-DADA2-silva}, Figure \ref{fig:RF-HE-metrics-DADA2-homd}, Figure \ref{fig:RF-HE-metrics-Deblur-gg}, Figure \ref{fig:RF-HE-metrics-Deblur-silva} and Figure \ref{fig:RF-HE-metrics-Deblur-homd}) and violin plots from the most two important features (Figure \ref{fig:RF-HE-important-DADA2-gg}, Figure \ref{fig:RF-HE-important-DADA2-silva}, Figure \ref{fig:RF-HE-important-DADA2-homd}, Figure \ref{fig:RF-HE-important-Deblur-gg}, Figure \ref{fig:RF-HE-important-Deblur-silva} and Figure \ref{fig:RF-HE-important-Deblur-homd}).
-
-            \begin{table}[p]
-                \centering
-                \caption{Taxa with DADA2 and GG Ordered by Random Forest for Merging (Healthy+Early) Classes}
-                \label{tb:RF-HE-DADA2-gg}
-
-                \csvreader[tabular=cp{10cm}l, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline]{csv/RandomForest/one-DADA2-gg.txt}{}{\csvlinetotablerow}
-            \end{table}
-
-            \begin{figure}[p]
-                \centering
-                \includegraphics[width=0.7 \linewidth]{figures/RandomForest/one.DADA2.gg/metrics.png}
-                \caption{Metrics by Feature Count with DADA2 and GG for Merging (Healthy+Early) Classes}
-                \label{fig:RF-HE-metrics-DADA2-gg}
-            \end{figure}
-
-            \begin{figure}[p]
-                \centering
-                $\begin{array}{cc}
-                    \includegraphics[width=0.4 \linewidth]{figures/RandomForest/one.DADA2.gg/Feature_0.png}
-                    &
-                    \includegraphics[width=0.4 \linewidth]{figures/RandomForest/one.DADA2.gg/Feature_1.png}
-                    \\
-                    \mbox{(a) \textit{Actinomyces}} & \mbox{(b) \textit{Filifactor}} \\
-                \end{array}$
-                \caption{Most and Second Most Important Features with DADA2 and GG for Merging (Healthy+Early) Classes}
-                \label{fig:RF-HE-important-DADA2-gg}
-            \end{figure}
-
-            \begin{table}[p]
-                \centering
-                \caption{Taxa with DADA2 and SILVA Ordered by Random Forest for Merging (Healthy+Early) Classes}
-                \label{tb:RF-HE-DADA2-silva}
-
-                \csvreader[tabular=cp{10cm}l, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline]{csv/RandomForest/one-DADA2-silva.txt}{}{\csvlinetotablerow}
-            \end{table}
-
-            \begin{figure}[p]
-                \centering
-                \includegraphics[width=0.7 \linewidth]{figures/RandomForest/one.DADA2.silva/metrics.png}
-                \caption{Metrics by Feature Count with DADA2 and SILVA for Merging (Healthy+Early) Classes}
-                \label{fig:RF-HE-metrics-DADA2-silva}
-            \end{figure}
-
-            \begin{figure}[p]
-                \centering
-                $\begin{array}{cc}
-                    \includegraphics[width=0.4 \linewidth]{figures/RandomForest/one.DADA2.silva/Feature_0.png}
-                    &
-                    \includegraphics[width=0.4 \linewidth]{figures/RandomForest/one.DADA2.silva/Feature_1.png}
-                    \\
-                    \mbox{(a) \textit{Actinomyces}} & \mbox{(b) \textit{Porphyromonas gingivalis}} \\
-                \end{array}$
-                \caption{Most and Second Most Important Features with DADA2 and SILVA for Merging (Healthy+Early) Classes}
-                \label{fig:RF-HE-important-DADA2-silva}
-            \end{figure}
+            As figures \ref{fig:denosing-workflow} and \ref{fig:taxonomy-workflow}, there are six combinations. However, there is no significant difference between Healthy and Early classes. Thus, classification algorithm is carried out on these six combinations with merging Healthy and Early classes. Among these six combinations, DADA2 and HOMD pair gives the best result in terms of balanced accuracy.
 
             \begin{table}[p]
                 \centering
@@ -1102,93 +904,67 @@
                 \label{fig:RF-HE-important-DADA2-homd}
             \end{figure}
 
+        \subsection{Random Forest Classifier with Merging (Moderate+Severe) Classes}
+
             \begin{table}[p]
                 \centering
-                \caption{Taxa with Deblur and GG Ordered by Random Forest for Merging (Healthy+Early) Classes}
-                \label{tb:RF-HE-Deblur-gg}
+                \caption{Taxa with Deblur and HOMD Ordered by Random Forest for Merging (Moderate+Severe) Classes}
+                \label{tb:RF-MS-Deblur-homd}
 
-                \csvreader[tabular=cp{10cm}l, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline]{csv/RandomForest/one-Deblur-gg.txt}{}{\csvlinetotablerow}
+                \csvreader[tabular=cp{10cm}l, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline]{csv/RandomForest/two-Deblur-homd.txt}{}{\csvlinetotablerow}
             \end{table}
 
             \begin{figure}[p]
                 \centering
-                \includegraphics[width=0.7 \linewidth]{figures/RandomForest/one.Deblur.gg/metrics.png}
-                \caption{Metrics by Feature Count with Deblur and GG for Merging (Healthy+Early) Classes}
-                \label{fig:RF-HE-metrics-Deblur-gg}
+                \includegraphics[width=0.7 \linewidth]{figures/RandomForest/two.Deblur.homd/metrics.png}
+                \caption{Metrics by Feature Count with Deblur and HOMD for Merging (Moderate+Severe) Classes}
+                \label{fig:RF-MS-metrics-Deblur-homd}
             \end{figure}
 
             \begin{figure}[p]
                 \centering
                 $\begin{array}{cc}
-                    \includegraphics[width=0.4 \linewidth]{figures/RandomForest/one.Deblur.gg/Feature_0.png}
+                    \includegraphics[width=0.4 \linewidth]{figures/RandomForest/two.Deblur.homd/Feature_0.png}
                     &
-                    \includegraphics[width=0.4 \linewidth]{figures/RandomForest/one.Deblur.gg/Feature_1.png}
-                    \\
-                    \mbox{(a) \textit{Treponema}} & \mbox{(b) \textit{Filifactor}} \\
-                \end{array}$
-                \caption{Most and Second Most Important Features with Deblur and GG for Merging (Healthy+Early) Classes}
-                \label{fig:RF-HE-important-Deblur-gg}
-            \end{figure}
-
-            \begin{table}[p]
-                \centering
-                \caption{Taxa with Deblur and SILVA Ordered by Random Forest for Merging (Healthy+Early) Classes}
-                \label{tb:RF-HE-Deblur-silva}
-
-                \csvreader[tabular=cp{10cm}l, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline]{csv/RandomForest/one-Deblur-silva.txt}{}{\csvlinetotablerow}
-            \end{table}
-
-            \begin{figure}[p]
-                \centering
-                \includegraphics[width=0.7 \linewidth]{figures/RandomForest/one.Deblur.silva/metrics.png}
-                \caption{Metrics by Feature Count with Deblur and SILVA for Merging (Healthy+Early) Classes}
-                \label{fig:RF-HE-metrics-Deblur-silva}
-            \end{figure}
-
-            \begin{figure}[p]
-                \centering
-                $\begin{array}{cc}
-                    \includegraphics[width=0.4 \linewidth]{figures/RandomForest/one.Deblur.silva/Feature_0.png}
-                    &
-                    \includegraphics[width=0.4 \linewidth]{figures/RandomForest/one.Deblur.silva/Feature_1.png}
-                    \\
-                    \mbox{(a) \textit{Porphyromonas gingivalis}} & \mbox{(b) \textit{Treponema denticola}} \\
-                \end{array}$
-                \caption{Most and Second Most Important Features with Deblur and SILVA for Merging (Healthy+Early) Classes}
-                \label{fig:RF-HE-important-Deblur-silva}
-            \end{figure}
-
-            \begin{table}[p]
-                \centering
-                \caption{Taxa with Deblur and HOMD Ordered by Random Forest for Merging (Healthy+Early) Classes}
-                \label{tb:RF-HE-Deblur-homd}
-
-                \csvreader[tabular=cp{10cm}l, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline]{csv/RandomForest/one-Deblur-homd.txt}{}{\csvlinetotablerow}
-            \end{table}
-
-            \begin{figure}[p]
-                \centering
-                \includegraphics[width=0.7 \linewidth]{figures/RandomForest/one.Deblur.homd/metrics.png}
-                \caption{Metrics by Feature Count with Deblur and HOMD for Merging (Healthy+Early) Classes}
-                \label{fig:RF-HE-metrics-Deblur-homd}
-            \end{figure}
-
-            \begin{figure}[p]
-                \centering
-                $\begin{array}{cc}
-                    \includegraphics[width=0.4 \linewidth]{figures/RandomForest/one.Deblur.homd/Feature_0.png}
-                    &
-                    \includegraphics[width=0.4 \linewidth]{figures/RandomForest/one.Deblur.homd/Feature_1.png}
+                    \includegraphics[width=0.4 \linewidth]{figures/RandomForest/two.Deblur.homd/Feature_1.png}
                     \\
                     \mbox{(a) \textit{Porphyromonas gingivalis}} & \mbox{(b) \textit{Actinomyces}} \\
                 \end{array}$
-                \caption{Most and Second Most Important Features with Deblur and HOMD for Merging (Healthy+Early) Classes}
-                \label{fig:RF-HE-important-Deblur-homd}
+                \caption{Most and Second Most Important Features with Deblur and HOMD for Merging (Moderate+Severe) Classes}
+                \label{fig:RF-MS-important-Deblur-homd}
             \end{figure}
 
-        \subsection{Random Forest Classifier with Merging (Moderate+Severe) Classes}
-
         \subsection{Random Forest Classifier with Merging (Healthy+Early) \& (Moderate+Severe) Classes}
+
+            \begin{table}[p]
+                \centering
+                \caption{Taxa with DADA2 and SILVA Ordered by Random Forest for Merging (Healthy+Early) \& (Moderate+Severe) Classes}
+                \label{tb:RF-HEMS-DADA2-silva}
+
+                \csvreader[tabular=cp{10cm}l, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline]{csv/RandomForest/onetwo-DADA2-silva.txt}{}{\csvlinetotablerow}
+            \end{table}
+
+            \begin{figure}[p]
+                \centering
+                \includegraphics[width=0.7 \linewidth]{figures/RandomForest/one-two.DADA2.silva/metrics.png}
+                \caption{Metrics by Feature Count with DADA2 and SILVA for Merging (Healthy+Early) \& (Moderate+Severe) Classes}
+                \label{fig:RF-HEMS-metrics-DADA2-silva}
+            \end{figure}
+
+            \begin{figure}[p]
+                \centering
+                $\begin{array}{cc}
+                    \includegraphics[width=0.4 \linewidth]{figures/RandomForest/one-two.DADA2.silva/Feature_0.png}
+                    &
+                    \includegraphics[width=0.4 \linewidth]{figures/RandomForest/one-two.DADA2.silva/Feature_1.png}
+                    \\
+                    \mbox{(a) \textit{Porphyromonas gingivalis}} & \mbox{(b) \textit{Treponema denticola}} \\
+                \end{array}$
+                \caption{Most and Second Most Important Features with Deblur and HOMD for Merging (Healthy+Early) \& (Moderate+Severe) Classes}
+                \label{fig:RF-HEMS-important-DADA2-silva}
+            \end{figure}
+
+        \subsection{Random Forest Classifier with Healthy Class and Early Class Only}
 
     \section{Discussion}
         \subsection{Alpha-diversity}
