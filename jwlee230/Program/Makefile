@@ -50,7 +50,7 @@ run: tmp.sh | log Output
 .PHONY += run
 
 # Actual
-latest: step20
+latest: step23
 .PHONY += latest
 
 # Step 01 (Make manifest files)
@@ -385,3 +385,13 @@ Output/Step22/%.png: Python/step22.py Output/Step21/%.tsv | Output/Step22 build.
 
 step22: Output/Step22/DADA2.unweighted_unifrac.png Output/Step22/DADA2.weighted_unifrac.png Output/Step22/DADA2.jaccard.png Output/Step22/DADA2.bray_curtis.png Output/Step22/Deblur.unweighted_unifrac.png Output/Step22/Deblur.weighted_unifrac.png Output/Step22/Deblur.jaccard.png Output/Step22/Deblur.bray_curtis.png
 .PHONY += step22
+
+# Step 23 (Divide Healty vs. Early Only)
+Output/Step23:
+	mkdir -p $@
+
+Output/Step23/HE.%.tar: Python/step23.py Output/Step17/whole.%.tar.gz Output/Step18/ANCOM.%.tar.gz | Output/Step23 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS)
+
+step23: Output/Step23/HE.DADA2.gg.tar Output/Step23/HE.DADA2.silva.tar Output/Step23/HE.DADA2.homd.tar Output/Step23/HE.Deblur.gg.tar Output/Step23/HE.Deblur.silva.tar Output/Step23/HE.Deblur.homd.tar
+.PHONY += step23
