@@ -1,0 +1,56 @@
+\documentclass[border=1cm]{standalone}
+
+\usepackage{tikz}
+
+\usetikzlibrary{shapes, arrows, calc, positioning}
+\definecolor{codegreen}{rgb}{0, 0.6, 0}
+\definecolor{codegray}{rgb}{0.5, 0.5, 0.5}
+\definecolor{codepurple}{rgb}{0.58, 0, 0.82}
+\definecolor{backcolour}{rgb}{0.95, 0.95, 0.92}
+
+\tikzstyle{decision} = [diamond, draw, fill=blue!20, text badly centered, node distance=3cm, inner sep=0pt]
+\tikzstyle{block} = [rectangle, draw, fill=blue!20, text centered, rounded corners, minimum height=2em]
+\tikzstyle{line} = [draw, -latex']
+\tikzstyle{cloud} = [draw, ellipse, fill=red!20, node distance=5em, minimum height=2em]
+\tikzset
+{
+    -|-/.style=
+    {
+        to path=
+        {
+            (\tikztostart) -| ($(\tikztostart)!#1!(\tikztotarget)$) |- (\tikztotarget)
+            \tikztonodes
+        }
+    },
+    -|-/.default=0.5,
+    |-|/.style=
+    {
+        to path=
+        {
+            (\tikztostart) |- ($(\tikztostart)!#1!(\tikztotarget)$) -| (\tikztotarget)
+            \tikztonodes
+        }
+    },
+    |-|/.default=0.5,
+}
+
+\begin{document}
+    \begin{tikzpicture}
+        \node[block] (00) {Data with Selecting Class Information};
+
+        \node[block, below=1cm of 00] (01) {Get Feature Importances};
+        \path[line] (00) -- (01);
+
+        \node[block, below=1cm of 01] (02) {Best Classifier by Metrics};
+        \path[line] (01) -- (02);
+
+        \node[cloud, below=1cm of 02] (03) {Feature Count vs. Metric};
+        \path[line] (02) -- (03);
+
+        \node[cloud, left=1cm of 03] (04) {Features Order by Importances};
+        \path[line] (02) to[|-|] (04);
+
+        \node[cloud, right=1cm of 03] (05) {Violin Plots by Features};
+        \path[line] (02) to[|-|] (05);
+    \end{tikzpicture}
+\end{document}
