@@ -677,6 +677,35 @@
             \includegraphics[width=0.8 \linewidth]{figures/RandomForest/select.pdf}
             \caption{Random Forest Classifier with Merging Workflow}
         \end{figure}
+
+        \textbf{DADA2 + HOMD} gives the best result with balanced accuracy (0.771 with 4 taxa).
+
+        \begin{table}
+            \caption{Features Order by Importances}
+            \begin{tabular}{c|l}
+                Order & Taxonomy (Genus [Species]) \\ \hline
+                0 & \textit{Actinomyces} \\
+                1 & \textit{Porphyromonas gingivalis} \\
+                2 & \textit{Actinomyces graevenitzii} \\
+                3 & \textit{Filifactor alocis} \\
+            \end{tabular}
+        \end{table}
+
+        \begin{figure}
+            \includegraphics[width=0.8 \linewidth]{figures/RandomForest/HE.DADA2.homd/metrics.png}
+            \caption{Metrics by Feature Count}
+        \end{figure}
+
+        \begin{figure}
+            $\begin{array}{cc}
+                \includegraphics[width=0.4 \linewidth]{figures/RandomForest/HE.DADA2.homd/feature_0.png}
+                &
+                \includegraphics[width=0.4 \linewidth]{figures/RandomForest/HE.DADA2.homd/feature_1.png}
+                \\
+                \mbox{(a) \textit{Actinomyces}} & \mbox{(b) \textit{Porphyromonas gingivalis}} \\
+            \end{array}$
+            \caption{Violin Plot by Features}
+        \end{figure}
     \end{frame}
 
     \section{Discussion}
