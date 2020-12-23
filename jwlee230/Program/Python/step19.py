@@ -20,8 +20,8 @@ if __name__ == "__main__":
         raise ValueError("OUTPUT file must end with .PNG!!")
 
     data: pandas.DataFrame = step00.read_pickle(args.input)
-    data["ShortStage"] = list(map(lambda x: x[0] if x[0] == "H" else x[2], data["ID"]))
-    data["LongStage"] = list(map(lambda x: {"H": "Healthy", "E": "Early", "M": "Moderate", "S": "Severe"}[x], data["ShortStage"]))
+    data["ShortStage"] = list(map(step00.change_ID_into_short_stage, data["ID"]))
+    data["LongStage"] = list(map(step00.change_short_into_long, data["ShortStage"]))
 
     seaborn.set(context="poster", style="whitegrid")
     fig, ax = matplotlib.pyplot.subplots(figsize=(24, 24))

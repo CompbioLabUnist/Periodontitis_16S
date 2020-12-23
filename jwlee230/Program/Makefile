@@ -271,7 +271,7 @@ Output/Step14/%.site.qzv: Output/Step14/%.qza Output/Step07/whole.tsv | build.lo
 
 Output/Step14/%/ancom.tsv: Output/Step14/%.qzv | build.log
 	$(DOCKER) rm -rfv $(addprefix /,$(@D))
-	$(DOCKER) qiime tools export --input-path $(addprefix /,$(word 1,$^)) --output-path $(addprefix /,$(@D))
+	$(DOCKER) qiime tools export --input-path $(addprefix /,$(word 1,$^)) --output-path $(addprefix /,$(@D)) 1> $@.stdout 2> $@.stderr
 
 step14: Output/Step14/whole.DADA2.gg.pseudocount.site.qzv Output/Step14/whole.DADA2.silva.pseudocount.site.qzv Output/Step14/whole.DADA2.homd.pseudocount.site.qzv Output/Step14/whole.Deblur.gg.pseudocount.site.qzv Output/Step14/whole.Deblur.silva.pseudocount.site.qzv Output/Step14/whole.Deblur.homd.pseudocount.site.qzv Output/Step14/whole.DADA2.gg.pseudocount.site/ancom.tsv Output/Step14/whole.DADA2.silva.pseudocount.site/ancom.tsv Output/Step14/whole.DADA2.homd.pseudocount.site/ancom.tsv Output/Step14/whole.Deblur.gg.pseudocount.site/ancom.tsv Output/Step14/whole.Deblur.silva.pseudocount.site/ancom.tsv Output/Step14/whole.Deblur.homd.pseudocount.site/ancom.tsv
 .PHONY += step14
@@ -366,11 +366,11 @@ Output/Step21:
 	mkdir -p $@
 
 Output/Step21/DADA2.%.tsv: Output/Step10/DADA2/whole.%_distance_matrix.qza | Output/Step21 build.log
-	$(DOCKER) qiime tools export --input-path $(addprefix /,$(word 1,$^)) --output-path $(addprefix /,$(@D))
+	$(DOCKER) qiime tools export --input-path $(addprefix /,$(word 1,$^)) --output-path $(addprefix /,$(@D)) 1> $@.stdout 2> $@.stderr
 	$(DOCKER) mv $(addprefix /,$(@D))/distance-matrix.tsv $(addprefix /,$@)
 
 Output/Step21/Deblur.%.tsv: Output/Step10/Deblur/whole.%_distance_matrix.qza | Output/Step21 build.log
-	$(DOCKER) qiime tools export --input-path $(addprefix /,$(word 1,$^)) --output-path $(addprefix /,$(@D))
+	$(DOCKER) qiime tools export --input-path $(addprefix /,$(word 1,$^)) --output-path $(addprefix /,$(@D)) 1> $@.stdout 2> $@.stderr
 	$(DOCKER) mv $(addprefix /,$(@D))/distance-matrix.tsv $(addprefix /,$@)
 
 step21: Output/Step21/DADA2.unweighted_unifrac.tsv Output/Step21/DADA2.weighted_unifrac.tsv Output/Step21/DADA2.jaccard.tsv Output/Step21/DADA2.bray_curtis.tsv Output/Step21/Deblur.unweighted_unifrac.tsv Output/Step21/Deblur.weighted_unifrac.tsv Output/Step21/Deblur.jaccard.tsv Output/Step21/Deblur.bray_curtis.tsv

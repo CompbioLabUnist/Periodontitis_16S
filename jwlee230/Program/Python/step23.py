@@ -37,12 +37,12 @@ if __name__ == "__main__":
     tar_files: typing.List[str] = list()
 
     tsne_data = step00.read_pickle(args.tsne)
-    tsne_data["ShortStage"] = list(map(lambda x: x[0] if x[0] == "H" else x[2], tsne_data["ID"]))
-    tsne_data["LongStage"] = list(map(lambda x: {"H": "Healthy", "E": "Early", "M": "Moderate", "S": "Severe"}[x], tsne_data["ShortStage"]))
+    tsne_data["ShortStage"] = list(map(step00.change_ID_into_short_stage, tsne_data["ID"]))
+    tsne_data["LongStage"] = list(map(step00.change_short_into_long, tsne_data["ShortStage"]))
     tsne_data = tsne_data.loc[(tsne_data["ShortStage"] == "H") | (tsne_data["ShortStage"] == "E")]
 
     data = step00.read_pickle(args.input)
-    data = data.loc[(data["ShortStage"] == "H") | (data["ShortStage"] == "E")]
+    data = data.loc[(data["ShortStage"] == "H") | (data["ShortStage"] == "Sli")]
     data.drop(labels="ShortStage", axis="columns", inplace=True)
     train_columns = sorted(set(data.columns) - {"LongStage"})
 

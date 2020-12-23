@@ -35,8 +35,8 @@ if __name__ == "__main__":
     for column in tsne_data.columns:
         tsne_data[column] = sklearn.preprocessing.scale(tsne_data[column])
 
-    tsne_data["ShortStage"] = list(map(lambda x: x[0] if x[0] == "H" else x[2], list(raw_data.index)))
-    tsne_data["LongStage"] = list(map(lambda x: {"H": "Healthy", "E": "Early", "M": "Moderate", "S": "Severe"}[x], tsne_data["ShortStage"]))
+    tsne_data["ShortStage"] = list(map(step00.change_ID_into_short_stage, list(raw_data.index)))
+    tsne_data["LongStage"] = list(map(step00.change_short_into_long, tsne_data["ShortStage"]))
     print(tsne_data)
 
     seaborn.set(context="poster", style="whitegrid")

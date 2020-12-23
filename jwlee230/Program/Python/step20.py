@@ -23,7 +23,7 @@ if __name__ == "__main__":
     parser.add_argument("tsne", type=str, help="t-SNE TAR.gz file")
     parser.add_argument("output", type=str, help="Output TAR file")
     parser.add_argument("--cpu", type=int, default=1, help="Number of CPU to use")
-    parser.add_argument("--one", action="store_true", default=False, help="Merge Healthy+Early")
+    parser.add_argument("--one", action="store_true", default=False, help="Merge Healthy+Slight")
     parser.add_argument("--two", action="store_true", default=False, help="Merge Moderate+Severe")
 
     args = parser.parse_args()
@@ -39,16 +39,16 @@ if __name__ == "__main__":
     tar_files: typing.List[str] = list()
 
     tsne_data = step00.read_pickle(args.tsne)
-    tsne_data["ShortStage"] = list(map(lambda x: x[0] if x[0] == "H" else x[2], tsne_data["ID"]))
-    tsne_data["LongStage"] = list(map(lambda x: {"H": "Healthy", "E": "Early", "M": "Moderate", "S": "Severe"}[x], tsne_data["ShortStage"]))
+    tsne_data["ShortStage"] = list(map(step00.change_ID_into_short_stage, tsne_data["ID"]))
+    tsne_data["LongStage"] = list(map(step00.change_short_into_long, tsne_data["ShortStage"]))
 
     data = step00.read_pickle(args.input)
     data.drop(labels="ShortStage", axis="columns", inplace=True)
     train_columns = sorted(set(data.columns) - {"LongStage"})
 
     if args.one:
-        data["LongStage"] = list(map(lambda x: "Healthy+Early" if (x == "Healthy") or (x == "Early") else x, data["LongStage"]))
-        tsne_data["LongStage"] = list(map(lambda x: "Healthy+Early" if (x == "Healthy") or (x == "Early") else x, tsne_data["LongStage"]))
+        data["LongStage"] = list(map(lambda x: "Healthy+Slight" if (x == "Healthy") or (x == "Slight") else x, data["LongStage"]))
+        tsne_data["LongStage"] = list(map(lambda x: "Healthy+Slight" if (x == "Healthy") or (x == "Slight") else x, tsne_data["LongStage"]))
 
     if args.two:
         data["LongStage"] = list(map(lambda x: "Moderate+Severe" if (x == "Moderate") or (x == "Severe") else x, data["LongStage"]))
