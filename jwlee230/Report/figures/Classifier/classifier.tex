@@ -38,14 +38,14 @@
     \begin{tikzpicture}
         \node[block] (00) {Optional: Merge Classes};
 
-        \node[block, right=1cm of 00] (01) {Order Features by Importances};
+        \node[block, right=1cm of 00] (01) {Order Features by Importance};
         \path[line] (00) -- (01);
 
-        \node[block, right=1cm of 01] (02) {Devide Train and Test set};
+        \node[block, right=1cm of 01] (02) {Divide Train and Test set};
         \path[line] (01) -- (02);
 
-        \node[block, right=1cm of 02] (03) {Decide the Best Features};
-        \path[line] (02) -- (03);
+        \node[block, below=1cm of 00] (03) {Decide the Best Features};
+        \path[line] (02) to[|-|] (03);
 
         \node[block, right=1cm of 03] (04) {Get Final Classification Result};
         \path[line] (03) -- (04);
