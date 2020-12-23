@@ -3,6 +3,7 @@ step07.py: make metadata
 """
 import argparse
 import pandas
+import step00
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -24,8 +25,9 @@ if __name__ == "__main__":
     data["BarcodeSequence"] = ""
     data["LinkPrimerSequence"] = ""
 
-    data["ShortStage"] = list(map(lambda x: x[0] if x[0] == "H" else x[2], data["#SampleID"]))
-    data["LongStage"] = list(map(lambda x: {"H": "Healthy", "E": "Early", "M": "Moderate", "S": "Severe"}[x], data["ShortStage"]))
+    data["ShortStage"] = list(map(step00.change_ID_into_short_stage, data["#SampleID"]))
+    data["NumberStage"] = list(map(step00.change_short_into_number, data["ShortStage"]))
+    data["LongStage"] = list(map(step00.change_short_into_long, data["ShortStage"]))
 
     data["Description"] = ""
 

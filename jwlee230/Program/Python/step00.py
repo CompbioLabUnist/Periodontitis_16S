@@ -172,5 +172,38 @@ def aggregate_confusion_matrix(confusion_matrix: numpy.ndarray, derivation: str 
     raise ValueError(derivation)
 
 
-long_stage_order = ["Healthy", "Early", "Moderate", "Severe"]
 short_stage_order = ["H", "E", "M", "S"]
+number_stage_order = ["0", "1", "2", "3"]
+long_stage_order = ["Healthy", "Early", "Moderate", "Severe"]
+
+
+def change_ID_into_short_stage(ID: str) -> str:
+    """
+    change_ID_into_short_stage: change ID (e.g. H19 or CPM20) into short stage
+    """
+    assert (ID[0] in short_stage_order) or (ID[2] in short_stage_order)
+
+    if ID.startswith("H"):
+        return ID[0]
+    else:
+        return ID[2]
+
+
+def change_short_into_number(given_short: str) -> str:
+    """
+    change_short_into_number: change short stage into number stage
+    """
+    for short, number in zip(short_stage_order, number_stage_order):
+        if short == given_short:
+            return number
+    raise Exception("Something went wrong!!")
+
+
+def change_short_into_long(given_short: str) -> str:
+    """
+    change_short_into_long: change short stage into long stage
+    """
+    for short, long_stage in zip(short_stage_order, long_stage_order):
+        if short == given_short:
+            return long_stage
+    raise Exception("Something went wrong!!")
