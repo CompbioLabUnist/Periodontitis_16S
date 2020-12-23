@@ -172,21 +172,21 @@ def aggregate_confusion_matrix(confusion_matrix: numpy.ndarray, derivation: str 
     raise ValueError(derivation)
 
 
-short_stage_order = ["H", "E", "M", "S"]
+short_stage_dict = {"H": "H", "E": "Sli", "M": "M", "S": "S"}
+short_stage_order = ["H", "Sli", "M", "S"]
 number_stage_order = ["0", "1", "2", "3"]
-long_stage_order = ["Healthy", "Early", "Moderate", "Severe"]
+long_stage_order = ["Healthy", "Slight", "Moderate", "Severe"]
 
 
 def change_ID_into_short_stage(ID: str) -> str:
     """
     change_ID_into_short_stage: change ID (e.g. H19 or CPM20) into short stage
     """
-    assert (ID[0] in short_stage_order) or (ID[2] in short_stage_order)
 
     if ID.startswith("H"):
-        return ID[0]
+        return short_stage_dict[ID[0]]
     else:
-        return ID[2]
+        return short_stage_dict[ID[2]]
 
 
 def change_short_into_number(given_short: str) -> str:
