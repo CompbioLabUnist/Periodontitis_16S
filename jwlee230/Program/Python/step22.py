@@ -42,7 +42,7 @@ if __name__ == "__main__":
 
     seaborn.set(context="poster", style="whitegrid")
     fig, ax = matplotlib.pyplot.subplots(figsize=(24, 24))
-    seaborn.scatterplot(data=tsne_data, x="TSNE1", y="TSNE2", hue="LongStage", style="LongStage", ax=ax, legend="full", hue_order=step00.long_stage_order, style_order=step00.long_stage_order)
+    seaborn.scatterplot(data=tsne_data, x="TSNE1", y="TSNE2", hue="LongStage", style="LongStage", ax=ax, legend="full", hue_order=step00.long_stage_order, style_order=step00.long_stage_order, palette=step00.color_stage_order)
 
     for stage, color in zip(step00.long_stage_order, step00.color_stage_order):
         selected_data = tsne_data.loc[(tsne_data["LongStage"] == stage)]
