@@ -176,6 +176,7 @@ short_stage_dict = {"H": "H", "E": "Sli", "M": "M", "S": "S"}
 short_stage_order = ["H", "Sli", "M", "S"]
 number_stage_order = ["0", "1", "2", "3"]
 long_stage_order = ["Healthy", "Slight", "Moderate", "Severe"]
+color_stage_order = ["green", "yellow", "red", "black"]
 
 
 def change_ID_into_short_stage(ID: str) -> str:
