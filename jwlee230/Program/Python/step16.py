@@ -27,8 +27,8 @@ if __name__ == "__main__":
         data[taxonomy] = raw_data[list(filter(lambda x: x[0] == taxonomy, raw_data.columns))].sum(axis=1)
     data.columns = list(map(lambda x: step00.consistency_taxonomy(x), data.columns))
 
-    data["ShortStage"] = list(map(lambda x: x[0] if x[0] == "H" else x[2], list(data.index)))
-    data["LongStage"] = list(map(lambda x: {"H": "Healthy", "E": "Early", "M": "Moderate", "S": "Severe"}[x], data["ShortStage"]))
+    data["ShortStage"] = list(map(step00.change_ID_into_short_stage, list(data.index)))
+    data["LongStage"] = list(map(step00.change_short_into_long, data["ShortStage"]))
 
     print(data)
     step00.make_pickle(args.output, data)

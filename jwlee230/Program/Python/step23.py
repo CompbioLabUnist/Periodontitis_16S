@@ -39,7 +39,7 @@ if __name__ == "__main__":
     tsne_data = step00.read_pickle(args.tsne)
     tsne_data["ShortStage"] = list(map(step00.change_ID_into_short_stage, tsne_data["ID"]))
     tsne_data["LongStage"] = list(map(step00.change_short_into_long, tsne_data["ShortStage"]))
-    tsne_data = tsne_data.loc[(tsne_data["ShortStage"] == "H") | (tsne_data["ShortStage"] == "E")]
+    tsne_data = tsne_data.loc[(tsne_data["ShortStage"] == "H") | (tsne_data["ShortStage"] == "Sli")]
 
     data = step00.read_pickle(args.input)
     data = data.loc[(data["ShortStage"] == "H") | (data["ShortStage"] == "Sli")]
@@ -48,6 +48,7 @@ if __name__ == "__main__":
 
     print(tsne_data)
     print(data)
+    print(set(data["LongStage"]))
 
     # Get Feature Importances
     classifier = sklearn.ensemble.RandomForestClassifier(max_features=None, n_jobs=args.cpu, random_state=0)
@@ -56,7 +57,7 @@ if __name__ == "__main__":
     best_features = list(map(lambda x: x[1], sorted(list(filter(lambda x: x[0] > 0, zip(feature_importances, train_columns))), reverse=True)))
 
     # Save Features
-    tar_files.append("features.txt")
+    tar_files.append("features.csv")
     with open(tar_files[-1], "w") as f:
         f.write("Order,Taxonomy Classification,Importances\n")
         for i, (feature, importance) in enumerate(zip(best_features, sorted(feature_importances, reverse=True))):
@@ -118,6 +119,10 @@ if __name__ == "__main__":
 
     score_data = pandas.DataFrame.from_records(scores, columns=["FeatureCount", "Metrics", "Value"])
     print(score_data)
+
+    # Export score data
+    tar_files.append("metrics.csv")
+    score_data.to_csv(tar_files[-1])
 
     # Draw Metrics
     fig, ax = matplotlib.pyplot.subplots(figsize=(32, 18))

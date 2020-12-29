@@ -56,6 +56,7 @@ if __name__ == "__main__":
 
     print(tsne_data)
     print(data)
+    print(set(data["LongStage"]))
 
     # Get Feature Importances
     classifier = sklearn.ensemble.RandomForestClassifier(max_features=None, n_jobs=args.cpu, random_state=0)
@@ -64,7 +65,7 @@ if __name__ == "__main__":
     best_features = list(map(lambda x: x[1], sorted(list(filter(lambda x: x[0] > 0, zip(feature_importances, train_columns))), reverse=True)))
 
     # Save Features
-    tar_files.append("features.txt")
+    tar_files.append("features.csv")
     with open(tar_files[-1], "w") as f:
         f.write("Order,Taxonomy Classification,Importances\n")
         for i, (feature, importance) in enumerate(zip(best_features, sorted(feature_importances, reverse=True))):
@@ -145,7 +146,7 @@ if __name__ == "__main__":
     for metric in step00.selected_derivations:
         print("--", metric)
         fig, ax = matplotlib.pyplot.subplots(figsize=(32, 18))
-        seaborn.lineplot(data=score_data.query("Metrics == '%s'" % metric,), x="FeatureCount", y="Value", markers=True, ax=ax)
+        seaborn.lineplot(data=score_data.query("Metrics == '%s'" % metric,), x="FeatureCount", y="Value", ax=ax)
         matplotlib.pyplot.grid(True)
         matplotlib.pyplot.ylim(0, 1)
         matplotlib.pyplot.title("Higest with %s feature(s) at %.3f" % highest_metrics[metric])
