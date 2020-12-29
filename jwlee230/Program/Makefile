@@ -358,7 +358,8 @@ Output/Step20/two.%.tar: Python/step20.py Output/Step17/whole.%.tar.gz Output/St
 Output/Step20/one-two.%.tar: Python/step20.py Output/Step17/whole.%.tar.gz Output/Step18/ANCOM.%.tar.gz | Output/Step20 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --one --two 1> $@.stdout 2> $@.stderr
 
-step20: Output/Step20/ANCOM.DADA2.gg.tar Output/Step20/ANCOM.DADA2.silva.tar Output/Step20/ANCOM.DADA2.homd.tar Output/Step20/ANCOM.Deblur.gg.tar Output/Step20/ANCOM.Deblur.silva.tar Output/Step20/ANCOM.Deblur.homd.tar Output/Step20/one.DADA2.gg.tar Output/Step20/one.DADA2.silva.tar Output/Step20/one.DADA2.homd.tar Output/Step20/one.Deblur.gg.tar Output/Step20/one.Deblur.silva.tar Output/Step20/one.Deblur.homd.tar Output/Step20/two.DADA2.gg.tar Output/Step20/two.DADA2.silva.tar Output/Step20/two.DADA2.homd.tar Output/Step20/two.Deblur.gg.tar Output/Step20/two.Deblur.silva.tar Output/Step20/two.Deblur.homd.tar Output/Step20/one-two.DADA2.gg.tar Output/Step20/one-two.DADA2.silva.tar Output/Step20/one-two.DADA2.homd.tar Output/Step20/one-two.Deblur.gg.tar Output/Step20/one-two.Deblur.silva.tar Output/Step20/one-two.Deblur.homd.tar
+# step20: Output/Step20/ANCOM.DADA2.gg.tar Output/Step20/ANCOM.DADA2.silva.tar Output/Step20/ANCOM.DADA2.homd.tar Output/Step20/ANCOM.Deblur.gg.tar Output/Step20/ANCOM.Deblur.silva.tar Output/Step20/ANCOM.Deblur.homd.tar Output/Step20/one.DADA2.gg.tar Output/Step20/one.DADA2.silva.tar Output/Step20/one.DADA2.homd.tar Output/Step20/one.Deblur.gg.tar Output/Step20/one.Deblur.silva.tar Output/Step20/one.Deblur.homd.tar Output/Step20/two.DADA2.gg.tar Output/Step20/two.DADA2.silva.tar Output/Step20/two.DADA2.homd.tar Output/Step20/two.Deblur.gg.tar Output/Step20/two.Deblur.silva.tar Output/Step20/two.Deblur.homd.tar Output/Step20/one-two.DADA2.gg.tar Output/Step20/one-two.DADA2.silva.tar Output/Step20/one-two.DADA2.homd.tar Output/Step20/one-two.Deblur.gg.tar Output/Step20/one-two.Deblur.silva.tar Output/Step20/one-two.Deblur.homd.tar
+step20: Output/Step20/ANCOM.DADA2.homd.tar Output/Step20/one.DADA2.homd.tar Output/Step20/two.DADA2.homd.tar Output/Step20/one-two.DADA2.homd.tar
 .PHONY += step20
 
 # Step 21 (Extract TSV from Beta-diversity)
@@ -391,7 +392,8 @@ Output/Step23:
 	mkdir -p $@
 
 Output/Step23/HE.%.tar: Python/step23.py Output/Step17/whole.%.tar.gz Output/Step18/ANCOM.%.tar.gz | Output/Step23 build.log
-	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS)
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) 1> $@.stdout 2> $@.stderr
 
-step23: Output/Step23/HE.DADA2.gg.tar Output/Step23/HE.DADA2.silva.tar Output/Step23/HE.DADA2.homd.tar Output/Step23/HE.Deblur.gg.tar Output/Step23/HE.Deblur.silva.tar Output/Step23/HE.Deblur.homd.tar
+# step23: Output/Step23/HE.DADA2.gg.tar Output/Step23/HE.DADA2.silva.tar Output/Step23/HE.DADA2.homd.tar Output/Step23/HE.Deblur.gg.tar Output/Step23/HE.Deblur.silva.tar Output/Step23/HE.Deblur.homd.tar
+step23: Output/Step23/HE.DADA2.homd.tar
 .PHONY += step23
