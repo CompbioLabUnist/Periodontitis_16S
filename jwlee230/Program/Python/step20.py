@@ -127,6 +127,10 @@ if __name__ == "__main__":
     score_data = pandas.DataFrame.from_records(scores, columns=["FeatureCount", "Metrics", "Value"])
     print(score_data)
 
+    # Export score data
+    tar_files.append("metrics.csv")
+    score_data.to_csv(tar_files[-1])
+
     # Draw Metrics
     fig, ax = matplotlib.pyplot.subplots(figsize=(32, 18))
     seaborn.lineplot(data=score_data, x="FeatureCount", y="Value", hue="Metrics", style="Metrics", ax=ax, legend="full", markers=True)
@@ -141,10 +145,10 @@ if __name__ == "__main__":
     for metric in step00.selected_derivations:
         print("--", metric)
         fig, ax = matplotlib.pyplot.subplots(figsize=(32, 18))
-        seaborn.lineplot(data=score_data.query("Metrics == '%s'" % metric,), x="FeatureCount", y="Value", ax=ax)
+        seaborn.lineplot(data=score_data.query("Metrics == '%s'" % metric,), x="FeatureCount", y="Value", markers=True, ax=ax)
         matplotlib.pyplot.grid(True)
         matplotlib.pyplot.ylim(0, 1)
-        matplotlib.pyplot.title("Higest with %s feature(s) at %.3f; Lowest with %s feature(s) at %.3f" % (highest_metrics[metric] + lowest_metrics[metric]))
+        matplotlib.pyplot.title("Higest with %s feature(s) at %.3f" % highest_metrics[metric])
         tar_files.append(metric + ".png")
         fig.savefig(tar_files[-1])
         matplotlib.pyplot.close(fig)
@@ -168,7 +172,7 @@ if __name__ == "__main__":
 
     # Draw Violin Plots
     print("Drawing Violin plot start!!")
-    for i, feature in enumerate(best_features[:4]):
+    for i, feature in enumerate(best_features[:2]):
         print("--", feature)
 
         seaborn.set(context="poster", style="whitegrid")
