@@ -397,3 +397,13 @@ Output/Step23/HE.%.tar: Python/step23.py Output/Step17/whole.%.tar.gz Output/Ste
 # step23: Output/Step23/HE.DADA2.gg.tar Output/Step23/HE.DADA2.silva.tar Output/Step23/HE.DADA2.homd.tar Output/Step23/HE.Deblur.gg.tar Output/Step23/HE.Deblur.silva.tar Output/Step23/HE.Deblur.homd.tar
 step23: Output/Step23/HE.DADA2.homd.tar
 .PHONY += step23
+
+# Step 24 (Make 2D plot of Pg. & Act.)
+Output/Step24:
+	mkdir -p $@
+
+Output/Step24/2D.%.png: Python/step24.py Output/Step17/whole.%.tar.gz | Output/Step24 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@)
+
+step24: Output/Step24/2D.DADA2.homd.png
+.PHONY += step24
