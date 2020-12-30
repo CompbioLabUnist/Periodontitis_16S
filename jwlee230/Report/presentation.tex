@@ -263,7 +263,7 @@
         \frametitle{Classification}
 
         \begin{figure}
-            \includegraphics[width=0.8 \linewidth]{figures/Classifier/classifier.pdf}
+            \includegraphics[width=0.5 \linewidth]{figures/Classifier/classifier.pdf}
             \caption{Workflow of Classification}
         \end{figure}
 
@@ -305,20 +305,14 @@
         \frametitle{Rarefaction}
 
         \begin{figure}
-            $\begin{array}{cc}
-                \includegraphics[width=0.4 \linewidth]{figures/Rarefaction/DADA.pdf}
-                &
-                \includegraphics[width=0.4 \linewidth]{figures/Rarefaction/Deblur.pdf}
-                \\
-                \mbox{(a) DADA2} & \mbox{(b) Deblur} \\
-            \end{array}$
+            \includegraphics[width=0.6 \linewidth]{figures/Rarefaction/DADA.pdf}
             \caption{Frequency per sample}
         \end{figure}
 
-        $\therefore$ p-sampling-depth $n_{DADA2} = 3786$ and $n_{Deblur} = 7253$\\
+        $\therefore$ p-sampling-depth $n_{DADA2} = 3786$. \\
     \end{frame}
 
-    \begin{frame}[allowframebreaks]
+    \begin{frame}
         \frametitle{Alpha-diversity}
 
         \begin{figure}
@@ -337,66 +331,33 @@
             \end{array}$
             \caption{Alpha Diversity from DADA2 with Kruskal-Wallis among All Groups}
         \end{figure}
-
-        \begin{figure}
-            $\begin{array}{cc}
-                \includegraphics[width=0.4 \linewidth]{figures/AlphaDiversity/Deblur/evenness.png}
-                &
-                \includegraphics[width=0.4 \linewidth]{figures/AlphaDiversity/Deblur/faith.png}
-                \\
-                \mbox{(a) Evenness ($p < 0.05$)} & \mbox{(b) Faith PD ($p < 10^{-18}$)} \\
-
-                \includegraphics[width=0.4 \linewidth]{figures/AlphaDiversity/Deblur/observed.png}
-                &
-                \includegraphics[width=0.4 \linewidth]{figures/AlphaDiversity/Deblur/shannon.png}
-                \\
-                \mbox{(c) Observed features ($p < 10^{-12}$)} & \mbox{(d) Shannon's diversity ($p < 10^{-4}$)}
-            \end{array}$
-            \caption{Alpha Diversity from Deblur with Kruskal-Wallis among All Groups}
-        \end{figure}
     \end{frame}
 
     \begin{frame}[allowframebreaks]
         \frametitle{Beta-diversity}
 
         \begin{figure}
-            \includegraphics[width=0.5 \linewidth]{figures/BetaDiversity/DADA2.bray_curtis.png}
-            \caption{Bray-Curtis Distance with DADA2}
+            $\begin{array}{cc}
+                \includegraphics[width=0.4 \linewidth]{figures/BetaDiversity/DADA2.bray_curtis.png}
+                &
+                \includegraphics[width=0.4 \linewidth]{figures/BetaDiversity/DADA2.jaccard.png}
+                \\
+
+                \mbox{(a) Bray-Curtis} & \mbox{(b) Jaccard} \\
+            \end{array}$
+            \caption{Beta-diversity with DADA2}
         \end{figure}
 
         \begin{figure}
-            \includegraphics[width=0.5 \linewidth]{figures/BetaDiversity/DADA2.jaccard.png}
-            \caption{Jaccard Distance with DADA2}
-        \end{figure}
+            $\begin{array}{cc}
+                \includegraphics[width=0.4 \linewidth]{figures/BetaDiversity/DADA2.unweighted_unifrac.png}
+                &
+                \includegraphics[width=0.4 \linewidth]{figures/BetaDiversity/DADA2.weighted_unifrac.png}
+                \\
 
-        \begin{figure}
-            \includegraphics[width=0.5 \linewidth]{figures/BetaDiversity/DADA2.unweighted_unifrac.png}
-            \caption{Unweighted Unifrac Distance with DADA2}
-        \end{figure}
-
-        \begin{figure}
-            \includegraphics[width=0.5 \linewidth]{figures/BetaDiversity/DADA2.weighted_unifrac.png}
-            \caption{Weighted Unifrac Distance with DADA2}
-        \end{figure}
-
-        \begin{figure}
-            \includegraphics[width=0.5 \linewidth]{figures/BetaDiversity/Deblur.bray_curtis.png}
-            \caption{Bray-Curtis Distance with Deblur}
-        \end{figure}
-
-        \begin{figure}
-            \includegraphics[width=0.5 \linewidth]{figures/BetaDiversity/Deblur.jaccard.png}
-            \caption{Jaccard Distance with Deblur}
-        \end{figure}
-
-        \begin{figure}
-            \includegraphics[width=0.5 \linewidth]{figures/BetaDiversity/Deblur.unweighted_unifrac.png}
-            \caption{Unweighted Unifrac Distance with Deblur}
-        \end{figure}
-
-        \begin{figure}
-            \includegraphics[width=0.5 \linewidth]{figures/BetaDiversity/Deblur.weighted_unifrac.png}
-            \caption{Weighted Unifrac Distance with Deblur}
+                \mbox{(a) Unweighted UniFrac} & \mbox{(b) Weighted UniFrac} \\
+            \end{array}$
+            \caption{Beta-diversity with DADA2}
         \end{figure}
     \end{frame}
 
@@ -404,292 +365,94 @@
         \frametitle{ANCOM}
 
         \begin{figure}
-            $\begin{array}{ccc}
-                \includegraphics[width=0.3 \linewidth]{figures/ANCOM/DADA2.gg.png}
-                &
-                \includegraphics[width=0.3 \linewidth]{figures/ANCOM/DADA2.silva.png}
-                &
-                \includegraphics[width=0.3 \linewidth]{figures/ANCOM/DADA2.homd.png}
-                \\
-                \mbox{(a) GG (15 Taxa)} & \mbox{(b) SILVA (23 Taxa)} & \mbox{(c) HOMD (20 Taxa)} \\
-            \end{array}$
-            \caption{ANCOM Volcano Plot with DADA2}
-        \end{figure}
-
-        \begin{figure}
-            $\begin{array}{ccc}
-                \includegraphics[width=0.3 \linewidth]{figures/ANCOM/Deblur.gg.png}
-                &
-                \includegraphics[width=0.3 \linewidth]{figures/ANCOM/Deblur.silva.png}
-                &
-                \includegraphics[width=0.3 \linewidth]{figures/ANCOM/Deblur.homd.png}
-                \\
-                \mbox{(a) GG (27 Taxa)} & \mbox{(b) SILVA (20 Taxa)} & \mbox{(c) HOMD (28 Taxa)} \\
-            \end{array}$
-            \caption{ANCOM Volcano Plot with Deblur}
+            \includegraphics[width=0.8 \linewidth]{figures/ANCOM/DADA2.homd.png}
+            \caption{ANCOM Volcano Plot with DADA2 \& HOMD}
         \end{figure}
     \end{frame}
 
-    \begin{frame}[allowframebreaks]
+    \begin{frame}
         \frametitle{t-SNE with Whole Microbiome}
 
         \begin{figure}
-            $\begin{array}{ccc}
-                \includegraphics[width=0.3 \linewidth]{figures/tSNE/Whole/whole.DADA2.gg.png}
-                &
-                \includegraphics[width=0.3 \linewidth]{figures/tSNE/Whole/whole.DADA2.silva.png}
-                &
-                \includegraphics[width=0.3 \linewidth]{figures/tSNE/Whole/whole.DADA2.homd.png}
-                \\
-                \mbox{(a) GG (328 Taxa)} & \mbox{(b) SILVA (633 Taxa)} & \mbox{(c) HOMD (425 Taxa)} \\
-            \end{array}$
-            \caption{t-SNE Plot with Whole Microbiome from DADA2}
-        \end{figure}
-
-        \begin{figure}
-            $\begin{array}{ccc}
-                \includegraphics[width=0.3 \linewidth]{figures/tSNE/Whole/whole.Deblur.gg.png}
-                &
-                \includegraphics[width=0.3 \linewidth]{figures/tSNE/Whole/whole.Deblur.silva.png}
-                &
-                \includegraphics[width=0.3 \linewidth]{figures/tSNE/Whole/whole.Deblur.homd.png}
-                \\
-                \mbox{(a) GG (232 Taxa)} & \mbox{(b) SILVA (414 Taxa)} & \mbox{(c) HOMD (235 Taxa)} \\
-            \end{array}$
-            \caption{t-SNE Plot with Whole Microbiome from Deblur}
+            \includegraphics[width=0.5 \linewidth]{figures/tSNE/Whole/whole.DADA2.homd.png}
+            \caption{t-SNE Plot with Whole Microbiome from DADA2 \& HOMD}
         \end{figure}
     \end{frame}
 
-    \begin{frame}[allowframebreaks]
+    \begin{frame}
         \frametitle{t-SNE with ANCOM Selected}
 
         \begin{figure}
-            $\begin{array}{ccc}
-                \includegraphics[width=0.3 \linewidth]{figures/tSNE/ANCOM/ANCOM.DADA2.gg.png}
-                &
-                \includegraphics[width=0.3 \linewidth]{figures/tSNE/ANCOM/ANCOM.DADA2.silva.png}
-                &
-                \includegraphics[width=0.3 \linewidth]{figures/tSNE/ANCOM/ANCOM.DADA2.homd.png}
-                \\
-                \mbox{(a) GG (15 Taxa)} & \mbox{(b) SILVA (23 Taxa)} & \mbox{(c) HOMD (20 Taxa)} \\
-            \end{array}$
-            \caption{t-SNE Plot with ANCOM Selected from DADA2}
-        \end{figure}
-
-        \begin{figure}
-            $\begin{array}{ccc}
-                \includegraphics[width=0.3 \linewidth]{figures/tSNE/ANCOM/ANCOM.Deblur.gg.png}
-                &
-                \includegraphics[width=0.3 \linewidth]{figures/tSNE/ANCOM/ANCOM.Deblur.silva.png}
-                &
-                \includegraphics[width=0.3 \linewidth]{figures/tSNE/ANCOM/ANCOM.Deblur.homd.png}
-                \\
-                \mbox{(a) GG (27 Taxa)} & \mbox{(b) SILVA (20 Taxa)} & \mbox{(c) HOMD (28 Taxa)} \\
-            \end{array}$
-            \caption{t-SNE Plot with ANCOM Selected from Deblur}
+            \includegraphics[width=0.5 \linewidth]{figures/tSNE/ANCOM/ANCOM.DADA2.homd.png}
+            \caption{t-SNE Plot with ANCOM Selected from DADA2 \& HOMD}
         \end{figure}
     \end{frame}
 
     \begin{frame}[allowframebreaks]
-        \frametitle{Random Forest Classifier -- Every Classes}
+        \frametitle{Random Forest Classifier with Every Class}
 
         \begin{figure}
             \includegraphics[width=0.8 \linewidth]{figures/RandomForest/whole.pdf}
             \caption{Random Forest Classifier Workflow}
         \end{figure}
 
-        \textbf{Deblur + HOMD} gives the best result with balanced accuracy (0.778 with 13 taxa).
-
-        \begin{table}
-            \caption{Features Order by Importances}
-            \begin{tabular}{c|l}
-                Order & Taxonomy (Genus [Species]) \\ \hline
-                0 & \textit{Porphyromonas gingivalis} \\
-                1 & \textit{Actinomyces} \\
-                2 & \textit{Pasteurellaceae} \\
-                3 & \textit{Veillonella denticariosi} \\
-                4 & \textit{Oribacterium sinus} \\
-                5 & \textit{Peptostreptococcus anaerobius} \\
-                6 & \textit{Prevotella nanceiensis} \\
-                7 & \textit{Treponema} \\
-                8 & \textit{Parvimonas sp. HMT 393} \\
-                9 & \textit{Filifactor alocis} \\
-                ... & ... \\
-            \end{tabular}
-        \end{table}
+        The best result is at \textbf{0.980} with 9 features.
 
         \begin{figure}
-            \includegraphics[width=0.8 \linewidth]{figures/RandomForest/ANCOM.Deblur.homd/metrics.png}
+            \includegraphics[width=0.8 \linewidth]{figures/RandomForest/ANCOM.DADA2.homd/metrics.png}
             \caption{Metrics by Feature Count}
         \end{figure}
 
         \begin{figure}
             $\begin{array}{cc}
-                \includegraphics[width=0.4 \linewidth]{figures/RandomForest/ANCOM.Deblur.homd/feature_0.png}
+                \includegraphics[width=0.4 \linewidth]{figures/RandomForest/ANCOM.DADA2.homd/feature_0.png}
                 &
-                \includegraphics[width=0.4 \linewidth]{figures/RandomForest/ANCOM.Deblur.homd/feature_1.png}
+                \includegraphics[width=0.4 \linewidth]{figures/RandomForest/ANCOM.DADA2.homd/feature_1.png}
                 \\
-                \mbox{(a) \textit{Porphyromonas gingivalis}} & \mbox{(b) \textit{Actinomyces}} \\
+
+                \mbox{(a) \textit{Actinomyces}} & \mbox{(b) \textit{Porphyromonas gingivalis}} \\
             \end{array}$
-            \caption{Violin Plot by Features}
+            \caption{Most Important Two Features}
         \end{figure}
     \end{frame}
 
     \begin{frame}[allowframebreaks]
-        \frametitle{Random Forest Classifier -- Merge (Healthy+Early)}
+        \frametitle{Random Forest Classifier with (M+S) Classes}
 
         \begin{figure}
             \includegraphics[width=0.8 \linewidth]{figures/RandomForest/merge.pdf}
-            \caption{Random Forest Classifier with Merging Workflow}
+            \caption{Random Forest Classifier Workflow}
         \end{figure}
 
-        \textbf{DADA2 + HOMD} gives the best result with balanced accuracy (0.938 with 11 taxa).
-
-        \begin{table}
-            \caption{Features Order by Importances}
-            \begin{tabular}{c|l}
-                Order & Taxonomy (Genus [Species]) \\ \hline
-                0 & \textit{Porphyromonas gingivalis} \\
-                1 & \textit{Actinomyces} \\
-                2 & \textit{Prevotella intermedia} \\
-                3 & \textit{Filifactor alocis} \\
-                4 & \textit{Treponema sp. HMT 260} \\
-                5 & \textit{Campylobacter showae} \\
-                6 & \textit{Porphyromonas sp. HMT 285} \\
-                7 & \textit{Peptostreptococcaceae XIG-6 nodatum} \\
-                8 & \textit{Prevotella sp. HMT 304} \\
-                9 & \textit{Actinomyces graevenitzii} \\
-                10 & \textit{Tannerella forsythia} \\
-            \end{tabular}
-        \end{table}
+        The best result is at \textbf{0.989} with 9 features.
 
         \begin{figure}
-            \includegraphics[width=0.8 \linewidth]{figures/RandomForest/one.DADA2.homd/metrics.png}
+            \includegraphics[width=0.8 \linewidth]{figures/RandomForest/two.DADA2.homd/metrics.png}
             \caption{Metrics by Feature Count}
         \end{figure}
 
         \begin{figure}
             $\begin{array}{cc}
-                \includegraphics[width=0.4 \linewidth]{figures/RandomForest/one.DADA2.homd/feature_0.png}
+                \includegraphics[width=0.4 \linewidth]{figures/RandomForest/two.DADA2.homd/feature_0.png}
                 &
-                \includegraphics[width=0.4 \linewidth]{figures/RandomForest/one.DADA2.homd/feature_1.png}
+                \includegraphics[width=0.4 \linewidth]{figures/RandomForest/two.DADA2.homd/feature_1.png}
                 \\
-                \mbox{(a) \textit{Porphyromonas gingivalis}} & \mbox{(b) \textit{Actinomyces}} \\
+
+                \mbox{(a) \textit{Actinomyces}} & \mbox{(b) \textit{Porphyromonas gingivalis}} \\
             \end{array}$
-            \caption{Violin Plot by Features}
-        \end{figure}
-   \end{frame}
-
-    \begin{frame}[allowframebreaks]
-        \frametitle{Random Forest Classifier -- Merge (Moderate + Severe)}
-
-        \begin{figure}
-            \includegraphics[width=0.8 \linewidth]{figures/RandomForest/merge.pdf}
-            \caption{Random Forest Classifier with Merging Workflow}
-        \end{figure}
-
-        \textbf{Deblur + HOMD} gives the best result with balanced accuracy (0.777 with 28 taxa).
-
-        \begin{table}
-            \caption{Features Order by Importances}
-            \begin{tabular}{c|l}
-                Order & Taxonomy (Genus [Species]) \\ \hline
-                0 & \textit{Porphyromonas gingivalis} \\
-                1 & \textit{Actinomyces} \\
-                2 & \textit{Pasteurellaceae} \\
-                3 & \textit{Veillonella denticariosi} \\
-                4 & \textit{Oribacterium sinus} \\
-                5 & \textit{Peptostreptococcus anaerobius} \\
-                6 & \textit{Treponema} \\
-                7 & \textit{Prevotella nanceiensis} \\
-                8 & \textit{Porphyromonas sp. HMT 285} \\
-                9 & \textit{Parvimonas sp. HMT 393} \\
-                ... & ... \\
-            \end{tabular}
-        \end{table}
-
-        \begin{figure}
-            \includegraphics[width=0.8 \linewidth]{figures/RandomForest/two.Deblur.homd/metrics.png}
-            \caption{Metrics by Feature Count}
-        \end{figure}
-
-        \begin{figure}
-            $\begin{array}{cc}
-                \includegraphics[width=0.4 \linewidth]{figures/RandomForest/two.Deblur.homd/feature_0.png}
-                &
-                \includegraphics[width=0.4 \linewidth]{figures/RandomForest/two.Deblur.homd/feature_1.png}
-                \\
-                \mbox{(a) \textit{Porphyromonas gingivalis}} & \mbox{(b) \textit{Actinomyces}} \\
-            \end{array}$
-            \caption{Violin Plot by Features}
+            \caption{Most Important Two Features}
         \end{figure}
     \end{frame}
 
     \begin{frame}[allowframebreaks]
-        \frametitle{Random Forest Classifier -- Merge (H + E) \& (M + S)}
+        \frametitle{Random Forest Classifier with (H \& E) Classes}
 
         \begin{figure}
             \includegraphics[width=0.8 \linewidth]{figures/RandomForest/merge.pdf}
-            \caption{Random Forest Classifier with Merging Workflow}
+            \caption{Random Forest Classifier Workflow}
         \end{figure}
 
-        \textbf{DADA2 + SILVA} gives the best result with balanced accuracy (0.934 with 15 taxa).
-
-        \begin{table}
-            \caption{Features Order by Importances}
-            \begin{tabular}{c|l}
-                Order & Taxonomy (Genus [Species]) \\ \hline
-                0 & \textit{Actinomyces} \\
-                1 & \textit{Treponema denticola} \\
-                2 & \textit{Porphyromonas gingivalis} \\
-                3 & \textit{Prevotella intermedia} \\
-                4 & \textit{Filifactor alocis} \\
-                5 & \textit{Schaalia odontolytica} \\
-                6 & \textit{Tannerella forsythia} \\
-                7 & \textit{Eubacterium nodatum} \\
-                8 & \textit{Corynebacterium durum} \\
-                9 & \textit{Oribacterium} \\
-                ... & ... \\
-            \end{tabular}
-        \end{table}
-
-        \begin{figure}
-            \includegraphics[width=0.8 \linewidth]{figures/RandomForest/one-two.DADA2.silva/metrics.png}
-            \caption{Metrics by Feature Count}
-        \end{figure}
-
-        \begin{figure}
-            $\begin{array}{cc}
-                \includegraphics[width=0.4 \linewidth]{figures/RandomForest/one-two.DADA2.silva/feature_0.png}
-                &
-                \includegraphics[width=0.4 \linewidth]{figures/RandomForest/one-two.DADA2.silva/feature_1.png}
-                \\
-                \mbox{(a) \textit{Actinomyces}} & \mbox{(b) \textit{Treponema denticola}} \\
-            \end{array}$
-            \caption{Violin Plot by Features}
-        \end{figure}
-    \end{frame}
-
-    \begin{frame}[allowframebreaks]
-        \frametitle{Random Forest Classifier -- Only (H + E)}
-
-        \begin{figure}
-            \includegraphics[width=0.8 \linewidth]{figures/RandomForest/select.pdf}
-            \caption{Random Forest Classifier with Merging Workflow}
-        \end{figure}
-
-        \textbf{DADA2 + HOMD} gives the best result with balanced accuracy (0.771 with 4 taxa).
-
-        \begin{table}
-            \caption{Features Order by Importances}
-            \begin{tabular}{c|l}
-                Order & Taxonomy (Genus [Species]) \\ \hline
-                0 & \textit{Actinomyces} \\
-                1 & \textit{Porphyromonas gingivalis} \\
-                2 & \textit{Actinomyces graevenitzii} \\
-                3 & \textit{Filifactor alocis} \\
-            \end{tabular}
-        \end{table}
+        The best result is at \textbf{0.768} with 4 features.
 
         \begin{figure}
             \includegraphics[width=0.8 \linewidth]{figures/RandomForest/HE.DADA2.homd/metrics.png}
@@ -702,23 +465,20 @@
                 &
                 \includegraphics[width=0.4 \linewidth]{figures/RandomForest/HE.DADA2.homd/feature_1.png}
                 \\
+
                 \mbox{(a) \textit{Actinomyces}} & \mbox{(b) \textit{Porphyromonas gingivalis}} \\
             \end{array}$
-            \caption{Violin Plot by Features}
+            \caption{Most Important Two Features}
         \end{figure}
     \end{frame}
 
     \section{Discussion}
     \begin{frame}
-        \frametitle{\textit{Porphyromonas} Genus}
-    \end{frame}
-
-    \begin{frame}
         \frametitle{\textit{Actinomyces} Genus}
     \end{frame}
 
     \begin{frame}
-        \frametitle{\textit{Treponema} Genus}
+        \frametitle{\textit{Porphyromonas gingivalis}}
     \end{frame}
 
     \begin{frame}[allowframebreaks]
