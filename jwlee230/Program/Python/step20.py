@@ -130,7 +130,12 @@ if __name__ == "__main__":
 
     # Export score data
     tar_files.append("metrics.csv")
-    score_data.to_csv(tar_files[-1])
+    with open(tar_files[-1], "w") as f:
+        f.write("Count,Metrics,Mean,STD\n")
+        for i in range(1, len(best_features) + 1):
+            for metric in step00.selected_derivations:
+                selected_data = list(score_data.loc[(score_data["FeatureCount"] == i) & (score_data["Metrics"] == metric)]["Value"])
+                f.write("%d,%s,%.3f,%.3f\n" % (i, metric, numpy.mean(selected_data), numpy.std(selected_data)))
 
     # Draw Metrics
     fig, ax = matplotlib.pyplot.subplots(figsize=(32, 18))
