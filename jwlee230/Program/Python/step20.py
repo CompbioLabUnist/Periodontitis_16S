@@ -103,13 +103,10 @@ if __name__ == "__main__":
             y_train, y_test = data.iloc[train_index]["LongStage"], data.iloc[test_index]["LongStage"]
 
             classifier.fit(x_train, y_train)
-            confusion_matrix = sklearn.metrics.confusion_matrix(y_test, classifier.predict(x_test))
+            confusion_matrix = numpy.sum(sklearn.metrics.multilabel_confusion_matrix(y_test, classifier.predict(x_test)), axis=0)
 
             for metric in step00.selected_derivations:
                 score = step00.aggregate_confusion_matrix(confusion_matrix, metric)
-
-                if numpy.isnan(score):
-                    continue
 
                 scores.append((i, metric, score))
 
@@ -178,17 +175,21 @@ if __name__ == "__main__":
 
     # Draw Violin Plots
     print("Drawing Violin plot start!!")
-    for i, feature in enumerate(best_features[:2]):
+    for i, feature in enumerate(best_features):
         print("--", feature)
 
         seaborn.set(context="poster", style="whitegrid")
+        matplotlib.use("Agg")
+        matplotlib.rcParams.update({"font.size": 100, "axes.labelsize": 50, 'axes.titlesize': 100, 'xtick.labelsize': 50, 'ytick.labelsize': 50})
 
         fig, ax = matplotlib.pyplot.subplots(figsize=(36, 36))
-        seaborn.violinplot(data=data, x="LongStage", y=feature, order=sorted(set(data["LongStage"])), ax=ax, inner="box")
+        seaborn.violinplot(data=data, x="LongStage", y=feature, order=sorted(set(data["LongStage"])) if (args.one or args.two) else step00.long_stage_order, ax=ax, inner="box")
 
-        statannot.add_stat_annotation(ax, data=data, x="LongStage", y=feature, order=sorted(set(data["LongStage"])), test="t-test_ind", box_pairs=itertools.combinations(sorted(set(data["LongStage"])), 2), text_format="star", loc="inside", verbose=0)
+        statannot.add_stat_annotation(ax, data=data, x="LongStage", y=feature, order=sorted(set(data["LongStage"])) if (args.one or args.two) else step00.long_stage_order, test="t-test_ind", box_pairs=itertools.combinations(sorted(set(data["LongStage"])), 2), text_format="star", loc="inside", verbose=0)
 
-        matplotlib.pyplot.title(" ".join(step00.simplified_taxonomy(feature).split("_")))
+        matplotlib.pyplot.title(" ".join(list(map(lambda x: x[3:], step00.consistency_taxonomy(feature).split("; ")))[5:]))
+        matplotlib.pyplot.ylabel("")
+
         tar_files.append("Feature_" + str(i) + ".png")
         fig.savefig(tar_files[-1])
         matplotlib.pyplot.close(fig)

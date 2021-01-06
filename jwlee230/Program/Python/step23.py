@@ -100,9 +100,6 @@ if __name__ == "__main__":
             for metric in step00.selected_derivations:
                 score = step00.aggregate_confusion_matrix(confusion_matrix, metric)
 
-                if numpy.isnan(score):
-                    continue
-
                 scores.append((i, metric, score))
 
                 if metric in score_by_metric:
@@ -146,7 +143,7 @@ if __name__ == "__main__":
         seaborn.lineplot(data=score_data.query("Metrics == '%s'" % metric,), x="FeatureCount", y="Value", ax=ax)
         matplotlib.pyplot.grid(True)
         matplotlib.pyplot.ylim(0, 1)
-        matplotlib.pyplot.title("Higest with %s feature(s) at %.3f" % highest_metrics[metric])
+        matplotlib.pyplot.title("Highest with %s feature(s) at %.3f" % highest_metrics[metric])
         tar_files.append(metric + ".png")
         fig.savefig(tar_files[-1])
         matplotlib.pyplot.close(fig)
@@ -170,7 +167,7 @@ if __name__ == "__main__":
 
     # Draw Violin Plots
     print("Drawing Violin plot start!!")
-    for i, feature in enumerate(best_features[:2]):
+    for i, feature in enumerate(best_features):
         print("--", feature)
 
         seaborn.set(context="poster", style="whitegrid")
