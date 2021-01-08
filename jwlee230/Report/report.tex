@@ -267,7 +267,6 @@
             \end{figure}
 
         \subsection{Alpha-diversity}
-            Alpha-diversity analysis with DADA2 was done: Evenness index (Table \ref{tb:alpha-evenness-dada2} and Figure \ref{fig:evenness-dada2}), Faith PD (Table \ref{tb:alpha-faith-dada2} and Figure \ref{fig:faith-dada2}), observed feature index (Table \ref{tb:alpha-observed-dada2} and Figure \ref{fig:observed-dada2}) and Shannon's diversity index (Table \ref{tb:alpha-shannon-dada2} and Figure \ref{fig:shannon-dada2}). Also, alpha-diversity analysis with DADA2 was done: Evenness index (Table \ref{tb:alpha-evenness-deblur} and Figure \ref{fig:evenness-deblur}), Faith PD (Table \ref{tb:alpha-faith-deblur} and Figure \ref{fig:faith-deblur}), observed feature index (Table \ref{tb:alpha-observed-deblur} and Figure \ref{fig:observed-deblur}) and Shannon's diversity index (Table \ref{tb:alpha-shannon-deblur} and Figure \ref{fig:shannon-deblur}). Moreover, Kruskal-Wallis tests among all groups are shown as table \ref{tb:alpha-all-dada2} (with DADA2) and table \ref{tb:alpha-all-deblur} (with Deblur).
 
             \begin{table}[p]
                 \centering
@@ -333,7 +332,6 @@
             \end{figure}
 
         \subsection{Beta-diversity}
-            Beta-diversity analysis with DADA2 was done: Bray-Curtis distance (Table \ref{tb:bray-dada2} and Figure \ref{fig:bray-dada2}), Jaccard distance (Table \ref{tb:jaccard-dada2} and Figure \ref{fig:jaccard-dada2}), unweighted UniFrac distance (Table \ref{tb:unweighted-dada2} and Figure \ref{fig:unweighted-dada2}) and weighted UniFrac distance (Table \ref{tb:weighted-dada2} and Figure \ref{fig:unweighted-dada2}). Also, beta-diversity analysis with Deblur was done: Bray-Curtis distance (Table \ref{tb:bray-deblur} and Figure \ref{fig:bray-deblur}), Jaccard distance (Table \ref{tb:jaccard-deblur} and Figure \ref{fig:jaccard-deblur}), unweighted UniFrac distance (Table \ref{tb:unweighted-deblur} and Figure \ref{fig:unweighted-deblur}) and weighted UniFrac distance (Table \ref{tb:weighted-deblur} and Figure \ref{fig:unweighted-deblur}).
 
             \begin{table}[p]
                 \centering
@@ -467,175 +465,12 @@
                 \label{fig:weighted-dada2}
             \end{figure}
 
-            \begin{table}[p]
-                \centering
-                \caption{Bray-Curtis Distance Index with Deblur}
-                \label{tb:bray-deblur}
-                \csvautobooktabular{csv/BetaDiversity/Deblur/Bray.csv}
-            \end{table}
-
-            \begin{table}[p]
-                \centering
-                \caption{Jaccard Distance Index with Deblur}
-                \label{tb:jaccard-deblur}
-                \csvautobooktabular{csv/BetaDiversity/Deblur/Jaccard.csv}
-            \end{table}
-
-            \begin{table}[p]
-                \centering
-                \caption{Unweighted UniFrac Distance Index with Deblur}
-                \label{tb:unweighted-deblur}
-                \csvautobooktabular{csv/BetaDiversity/Deblur/UnweightedUniFrac.csv}
-            \end{table}
-
-            \begin{table}[p]
-                \centering
-                \caption{Weighted UniFrac Distance Index with Deblur}
-                \label{tb:weighted-deblur}
-                \csvautobooktabular{csv/BetaDiversity/Deblur/WeightedUniFrac.csv}
-            \end{table}
-
-            \begin{figure}[p]
-                \centering
-                \includegraphics[width=0.6 \linewidth]{figures/BetaDiversity/Deblur.bray_curtis.png}
-                \caption{t-SNE Plot from Bray-Curtis Distance Index with Deblur}
-                \label{fig:tsne-bray-deblur}
-            \end{figure}
-
-            \begin{figure}[p]
-                \centering
-                $\begin{array}{cc}
-                    \includegraphics[width=0.4 \linewidth]{figures/BetaDiversity/Deblur/Bray/Healthy.pdf}
-                    &
-                    \includegraphics[width=0.4 \linewidth]{figures/BetaDiversity/Deblur/Bray/Early.pdf}
-                    \\
-                    \mbox{(a) Healthy} & \mbox{(b) Early} \\
-
-                    \includegraphics[width=0.4 \linewidth]{figures/BetaDiversity/Deblur/Bray/Moderate.pdf}
-                    &
-                    \includegraphics[width=0.4 \linewidth]{figures/BetaDiversity/Deblur/Bray/Severe.pdf}
-                    \\
-                    \mbox{(c) Moderate} & \mbox{(d) Severe} \\
-                \end{array}$
-                \caption{Bray-Curtis Distance Index with Deblur}
-                \label{fig:bray-deblur}
-            \end{figure}
-
-            \begin{figure}[p]
-                \centering
-                \includegraphics[width=0.6 \linewidth]{figures/BetaDiversity/Deblur.jaccard.png}
-                \caption{t-SNE Plot from Jaccard Distance Index with Deblur}
-                \label{fig:tsne-jaccard-deblur}
-            \end{figure}
-
-            \begin{figure}[p]
-                \centering
-                $\begin{array}{cc}
-                    \includegraphics[width=0.4 \linewidth]{figures/BetaDiversity/Deblur/Jaccard/Healthy.pdf}
-                    &
-                    \includegraphics[width=0.4 \linewidth]{figures/BetaDiversity/Deblur/Jaccard/Early.pdf}
-                    \\
-                    \mbox{(a) Healthy} & \mbox{(b) Early} \\
-
-                    \includegraphics[width=0.4 \linewidth]{figures/BetaDiversity/Deblur/Jaccard/Moderate.pdf}
-                    &
-                    \includegraphics[width=0.4 \linewidth]{figures/BetaDiversity/Deblur/Jaccard/Severe.pdf}
-                    \\
-                    \mbox{(c) Moderate} & \mbox{(d) Severe} \\
-                \end{array}$
-                \caption{Jaccard Distance Index with Deblur}
-                \label{fig:jaccard-deblur}
-            \end{figure}
-
-            \begin{figure}[p]
-                \centering
-                \includegraphics[width=0.6 \linewidth]{figures/BetaDiversity/Deblur.unweighted_unifrac.png}
-                \caption{t-SNE Plot from Unweighted UniFrac Distance Index with Deblur}
-                \label{fig:tsne-unweighted-deblur}
-            \end{figure}
-
-            \begin{figure}[p]
-                \centering
-                $\begin{array}{cc}
-                    \includegraphics[width=0.4 \linewidth]{figures/BetaDiversity/Deblur/UnweightedUnifrac/Healthy.pdf}
-                    &
-                    \includegraphics[width=0.4 \linewidth]{figures/BetaDiversity/Deblur/UnweightedUnifrac/Early.pdf}
-                    \\
-                    \mbox{(a) Healthy} & \mbox{(b) Early} \\
-
-                    \includegraphics[width=0.4 \linewidth]{figures/BetaDiversity/Deblur/UnweightedUnifrac/Moderate.pdf}
-                    &
-                    \includegraphics[width=0.4 \linewidth]{figures/BetaDiversity/Deblur/UnweightedUnifrac/Severe.pdf}
-                    \\
-                    \mbox{(c) Moderate} & \mbox{(d) Severe} \\
-                \end{array}$
-                \caption{Unweighted UniFrac Distance Index with Deblur}
-                \label{fig:unweighted-deblur}
-            \end{figure}
-
-            \begin{figure}[p]
-                \centering
-                \includegraphics[width=0.6 \linewidth]{figures/BetaDiversity/Deblur.weighted_unifrac.png}
-                \caption{t-SNE Plot from Weighted UniFrac Distance Index with Deblur}
-                \label{fig:tsne-weighted-deblur}
-            \end{figure}
-
-            \begin{figure}[p]
-                \centering
-                $\begin{array}{cc}
-                    \includegraphics[width=0.4 \linewidth]{figures/BetaDiversity/Deblur/WeightedUnifrac/Healthy.pdf}
-                    &
-                    \includegraphics[width=0.4 \linewidth]{figures/BetaDiversity/Deblur/WeightedUnifrac/Early.pdf}
-                    \\
-                    \mbox{(a) Healthy} & \mbox{(b) Early} \\
-
-                    \includegraphics[width=0.4 \linewidth]{figures/BetaDiversity/Deblur/WeightedUnifrac/Moderate.pdf}
-                    &
-                    \includegraphics[width=0.4 \linewidth]{figures/BetaDiversity/Deblur/WeightedUnifrac/Severe.pdf}
-                    \\
-                    \mbox{(c) Moderate} & \mbox{(d) Severe} \\
-                \end{array}$
-                \caption{Weighted UniFrac Distance Index with Deblur}
-                \label{fig:weighted-deblur}
-            \end{figure}
-
         \subsection{ANCOM}
-            Statistically significant different taxa and volcano plots by ANCOM were derived: DADA2 and GG (Table \ref{tb:ANCOM-dada2-gg} and Figure \ref{fig:volcano-dada2-gg}), DADA2 and SILVA (Table \ref{tb:ANCOM-dada2-silva} and Figure \ref{fig:volcano-dada2-silva}), DADA2 and HOMD (Table \ref{tb:ANCOM-dada2-homd} and Figure \ref{fig:volcano-dada2-homd}), Deblur and GG (Table \ref{tb:ANCOM-deblur-gg} and Figure \ref{fig:volcano-deblur-gg}), Deblur and SILVA (Table \ref{tb:ANCOM-deblur-silva} and Figure \ref{fig:volcano-deblur-silva}) and Deblur and HOMD (Table \ref{tb:ANCOM-deblur-homd} and Figure \ref{fig:volcano-deblur-homd}).
-
-            \begin{table}[p]
-                \centering
-                \caption{ANCOM Significant Taxa with DADA2 and GG}
-                \label{tb:ANCOM-dada2-gg}
-
-                \csvreader[tabular=p{10cm}cc, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline, respect underscore]{csv/ANCOM/DADA2.gg.csv}{}{\csvlinetotablerow}
-            \end{table}
-
-            \begin{figure}[p]
-                \centering
-                \includegraphics[width=0.8 \linewidth]{figures/ANCOM/DADA2.gg.png}
-                \caption{ANCOM Volcano Plot with DADA2 and GG}
-                \label{fig:volcano-dada2-gg}
-            \end{figure}
-
-            \begin{table}[p]
-                \centering
-                \caption{ANCOM Significant Taxa with DADA2 and SILVA}
-                \label{tb:ANCOM-dada2-silva}
-
-                \csvreader[tabular=p{10cm}cc, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline, respect underscore]{csv/ANCOM/DADA2.silva.csv}{}{\csvlinetotablerow}
-            \end{table}
-
-            \begin{figure}[p]
-                \centering
-                \includegraphics[width=0.8 \linewidth]{figures/ANCOM/DADA2.silva.png}
-                \caption{ANCOM Volcano Plot with DADA2 and HOMD}
-                \label{fig:volcano-dada2-silva}
-            \end{figure}
 
             \begin{table}[p]
                 \centering
                 \caption{ANCOM Significant Taxa with DADA2 and HOMD}
-                \label{tb:ANCOM-dada2-homd}
+                \label{tb:ANCOM-dada2-gg}
 
                 \csvreader[tabular=p{10cm}cc, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline, respect underscore]{csv/ANCOM/DADA2.homd.csv}{}{\csvlinetotablerow}
             \end{table}
@@ -643,53 +478,8 @@
             \begin{figure}[p]
                 \centering
                 \includegraphics[width=0.8 \linewidth]{figures/ANCOM/DADA2.homd.png}
-                \caption{ANCOM Volcano Plot with DADA2 and SILVA}
-                \label{fig:volcano-dada2-homd}
-            \end{figure}
-
-            \begin{table}[p]
-                \centering
-                \caption{ANCOM Significant Taxa with Deblur and GG}
-                \label{tb:ANCOM-deblur-gg}
-
-                \csvreader[tabular=p{10cm}cc, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline, respect underscore]{csv/ANCOM/Deblur.gg.csv}{}{\csvlinetotablerow}
-            \end{table}
-
-            \begin{figure}[p]
-                \centering
-                \includegraphics[width=0.8 \linewidth]{figures/ANCOM/Deblur.gg.png}
-                \caption{ANCOM Volcano Plot with Deblur and GG}
-                \label{fig:volcano-deblur-gg}
-            \end{figure}
-
-            \begin{table}[p]
-                \centering
-                \caption{ANCOM Significant Taxa with Deblur and SILVA}
-                \label{tb:ANCOM-deblur-silva}
-
-                \csvreader[tabular=p{10cm}cc, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline, respect underscore]{csv/ANCOM/DADA2.silva.csv}{}{\csvlinetotablerow}
-            \end{table}
-
-            \begin{figure}[p]
-                \centering
-                \includegraphics[width=0.8 \linewidth]{figures/ANCOM/Deblur.silva.png}
-                \caption{ANCOM Volcano Plot with Deblur and SILVA}
-                \label{fig:volcano-deblur-silva}
-            \end{figure}
-
-            \begin{table}[p]
-                \centering
-                \caption{ANCOM Significant Taxa with Deblur and HOMD}
-                \label{tb:ANCOM-deblur-homd}
-
-                \csvreader[tabular=p{10cm}cc, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline, respect underscore]{csv/ANCOM/Deblur.homd.csv}{}{\csvlinetotablerow}
-            \end{table}
-
-            \begin{figure}[p]
-                \centering
-                \includegraphics[width=0.8 \linewidth]{figures/ANCOM/Deblur.homd.png}
-                \caption{ANCOM Volcano Plot with Deblur and HOMD}
-                \label{fig:volcano-deblur-homd}
+                \caption{ANCOM Volcano Plot with DADA2 and GG}
+                \label{fig:volcano-dada2-gg}
             \end{figure}
 
         \subsection{t-SNE Plot with Whole Microbiome}
@@ -738,7 +528,6 @@
             \end{figure}
 
         \subsection{t-SNE Plot with ANCOM Selected Microbiome Data}
-            As whole microbiome data, ANCOM selected microbiome data are also multi-dimensional data, even though their columns are selected by ANCOM. Hence, with t-SNE, ANCOM selected microbiome data have also been deflated their dimension: 15 taxa (as Table \ref{tb:ANCOM-dada2-gg}) from DADA2 and GG (Figure \ref{fig:tsne-ANCOM-dada2-gg}), 23 taxa (as Table \ref{tb:ANCOM-dada2-silva}) from DADA2 and SILVA (Figure \ref{fig:tsne-ANCOM-dada2-silva}), 20 taxa (as Table \ref{tb:ANCOM-dada2-homd}) from DADA2 and HOMD (Figure \ref{fig:tsne-ANCOM-dada2-homd}), 27 taxa (as Table \ref{tb:ANCOM-deblur-gg}) from Deblur and GG (Figure \ref{fig:tsne-whole-deblur-gg}), 20 taxa (as Table \ref{tb:ANCOM-deblur-silva}) from Deblur and SILVA (Figure \ref{fig:tsne-ANCOM-deblur-silva}) and 28 taxa (as Table \ref{tb:ANCOM-deblur-homd}) from Deblur and HOMD (Figure \ref{fig:tsne-ANCOM-deblur-homd}).
 
             \begin{figure}[p]
                 \centering
@@ -783,127 +572,63 @@
             \end{figure}
 
         \subsection{Random Forest Classifier with Every Class}
-            As figure \ref{fig:denosing-workflow} and figure \ref{fig:taxonomy-workflow}, there are six combinations. Thus, classification algorithm is carried out on these six combinations (Figure \ref{fig:RF-whole-workflow}). Among these six combinations, Deblur and HOMD pair gives the best result in terms of balanced accuracy. Features which are ordered by importance are in table \ref{tb:RF-every-Deblur-homd}. Also, five metrics by feature count are shown as figure \ref{fig:RF-every-metrics-Deblur-homd}; then, the highest value of balanced accuracy is 0.778 with using 13 taxa. Moreover, violin plots from the two most important taxa, \textit{Porphyromonas gingivalis} and \textit{Actinomyces}, are in figure \ref{fig:RF-every-important-Deblur-homd}.
 
             \begin{table}[p]
                 \centering
-                \caption{Taxa with Deblur and HOMD Ordered by Random Forest}
-                \label{tb:RF-every-Deblur-homd}
+                \caption{Taxa with DADA2 and HOMD Ordered by Random Forest}
+                \label{tb:RF-every-DADA2-homd}
 
-                \csvreader[tabular=cp{10cm}l, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline]{csv/RandomForest/whole-Deblur-homd.txt}{}{\csvlinetotablerow}
+                \csvreader[tabular=cp{10cm}l, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline]{csv/RandomForest/whole-DADA2-homd.csv}{}{\csvlinetotablerow}
             \end{table}
 
             \begin{figure}[p]
                 \centering
-                \includegraphics[width=0.7 \linewidth]{figures/RandomForest/ANCOM.Deblur.homd/metrics.png}
-                \caption{Metrics by Feature Count with Deblur and HOMD}
-                \label{fig:RF-every-metrics-Deblur-homd}
+                \includegraphics[width=0.7 \linewidth]{figures/RandomForest/ANCOM.DADA2.homd/metrics.png}
+                \caption{Metrics by Feature Count with DADA2 and HOMD}
+                \label{fig:RF-every-metrics-DADA2-homd}
             \end{figure}
 
             \begin{figure}[p]
                 \centering
                 $\begin{array}{cc}
-                    \includegraphics[width=0.4 \linewidth]{figures/RandomForest/ANCOM.Deblur.homd/Feature_0.png}
+                    \includegraphics[width=0.4 \linewidth]{figures/RandomForest/ANCOM.DADA2.homd/Feature_0.png}
                     &
-                    \includegraphics[width=0.4 \linewidth]{figures/RandomForest/ANCOM.Deblur.homd/Feature_1.png}
+                    \includegraphics[width=0.4 \linewidth]{figures/RandomForest/ANCOM.DADA2.homd/Feature_1.png}
                     \\
                     \mbox{(a) \textit{Porphyromonas gingivalis}} & \mbox{(b) \textit{Actinomyces}} \\
                 \end{array}$
-                \caption{Most and Second Most Important Features with Deblur and HOMD}
-                \label{fig:RF-every-important-Deblur-homd}
-            \end{figure}
-
-        \subsection{Random Forest Classifier with Merging (Healthy+Early) Classes}
-            As figure \ref{fig:denosing-workflow} and figure \ref{fig:taxonomy-workflow}, there are six combinations. However, there is no statistically significant difference between Healthy and Early classes. Thus, classification algorithm is carried out on these six combinations with merging Healthy and Early classes. Among these six combinations, DADA2 and HOMD pair gives the best result in terms of balanced accuracy. Features which are ordered by importance are in table \ref{tb:RF-HE-DADA2-homd}. Also, five metrics by feature count are shown as figure \ref{fig:RF-HE-metrics-DADA2-homd}; then, the highest value of balanced accuracy is 0.938 with using 11 taxa. Moreover, violin plots from the two most important taxa, \textit{Porphyromonas gingivalis} and \textit{Actinomyces}, are in figure \ref{fig:RF-HE-important-DADA2-homd}.
-
-            \begin{table}[p]
-                \centering
-                \caption{Taxa with DADA2 and HOMD Ordered by Random Forest for Merging (Healthy+Early) Classes}
-                \label{tb:RF-HE-DADA2-homd}
-
-                \csvreader[tabular=cp{10cm}l, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline]{csv/RandomForest/one-DADA2-homd.txt}{}{\csvlinetotablerow}
-            \end{table}
-
-            \begin{figure}[p]
-                \centering
-                \includegraphics[width=0.7 \linewidth]{figures/RandomForest/one.DADA2.homd/metrics.png}
-                \caption{Metrics by Feature Count with DADA2 and HOMD for Merging (Healthy+Early) Classes}
-                \label{fig:RF-HE-metrics-DADA2-homd}
-            \end{figure}
-
-            \begin{figure}[p]
-                \centering
-                $\begin{array}{cc}
-                    \includegraphics[width=0.4 \linewidth]{figures/RandomForest/one.DADA2.homd/Feature_0.png}
-                    &
-                    \includegraphics[width=0.4 \linewidth]{figures/RandomForest/one.DADA2.homd/Feature_1.png}
-                    \\
-                    \mbox{(a) \textit{Porphyromonas gingivalis}} & \mbox{(b) \textit{Actinomyces}} \\
-                \end{array}$
-                \caption{Most and Second Most Important Features with DADA2 and HOMD for Merging (Healthy+Early) Classes}
-                \label{fig:RF-HE-important-DADA2-homd}
+                \caption{Most and Second Most Important Features with DADA2 and HOMD}
+                \label{fig:RF-every-important-DADA2-homd}
             \end{figure}
 
         \subsection{Random Forest Classifier with Merging (Moderate+Severe) Classes}
-            As figure \ref{fig:denosing-workflow} and figure \ref{fig:taxonomy-workflow}, there are six combinations. However, there is no statistically significant difference between Moderate and Severe classes. Thus, classification algorithm is carried out on these six combinations with merging Moderate and Severe classes. Among these six combinations, Deblur and HOMD pair gives the best result in terms of balanced accuracy. Features which are ordered by importance are in table \ref{tb:RF-MS-Deblur-homd}. Also, five metrics by feature count are shown as figure \ref{fig:RF-MS-metrics-Deblur-homd}; then, the highest value of balanced accuracy is 0.777 with using 28 taxa. Moreover, violin plots from the two most important taxa, \textit{Porphyromonas gingivalis} and \textit{Actinomyces}, are in figure \ref{fig:RF-MS-important-Deblur-homd}.
 
             \begin{table}[p]
                 \centering
-                \caption{Taxa with Deblur and HOMD Ordered by Random Forest for Merging (Moderate+Severe) Classes}
-                \label{tb:RF-MS-Deblur-homd}
+                \caption{Taxa with DADA2 and HOMD Ordered by Random Forest for Merging (Moderate+Severe) Classes}
+                \label{tb:RF-MS-DADA2-homd}
 
-                \csvreader[tabular=cp{10cm}l, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline]{csv/RandomForest/two-Deblur-homd.txt}{}{\csvlinetotablerow}
+                \csvreader[tabular=cp{10cm}l, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline]{csv/RandomForest/two-DADA2-homd.csv}{}{\csvlinetotablerow}
             \end{table}
 
             \begin{figure}[p]
                 \centering
-                \includegraphics[width=0.7 \linewidth]{figures/RandomForest/two.Deblur.homd/metrics.png}
+                \includegraphics[width=0.7 \linewidth]{figures/RandomForest/two.DADA2.homd/metrics.png}
                 \caption{Metrics by Feature Count with Deblur and HOMD for Merging (Moderate+Severe) Classes}
-                \label{fig:RF-MS-metrics-Deblur-homd}
+                \label{fig:RF-MS-metrics-DADA2-homd}
             \end{figure}
 
             \begin{figure}[p]
                 \centering
                 $\begin{array}{cc}
-                    \includegraphics[width=0.4 \linewidth]{figures/RandomForest/two.Deblur.homd/Feature_0.png}
+                    \includegraphics[width=0.4 \linewidth]{figures/RandomForest/two.DADA2.homd/Feature_0.png}
                     &
-                    \includegraphics[width=0.4 \linewidth]{figures/RandomForest/two.Deblur.homd/Feature_1.png}
+                    \includegraphics[width=0.4 \linewidth]{figures/RandomForest/two.DADA2.homd/Feature_1.png}
                     \\
                     \mbox{(a) \textit{Porphyromonas gingivalis}} & \mbox{(b) \textit{Actinomyces}} \\
                 \end{array}$
                 \caption{Most and Second Most Important Features with Deblur and HOMD for Merging (Moderate+Severe) Classes}
-                \label{fig:RF-MS-important-Deblur-homd}
-            \end{figure}
-
-        \subsection{Random Forest Classifier with Merging (Healthy+Early) \& (Moderate+Severe) Classes}
-            As figure \ref{fig:denosing-workflow} and figure \ref{fig:taxonomy-workflow}, there are six combinations. However, there are not statistically significant difference between (Healthy and Early) classes and between (Moderate and Severe) classes. Thus, classification algorithm is carried out on these six combinations with merging (Healthy and Early) classes and (Moderate and Severe) classes. Among these six combinations, DADA2 and SILVA pair gives the best result in terms of balanced accuracy. Features which are ordered by importance are in talbe \ref{tb:RF-HEMS-DADA2-silva}. Also, five metrics by feature count are shown as figure \ref{fig:RF-HEMS-metrics-DADA2-silva}; then, the highest value of balanced accuracy is 0.934 with using 15 taxa. Moreover, violin plots from the two most important taxa, \textit{Porphyromonas gingivalis} and \textit{Treponema denticola}, are in figure \ref{fig:RF-HEMS-important-DADA2-silva}.
-
-            \begin{table}[p]
-                \centering
-                \caption{Taxa with DADA2 and SILVA Ordered by Random Forest for Merging (Healthy+Early) \& (Moderate+Severe) Classes}
-                \label{tb:RF-HEMS-DADA2-silva}
-
-                \csvreader[tabular=cp{10cm}l, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline]{csv/RandomForest/onetwo-DADA2-silva.txt}{}{\csvlinetotablerow}
-            \end{table}
-
-            \begin{figure}[p]
-                \centering
-                \includegraphics[width=0.7 \linewidth]{figures/RandomForest/one-two.DADA2.silva/metrics.png}
-                \caption{Metrics by Feature Count with DADA2 and SILVA for Merging (Healthy+Early) \& (Moderate+Severe) Classes}
-                \label{fig:RF-HEMS-metrics-DADA2-silva}
-            \end{figure}
-
-            \begin{figure}[p]
-                \centering
-                $\begin{array}{cc}
-                    \includegraphics[width=0.4 \linewidth]{figures/RandomForest/one-two.DADA2.silva/Feature_0.png}
-                    &
-                    \includegraphics[width=0.4 \linewidth]{figures/RandomForest/one-two.DADA2.silva/Feature_1.png}
-                    \\
-                    \mbox{(a) \textit{Porphyromonas gingivalis}} & \mbox{(b) \textit{Treponema denticola}} \\
-                \end{array}$
-                \caption{Most and Second Most Important Features with DADA2 and HOMD for Merging (Healthy+Early) \& (Moderate+Severe) Classes}
-                \label{fig:RF-HEMS-important-DADA2-silva}
+                \label{fig:RF-MS-important-DADA2-homd}
             \end{figure}
 
         \subsection{Random Forest Classifier with Healthy Class and Early Class Only}
@@ -913,7 +638,7 @@
                 \caption{Taxa with DADA2 and HOMD Ordered by Random Forest for Healthy Class and Early Class Only}
                 \label{tb:RF-HEonly-DADA2-homd}
 
-                \csvreader[tabular=cp{10cm}l, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline]{csv/RandomForest/HE-DADA2-homd.txt}{}{\csvlinetotablerow}
+                \csvreader[tabular=cp{10cm}l, no head, column count=3, table head=\hline, late after first line=\\\hline, table foot=\hline]{csv/RandomForest/HE-DADA2-homd.csv}{}{\csvlinetotablerow}
             \end{table}
 
             \begin{figure}[p]
