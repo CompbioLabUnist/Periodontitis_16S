@@ -33,5 +33,8 @@ if __name__ == "__main__":
 
     seaborn.scatterplot(data=data, x=act_column, y=pg_column, hue="LongStage", style="LongStage", ax=ax, legend="full", hue_order=step00.long_stage_order, style_order=step00.long_stage_order, palette=step00.color_stage_order)
 
+    matplotlib.pyplot.xlabel("Actinomyces")
+    matplotlib.pyplot.ylabel("Porphyromonas gingivalis")
+
     fig.savefig(args.output)
     matplotlib.pyplot.close(fig)
