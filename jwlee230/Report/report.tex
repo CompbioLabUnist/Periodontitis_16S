@@ -45,7 +45,7 @@
 
     \section{Introduction}
         \subsection{Microbiome}
-            Microbiome is consist of microbiota, the micro-organisms which live inside and on humans \cite{microbiome1}. Microbiome is also about $10^{13}$ micro-organisms whose which collective genome \cite{microbiome2}.
+            The microbiome is consists of microbiota, the micro-organisms that live inside and on humans \cite{microbiome1}. The microbiome is also about $10^{13}$ micro-organisms whose that collective genome \cite{microbiome2}.
 
             \begin{figure}[p]
                 \centering
@@ -60,7 +60,7 @@
         \subsection{16S rRNA Gene Sequencing}
 
         \subsection{Periodontitis}
-            Periodontitis is an inflammatory condition which effecting periodontium that surround and support teeth. Major components of periodontitis are clinical attachment loss and bone loss \cite{periodontitis1}. Previous study found risk factors of periodontitis such as smoking, diabetes, genetic factors and host response \cite{periodontitis2}.
+            Periodontitis is an inflammatory condition that affects the periodontium that surrounds and supports teeth. Major syndromes of periodontitis are clinical attachment loss and bone loss \cite{periodontitis1}. Previous studies found risk factors of periodontitis, such as smoking, diabetes, genetic factors, and host response \cite{periodontitis2}.
 
     \section{Materials}
         \subsection{16S rRNA Gene Sequencing}
@@ -74,7 +74,7 @@
 
     \section{Methods}
         \subsection{QIIME2 Workflow}
-            QIIME2 is a capable, expandable and distributed microbiome analysis package with transparent analysis \cite{qiime1, qiime2}. A theoretic overview of QIIME2 workflow is shown as figure \ref{fig:qiime-workflow}.
+            QIIME2 is a capable, expandable and distributed microbiome analysis package with transparent analysis \cite{qiime1, qiime2}. A theoretic overview of QIIME2 workflow is figure \ref{fig:qiime-workflow}.
 
             \begin{figure}[p]
                 \centering
@@ -84,7 +84,7 @@
             \end{figure}
 
             \subsubsection{Denoising techniques}
-                There are two denoising techniques provided by QIIME2: DADA2 \cite{DADA1} and Deblur \cite{deblur1}. Major difference between DADA2 and Deblur, as shown as figure \ref{fig:denosing-workflow}, is a strategy, the strategy used to divide as different species. DADA2 uses amplicon sequence variants (ASVs), strictly divides sequences even one-base mismatch. However, Deblur uses operational taxonomic units (OTUs), considers as same sequence when sequences are 97 \% or more matched.
+                There are two denoising techniques provided by QIIME2: DADA2 \cite{DADA1} and Deblur \cite{deblur1}. The most meaningful difference between DADA2 and Deblur is the strategy that divides them into different variants (Figure \ref{fig:denosing-workflow}). DADA2 uses amplicon sequence variants (ASVs) that strictly divide sequences even one-base mismatch. However, Deblur uses operational taxonomic units (OTUs), considers the same taxonomies when they are 97 \% or more matched. We chose DADA2 rather than Deblur by the result of two reasons. First, DADA2 has internal filtering methods that cut the sequences with low-quality out. Second, DADA2 can be designated trimmed length both in forward and reverse.
 
                 \begin{figure}[p]
                     \centering
@@ -94,7 +94,7 @@
                 \end{figure}
 
             \subsubsection{Taxonomy Classification}
-                There are three taxonomy classification databases: Greengenes (GG) \cite{greengenes1}, SILVA \cite{silva1} and Human Oral Microbiome Database (HOMD) \cite{homd1}. Major difference among these databases is resolution. Resolution of GG and HOMD is from kingdom to species; however, resolution of SILVA is from domain to genus. Previous research have found that a higher accuracy at taxonomic levels above genus level; but accuracy drops at species level \cite{performance1}.
+                There are three taxonomy classification databases: Greengenes (GG) \cite{greengenes1}, SILVA \cite{silva1} and Human Oral Microbiome Database (HOMD) \cite{homd1}. The essential difference is its resolution. Previous researches have found that a higher accuracy at taxonomic levels above the genus level. However, accuracy drops at the species level \cite{performance1}.
 
                 \begin{figure}[p]
                     \centering
@@ -104,7 +104,7 @@
                 \end{figure}
 
             \subsubsection{Merging Denoising and Taxonomy Classification}
-                After denoising and taxonomy classification steps, some different IDs (ASVs or OTUs) have been identified as same taxonomy. In that case, the different IDs will be merged into one taxonomy (Figure \ref{fig:merging}).
+                After denoising and taxonomy classification steps, different IDs, such as ASVs or OTUs, have been identified as the single taxonomy. We considered those IDs as a single taxonomy (Figure \ref{fig:merging}).
 
                 \begin{figure}[p]
                     \centering
@@ -114,10 +114,10 @@
                 \end{figure}
 
             \subsubsection{Rarefaction}
-                Rarefaction is a statistical method of estimating the number of species expected in a random sample which taken from a collection \cite{rarefaction1}. Moreover, rarefaction allows comparisons of the species richness among communities. Thus, rarefaction is a good choice for normalization \cite{rarefaction2}.
+                Rarefaction is a statistical method of estimating the number of species expected in a random sample taken from a collection \cite{rarefaction1}. Moreover, rarefaction allows comparisons of the species richness among communities. Thus, rarefaction is one of the best choices for normalization \cite{rarefaction2}.
 
             \subsubsection{Alpha-diversity}
-                Alpha-diversity is a metric which shows the richness of taxa at a single community. There are four alpha-diversity indices which provided from QIIME2:
+                Alpha-diversity is a metric that shows the richness of taxa in a single community. QIIME2 provides four alpha-diversity indices:
                 \begin{itemize}
                     \item Evenness index \cite{evenness1}.
                     \item Faith's phylogenetic diversity (Faith PD) \cite{faith1}.
@@ -125,10 +125,10 @@
                     \item Shannon's diversity index \cite{shannon1}.
                 \end{itemize}
 
-                Evenness index shows a measurement of diversity in different type at community \cite{evenness1}; Faith's phylogenetic diversity, however, indicates a qualitative measurement of community richness which priorities for species conservation which incorporates with taxic diversity \cite{faith1}. Observed features, as its name, is a number of observed features in microbiome. Moreover, Shannon's diversity index means a significant aspect of community richness \cite{shannon1}.
+                The evenness index shows a measurement of diversity in a different type of community \cite{evenness1}. Faith's phylogenetic diversity index, however, indicates a qualitative evaluation of community richness. The index prefers species conservation that incorporates taxic diversity \cite{faith1}. Observed features index, as its name, is the number of detected features in the microbiome. Furthermore, Shannon's diversity index means a significant aspect of community richness \cite{shannon1}.
 
             \subsubsection{Beta-diversity}
-                Beta-diversity is a metric which indicates the taxonomic differentiation between multiple communities. There are four beta-diversity indices which provided from QIIME2:
+                Beta-diversity is a metric that indicates the taxonomic differentiation among multiple communities. QIIME2 provides four beta-diversity indices:
                 \begin{itemize}
                     \item Bray-Curtis distance index \cite{bray1}.
                     \item Jaccard distance index \cite{jaccard1}.
@@ -136,10 +136,10 @@
                     \item Weighted UniFrac distance index \cite{unifrac1}.
                 \end{itemize}
 
-                Bray-Curtis distance index shows a quantitative measurement of community dissimilarity \cite{bray1}; Jaccard distance index, however, indicates a measurement of local distribution among communities. UniFrac distance indices reveal measurements of phylogenetic distances \cite{unifrac1}. Difference between unweighted UniFrac distance index and weighted UniFrac distance index is a qualitative and a quantitative, respectively.
+                Bray-Curtis distance index shows a quantitative measurement of community dissimilarity \cite{bray1}. Jaccard distance index, however, indicates an evaluation of local distribution among communities \cite{jaccard1}. UniFrac distance indices reveal measures of phylogenetic distances \cite{unifrac1}. The unweighted UniFrac distance index and the weighted UniFrac distance index promote qualitative and quantitative, respectively.
 
             \subsubsection{ANCOM}
-                ANCOM (Analysis of composition of microbiomes) can be used for analyzing the composition of microbiome in multiple populations \cite{ANCOM1}. Example ANCOM volcano plot is shows as figure \ref{fig:ancom-example}. In figure \ref{fig:ancom-example}, two metrics are clearly shown: clr and W. clr stands for centered $\log$ ratio, and W is a count of the number of sub-hypothesis which have passed for given species.
+                ANCOM (analysis for the composition of microbiomes) analyzes the architecture of the microbiome in multiple populations \cite{ANCOM1}. An example ANCOM volcano plot is figure \ref{fig:ancom-example}. In figure \ref{fig:ancom-example}, two metrics are clearly shown: clr and W. clr stands for centered $\log$ ratio, and W is a count of the number of sub-hypothesis which have passed for given species.
 
                 \begin{figure}[p]
                     \centering
@@ -165,7 +165,7 @@
                 Statannot is a python package which computes statistical test and adds statistical annotations on violin plot generated by seaborn package.
 
         \subsection{t-SNE}
-            t-SNE (t-distributed stochastic neighbor embedding) reveals high-dimensional data a location in two-dimensional map \cite{tSNE1}. Figure \ref{fig:tsne-example} is example of t-SNE with hand-writing digits \cite{tSNE1}. In figure \ref{fig:tsne-example}, all 10 digits are grouped into 10 groups clearly; some hand-writings, however, are classified into wrong groups due to their similar shapes, such as 0 and 6.
+            t-SNE (t-distributed stochastic neighbor embedding) reveals high-dimensional data in a location in a two-dimensional map \cite{tSNE1}. Figure \ref{fig:tsne-example} is example of t-SNE with hand-writing digits \cite{tSNE1}. In figure \ref{fig:tsne-example}, all 10 digits are grouped into 10 groups clearly; some hand-writings, however, are classified into wrong groups due to their similar shapes, such as 0 and 6.
 
             \begin{figure}[p]
                 \centering
@@ -175,7 +175,7 @@
             \end{figure}
 
         \subsection{Classification}
-            In machine learning, Classification is one of supervised learning which identifies a class of a new observation, depends on given information which consist of training observations and their classes.
+            In machine learning, classification is one of the supervised problems. Classifier identifies a class of new observations, depends on training observations.
 
             In this study, classification will be carried out as figure \ref{fig:classification}; and the third step in figure \ref{fig:classification} is demonstrated in minute detail as figure \ref{fig:deciding-best}. Note that the first step in figure \ref{fig:classification} is optional: due to tables herein-after, such as table\ref{tb:alpha-evenness-dada2}, show that no statistically significant differences between healthy samples and early periodontitis samples and between moderate periodontitis samples and severe periodontitis samples.
 
@@ -330,69 +330,6 @@
                 \includegraphics[width=0.8 \linewidth]{figures/AlphaDiversity/DADA2/shannon.png}
                 \caption{Shannon's Diversity Index from DADA2}
                 \label{fig:shannon-dada2}
-            \end{figure}
-
-            \begin{table}[p]
-                \centering
-                \caption{Kruskal-Wallis Tests among All Group with Deblur}
-                \label{tb:alpha-all-deblur}
-                \csvautobooktabular{csv/AlphaDiversity/Deblur/all.csv}
-            \end{table}
-
-            \begin{table}[p]
-                \centering
-                \caption{Kruskal-Wallis Tests from Evenness Index with Deblur}
-                \label{tb:alpha-evenness-deblur}
-                \csvautobooktabular{csv/AlphaDiversity/Deblur/evenness.csv}
-            \end{table}
-
-            \begin{table}[p]
-                \centering
-                \caption{Kruskal-Wallis Tests from Faith PD Index with Deblur}
-                \label{tb:alpha-faith-deblur}
-                \csvautobooktabular{csv/AlphaDiversity/Deblur/faith.csv}
-            \end{table}
-
-            \begin{table}[p]
-                \centering
-                \caption{Kruskal-Wallis Tests from Observed Features Index with Deblur}
-                \label{tb:alpha-observed-deblur}
-                \csvautobooktabular{csv/AlphaDiversity/Deblur/observed.csv}
-            \end{table}
-
-            \begin{table}[p]
-                \centering
-                \caption{Kruskal-Wallis Tests from Shannon's Diversity Index with Deblur}
-                \label{tb:alpha-shannon-deblur}
-                \csvautobooktabular{csv/AlphaDiversity/Deblur/shannon.csv}
-            \end{table}
-
-            \begin{figure}[p]
-                \centering
-                \includegraphics[width=0.8 \linewidth]{figures/AlphaDiversity/Deblur/evenness.png}
-                \caption{Evenness Index from Deblur}
-                \label{fig:evenness-deblur}
-            \end{figure}
-
-            \begin{figure}[p]
-                \centering
-                \includegraphics[width=0.8 \linewidth]{figures/AlphaDiversity/Deblur/faith.png}
-                \caption{Faith PD Index from Deblur}
-                \label{fig:faith-deblur}
-            \end{figure}
-
-            \begin{figure}[p]
-                \centering
-                \includegraphics[width=0.8 \linewidth]{figures/AlphaDiversity/Deblur/observed.png}
-                \caption{Observed Features Index from Deblur}
-                \label{fig:observed-deblur}
-            \end{figure}
-
-            \begin{figure}[p]
-                \centering
-                \includegraphics[width=0.8 \linewidth]{figures/AlphaDiversity/Deblur/shannon.png}
-                \caption{Shannon's Diversity Index from Deblur}
-                \label{fig:shannon-deblur}
             \end{figure}
 
         \subsection{Beta-diversity}
