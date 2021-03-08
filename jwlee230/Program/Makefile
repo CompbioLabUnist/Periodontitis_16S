@@ -50,7 +50,7 @@ run: tmp.sh | log Output
 .PHONY: run
 
 # Actual
-latest: step23
+latest: step02
 .PHONY: latest
 
 # Step 01 (Make manifest files)
@@ -58,7 +58,7 @@ Output/Step01:
 	mkdir -p $@
 
 Output/Step01/whole.tsv: Python/step01.py $(wildcard Data/fastq/*.fastq.gz) | Output/Step01 build.log
-	@$(DOCKER) python3 $(addprefix /,$^) > $@
+	$(DOCKER) python3 $(addprefix /,$^) > $@
 
 step01: Output/Step01/whole.tsv
 .PHONY: step01
@@ -407,3 +407,18 @@ Output/Step24/2D.%.png: Python/step24.py Output/Step17/whole.%.tar.gz | Output/S
 
 step24: Output/Step24/2D.DADA2.homd.png
 .PHONY: step24
+
+# Step 25 (Extract TSV from alpha-diversity)
+Output/Step25:
+	mkdir -p $@
+
+Output/Step25/DADA2.%.tsv: Output/Step10/DADA2/whole.%_vector.qza | Output/Step25 build.log
+	$(DOCKER) qiime tools export --input-path $(addprefix /,$(word 1,$^)) --output-path $(addprefix /,$(@D)) 1> $@.stdout 2> $@.stderr
+	$(DOCKER) mv $(addprefix /,$(@D))/alpha-diversity.tsv $(addprefix /,$@)
+
+Output/Step25/Deblur.%.tsv: Output/Step10/Deblur/whole.%_vector.qza | Output/Step25 build.log
+	$(DOCKER) qiime tools export --input-path $(addprefix /,$(word 1,$^)) --output-path $(addprefix /,$(@D)) 1> $@.stdout 2> $@.stderr
+	$(DOCKER) mv $(addprefix /,$(@D))/alpha-diversity.tsv $(addprefix /,$@)
+
+step25: Output/Step25/DADA2.evenness.tsv Output/Step25/DADA2.faith_pd.tsv Output/Step25/DADA2.observed_features.tsv Output/Step25/DADA2.shannon.tsv
+.PHONY: step25
