@@ -50,7 +50,7 @@ run: tmp.sh | log Output
 .PHONY: run
 
 # Actual
-latest: step02
+latest: step25
 .PHONY: latest
 
 # Step 01 (Make manifest files)
@@ -422,3 +422,13 @@ Output/Step25/Deblur.%.tsv: Output/Step10/Deblur/whole.%_vector.qza | Output/Ste
 
 step25: Output/Step25/DADA2.evenness.tsv Output/Step25/DADA2.faith_pd.tsv Output/Step25/DADA2.observed_features.tsv Output/Step25/DADA2.shannon.tsv
 .PHONY: step25
+
+# Step 26 (Draw violin plot by alpha-diversity)
+Output/Step26:
+	mkdir -p $@
+
+Output/Step26/%.png: Python/step26.py Output/Step25/%.tsv | Output/Step26 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@)
+
+step26: Output/Step26/DADA2.evenness.png Output/Step26/DADA2.faith_pd.png Output/Step26/DADA2.observed_features.png Output/Step26/DADA2.shannon.png
+.PHONY: step26
