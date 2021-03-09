@@ -24,11 +24,12 @@ if __name__ == "__main__":
     data["LongStage"] = list(map(step00.change_short_into_long, data["ShortStage"]))
 
     matplotlib.use("Agg")
-    matplotlib.rcParams.update({"font.size": 100, "axes.labelsize": 50, 'axes.titlesize': 100, 'xtick.labelsize': 50, 'ytick.labelsize': 50})
+    matplotlib.rcParams.update({"font.size": 100, "axes.labelsize": 50, "axes.titlesize": 100, "xtick.labelsize": 50, "ytick.labelsize": 50})
     seaborn.set(context="poster", style="whitegrid")
     fig, ax = matplotlib.pyplot.subplots(figsize=(36, 36))
 
     seaborn.scatterplot(data=data, x="TSNE1", y="TSNE2", hue="LongStage", style="LongStage", ax=ax, legend="full", hue_order=step00.long_stage_order, style_order=step00.long_stage_order, palette=step00.color_stage_order, s=1000, edgecolor="none")
+    matplotlib.pyplot.legend(fontsize="50", title_fontsize="100")
 
     fig.savefig(args.output)
     matplotlib.pyplot.close(fig)
