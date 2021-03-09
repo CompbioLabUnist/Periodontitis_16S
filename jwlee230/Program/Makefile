@@ -50,7 +50,7 @@ run: tmp.sh | log Output
 .PHONY: run
 
 # Actual
-latest: step25
+latest: step19
 .PHONY: latest
 
 # Step 01 (Make manifest files)
