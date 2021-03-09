@@ -44,6 +44,6 @@ if __name__ == "__main__":
     matplotlib.rcParams.update({"font.size": 100, "axes.labelsize": 50, 'axes.titlesize': 100, 'xtick.labelsize': 50, 'ytick.labelsize': 50})
     fig, ax = matplotlib.pyplot.subplots(figsize=(36, 36))
     seaborn.scatterplot(data=tsne_data, x="TSNE1", y="TSNE2", hue="LongStage", style="LongStage", ax=ax, legend="full", hue_order=step00.long_stage_order, style_order=step00.long_stage_order, palette=step00.color_stage_order, s=1000, edgecolor="none")
-
+    matplotlib.pyplot.legend(fontsize="50", title_fontsize="100")
     fig.savefig(args.output)
     matplotlib.pyplot.close(fig)

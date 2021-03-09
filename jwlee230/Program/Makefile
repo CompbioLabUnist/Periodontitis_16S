@@ -50,7 +50,7 @@ run: tmp.sh | log Output
 .PHONY: run
 
 # Actual
-latest: step14 step15 step16 step17 step18 step19
+latest: step05 step22 step24 step26
 .PHONY: latest
 
 # Step 01 (Make manifest files)
@@ -105,7 +105,7 @@ Output/Step05/%.table.qza Output/Step05/%.seq.qza Output/Step05/%.stat.qza: Outp
 	@echo "You have to check the length manually!!"
 	$(DOCKER) qiime deblur denoise-16S --i-demultiplexed-seqs $(addprefix /,$<) --p-trim-length 265 --p-jobs-to-start $(CPUS) --o-table $(addprefix /,$(basename $(basename $@))).table.qza --o-representative-sequences $(addprefix /,$(basename $(basename $@))).seq.qza --o-stats $(addprefix /,$(basename $(basename $@))).stat.qza 1> $@.stdout 2> $@.stderr
 
-step05: Output/Step05/whole.seq.qza
+step05: Output/Step05/whole.table.qza
 .PHONY: step05
 
 # Step 06 (Visulaize Denoising)
