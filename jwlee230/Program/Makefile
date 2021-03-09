@@ -50,7 +50,7 @@ run: tmp.sh | log Output
 .PHONY: run
 
 # Actual
-latest: step14
+latest: step14 step15 step16 step17 step18 step19
 .PHONY: latest
 
 # Step 01 (Make manifest files)
@@ -271,7 +271,7 @@ Output/Step14/%.site.qzv: Output/Step14/%.qza Output/Step07/whole.tsv | build.lo
 
 Output/Step14/%/ancom.tsv: Output/Step14/%.qzv | build.log
 	$(DOCKER) rm -rfv $(addprefix /,$(@D))
-	$(DOCKER) qiime tools export --input-path $(addprefix /,$(word 1,$^)) --output-path $(addprefix /,$(@D)) 1> $@.stdout 2> $@.stderr
+	$(DOCKER) qiime tools export --input-path $(addprefix /,$(word 1,$^)) --output-path $(addprefix /,$(@D)) 1> $(@D).stdout 2> $(@D).stderr
 
 step14: Output/Step14/whole.DADA2.homd.qza Output/Step14/whole.DADA2.homd.pseudocount.qza Output/Step14/whole.DADA2.homd.pseudocount.site.qzv Output/Step14/whole.DADA2.homd.pseudocount.site/ancom.tsv
 .PHONY: step14
