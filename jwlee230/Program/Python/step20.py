@@ -34,7 +34,7 @@ if __name__ == "__main__":
         raise ValueError("CPU must be greater than zero!!")
 
     matplotlib.use("Agg")
-    matplotlib.rcParams.update({"font.size": 30})
+    matplotlib.rcParams.update({"font.size": 100, "axes.labelsize": 50, "axes.titlesize": 100, "xtick.labelsize": 50, "ytick.labelsize": 50, "font.family": "serif"})
 
     tar_files: typing.List[str] = list()
 
@@ -136,7 +136,7 @@ if __name__ == "__main__":
 
     # Draw Metrics
     fig, ax = matplotlib.pyplot.subplots(figsize=(32, 18))
-    seaborn.lineplot(data=score_data, x="FeatureCount", y="Value", hue="Metrics", style="Metrics", ax=ax, legend="full", markers=True)
+    seaborn.lineplot(data=score_data, x="FeatureCount", y="Value", hue="Metrics", style="Metrics", ax=ax, legend="full", markers=True, markersize=20)
     matplotlib.pyplot.grid(True)
     matplotlib.pyplot.ylim(0, 1)
     tar_files.append("metrics.png")
@@ -148,7 +148,7 @@ if __name__ == "__main__":
     for metric in step00.selected_derivations:
         print("--", metric)
         fig, ax = matplotlib.pyplot.subplots(figsize=(32, 18))
-        seaborn.lineplot(data=score_data.query("Metrics == '%s'" % metric,), x="FeatureCount", y="Value", ax=ax)
+        seaborn.lineplot(data=score_data.query("Metrics == '%s'" % metric,), x="FeatureCount", y="Value", ax=ax, markers=True, markersize=20)
         matplotlib.pyplot.grid(True)
         matplotlib.pyplot.ylim(0, 1)
         matplotlib.pyplot.title("Higest with %s feature(s) at %.3f" % highest_metrics[metric])
@@ -198,7 +198,7 @@ if __name__ == "__main__":
     # Draw scatter plot
     seaborn.set(context="poster", style="whitegrid")
     fig, ax = matplotlib.pyplot.subplots(figsize=(36, 36))
-    seaborn.scatterplot(data=tsne_data, x="TSNE1", y="TSNE2", hue="LongStage", style="LongStage", ax=ax, legend="full")
+    seaborn.scatterplot(data=tsne_data, x="tSNE1", y="tSNE2", hue="LongStage", style="LongStage", ax=ax, legend="full")
     tar_files.append("scatter.png")
     fig.savefig(tar_files[-1])
     matplotlib.pyplot.close(fig)

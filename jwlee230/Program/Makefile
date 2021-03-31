@@ -426,7 +426,7 @@ Output/Step26:
 	mkdir -p $@
 
 Output/Step26/%.png: Python/step26.py Output/Step25/%.tsv | Output/Step26 build.log
-	$(DOCKER) python3 $(addprefix /,$^ $@)
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
 
 step26: Output/Step26/DADA2.evenness.png Output/Step26/DADA2.faith_pd.png Output/Step26/DADA2.observed_features.png Output/Step26/DADA2.shannon.png
 .PHONY: step26

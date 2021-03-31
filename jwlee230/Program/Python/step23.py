@@ -32,7 +32,7 @@ if __name__ == "__main__":
         raise ValueError("CPU must be greater than zero!!")
 
     matplotlib.use("Agg")
-    matplotlib.rcParams.update({"font.size": 30})
+    matplotlib.rcParams.update({"font.size": 100, "axes.labelsize": 50, "axes.titlesize": 100, "xtick.labelsize": 50, "ytick.labelsize": 50, "font.family": "serif"})
 
     tar_files: typing.List[str] = list()
 
@@ -186,7 +186,7 @@ if __name__ == "__main__":
     # Draw scatter plot
     seaborn.set(context="poster", style="whitegrid")
     fig, ax = matplotlib.pyplot.subplots(figsize=(36, 36))
-    seaborn.scatterplot(data=tsne_data, x="TSNE1", y="TSNE2", hue="LongStage", style="LongStage", ax=ax, legend="full")
+    seaborn.scatterplot(data=tsne_data, x="tSNE1", y="tSNE2", hue="LongStage", style="LongStage", ax=ax, legend="full")
     tar_files.append("scatter.png")
     fig.savefig(tar_files[-1])
     matplotlib.pyplot.close(fig)
