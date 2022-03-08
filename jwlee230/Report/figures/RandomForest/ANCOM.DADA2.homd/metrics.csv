@@ -1,0 +1,16 @@
+Count,Metrics,Mean,STD
+1,accuracy,0.732,0.043
+1,balanced_accuracy,0.643,0.057
+1,sensitivity,0.821,0.029
+1,specificity,0.464,0.086
+1,precision,0.821,0.029
+2,accuracy,0.748,0.045
+2,balanced_accuracy,0.664,0.060
+2,sensitivity,0.832,0.030
+2,specificity,0.496,0.090
+2,precision,0.832,0.030
+3,accuracy,0.768,0.043
+3,balanced_accuracy,0.691,0.057
+3,sensitivity,0.845,0.029
+3,specificity,0.536,0.086
+3,precision,0.845,0.029
