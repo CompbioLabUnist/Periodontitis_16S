@@ -83,14 +83,14 @@ def consistency_taxonomy(taxonomy: str) -> str:
     """
     consistency_taxonomy: make taxonomy information with consistency
     """
-    return "; ".join(list(filter(lambda x: x != "__", list(map(lambda x: x.strip(), taxonomy.split(";"))))))
+    return "; ".join(list(filter(lambda x: not x.endswith("__"), list(map(lambda x: x.strip(), taxonomy.split(";"))))))
 
 
 def simplified_taxonomy(taxonomy: str) -> str:
     """
     simplified_taxonomy: simplified taxonomy information for file name
     """
-    return "_".join(list(filter(lambda x: x, list(map(lambda x: x.strip().replace("[", "").replace("]", "")[3:], taxonomy.split(";"))))))
+    return "_".join(list(filter(None, list(map(lambda x: x.strip().replace("[", "").replace("]", "")[3:], taxonomy.split(";"))))))
 
 
 derivations = ("sensitivity", "specificity", "precision", "negative_predictive_value", "miss_rate", "fall_out", "false_discovery_rate", "false_ommission_rate", "accuracy", "F1_score", "odds_ratio", "balanced_accuracy", "threat_score")
@@ -173,3 +173,6 @@ def change_short_into_long(given_short: str) -> str:
         if short == given_short:
             return long_stage
     raise Exception("Something went wrong!!")
+
+
+matplotlib_parameters = {"font.size": 50, "axes.labelsize": 50, "axes.titlesize": 75, "xtick.labelsize": 50, "ytick.labelsize": 50, "font.family": "serif", "legend.fontsize": 30, "legend.title_fontsize": 30, "figure.dpi": 500}

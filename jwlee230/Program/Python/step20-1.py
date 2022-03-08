@@ -1,5 +1,5 @@
 """
-step20: Random Forest Classifier with ANCOM
+step20: Random Forest Classifier
 """
 import argparse
 import itertools
@@ -63,7 +63,7 @@ if __name__ == "__main__":
     classifier = sklearn.ensemble.RandomForestClassifier(max_features=None, n_jobs=args.cpu, random_state=0)
     classifier.fit(data[train_columns], data["LongStage"])
     feature_importances = list(classifier.feature_importances_)
-    best_features = list(map(lambda x: x[1], sorted(list(filter(lambda x: (x[0] > 0), zip(feature_importances, train_columns))), reverse=True)))
+    best_features = list(map(lambda x: x[1], sorted(list(filter(lambda x: (x[0] > 0) and (step00.consistency_taxonomy(x[1]).count(";") == 5), zip(feature_importances, train_columns))), reverse=True)))
 
     # Save Features
     tar_files.append("features.csv")
