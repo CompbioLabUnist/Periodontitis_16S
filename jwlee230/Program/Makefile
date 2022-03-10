@@ -348,17 +348,17 @@ step19: Output/Step19/whole.DADA2.homd.png Output/Step19/ANCOM.DADA2.homd.png
 Output/Step20:
 	mkdir -p $@
 
-Output/Step20/%.tar: Python/step20.py Output/Step16/whole.%.tar.gz Output/Step18/whole.%.tar.gz | Output/Step20 build.log
+Output/Step20/%.tar: Python/step20-1.py Output/Step16/whole.%.tar.gz Output/Step18/whole.%.tar.gz | Output/Step20 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) 1> $@.stdout 2> $@.stderr
 
-Output/Step20/one.%.tar: Python/step20.py Output/Step16/whole.%.tar.gz Output/Step18/whole.%.tar.gz | Output/Step20 build.log
+Output/Step20/one.%.tar: Python/step20-1.py Output/Step16/whole.%.tar.gz Output/Step18/whole.%.tar.gz | Output/Step20 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --one 1> $@.stdout 2> $@.stderr
 
-Output/Step20/two.%.tar: Python/step20.py Output/Step16/whole.%.tar.gz Output/Step18/whole.%.tar.gz | Output/Step20 build.log
+Output/Step20/two.%.tar: Python/step20-1.py Output/Step16/whole.%.tar.gz Output/Step18/whole.%.tar.gz | Output/Step20 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --two 1> $@.stdout 2> $@.stderr
 
-Output/Step20/one-two.%.tar: Python/step20.py Output/Step16/whole.%.tar.gz Output/Step18/whole.%.tar.gz | Output/Step20 build.log
-	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --one --two 1> $@.stdout 2> $@.stderr
+Output/Step20/three.%.tar: Python/step20-1.py Output/Step16/whole.%.tar.gz Output/Step18/whole.%.tar.gz | Output/Step20 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --three 1> $@.stdout 2> $@.stderr
 
 Output/Step20/ANCOM.%.tar: Python/step20.py Output/Step17/whole.%.tar.gz Output/Step18/ANCOM.%.tar.gz | Output/Step20 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) 1> $@.stdout 2> $@.stderr
@@ -369,10 +369,10 @@ Output/Step20/ANCOM.one.%.tar: Python/step20.py Output/Step17/whole.%.tar.gz Out
 Output/Step20/ANCOM.two.%.tar: Python/step20.py Output/Step17/whole.%.tar.gz Output/Step18/ANCOM.%.tar.gz | Output/Step20 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --two 1> $@.stdout 2> $@.stderr
 
-Output/Step20/ANCOM.one-two.%.tar: Python/step20.py Output/Step17/whole.%.tar.gz Output/Step18/ANCOM.%.tar.gz | Output/Step20 build.log
-	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --one --two 1> $@.stdout 2> $@.stderr
+Output/Step20/ANCOM.three.%.tar: Python/step20.py Output/Step17/whole.%.tar.gz Output/Step18/ANCOM.%.tar.gz | Output/Step20 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --three 1> $@.stdout 2> $@.stderr
 
-step20: Output/Step20/DADA2.homd.tar Output/Step20/one.DADA2.homd.tar Output/Step20/two.DADA2.homd.tar Output/Step20/one-two.DADA2.homd.tar Output/Step20/ANCOM.DADA2.homd.tar Output/Step20/ANCOM.one.DADA2.homd.tar Output/Step20/ANCOM.two.DADA2.homd.tar Output/Step20/ANCOM.one-two.DADA2.homd.tar
+step20: Output/Step20/DADA2.homd.tar Output/Step20/one.DADA2.homd.tar Output/Step20/two.DADA2.homd.tar Output/Step20/three.DADA2.homd.tar Output/Step20/ANCOM.DADA2.homd.tar Output/Step20/ANCOM.one.DADA2.homd.tar Output/Step20/ANCOM.two.DADA2.homd.tar Output/Step20/ANCOM.three.DADA2.homd.tar
 .PHONY: step20
 
 # Step 21 (Extract TSV from Beta-diversity)

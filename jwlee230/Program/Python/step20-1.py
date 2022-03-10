@@ -14,6 +14,7 @@ import sklearn.ensemble
 import sklearn.metrics
 import sklearn.model_selection
 import statannot
+import scipy.stats
 import step00
 
 if __name__ == "__main__":
@@ -23,8 +24,11 @@ if __name__ == "__main__":
     parser.add_argument("tsne", type=str, help="t-SNE TAR.gz file")
     parser.add_argument("output", type=str, help="Output TAR file")
     parser.add_argument("--cpu", type=int, default=1, help="Number of CPU to use")
-    parser.add_argument("--one", action="store_true", default=False, help="Merge Healthy+Slight")
-    parser.add_argument("--two", action="store_true", default=False, help="Merge Moderate+Severe")
+
+    group = parser.add_mutually_exclusive_group(required=False)
+    group.add_argument("--one", action="store_true", default=False, help="Merge Healthy+Slight")
+    group.add_argument("--two", action="store_true", default=False, help="Merge Moderate+Severe")
+    group.add_argument("--three", action="store_true", default=False, help="Merge Slight+Moderate+Severe")
 
     args = parser.parse_args()
 
@@ -48,12 +52,14 @@ if __name__ == "__main__":
     train_columns = sorted(set(data.columns) - {"LongStage"})
 
     if args.one:
-        data["LongStage"] = list(map(lambda x: "Healthy+Slight" if (x == "Healthy") or (x == "Slight") else x, data["LongStage"]))
-        tsne_data["LongStage"] = list(map(lambda x: "Healthy+Slight" if (x == "Healthy") or (x == "Slight") else x, tsne_data["LongStage"]))
-
-    if args.two:
-        data["LongStage"] = list(map(lambda x: "Moderate+Severe" if (x == "Moderate") or (x == "Severe") else x, data["LongStage"]))
-        tsne_data["LongStage"] = list(map(lambda x: "Moderate+Severe" if (x == "Moderate") or (x == "Severe") else x, tsne_data["LongStage"]))
+        data["LongStage"] = list(map(lambda x: "Healthy+Slight" if (x in ["Healthy", "Slight"]) else x, data["LongStage"]))
+        tsne_data["LongStage"] = list(map(lambda x: "Healthy+Slight" if (x in ["Healthy", "Slight"]) else x, tsne_data["LongStage"]))
+    elif args.two:
+        data["LongStage"] = list(map(lambda x: "Moderate+Severe" if (x in ["Moderate", "Severe"]) else x, data["LongStage"]))
+        tsne_data["LongStage"] = list(map(lambda x: "Moderate+Severe" if (x in ["Moderate", "Severe"]) else x, tsne_data["LongStage"]))
+    elif args.three:
+        data["LongStage"] = list(map(lambda x: "Slight+Moderate+Severe" if (x in ["Slight", "Moderate", "Severe"]) else x, data["LongStage"]))
+        tsne_data["LongStage"] = list(map(lambda x: "Slight+Moderate+Severe" if (x in ["Slight", "Moderate", "Severe"]) else x, tsne_data["LongStage"]))
 
     print(tsne_data)
     print(data)
@@ -89,8 +95,8 @@ if __name__ == "__main__":
     matplotlib.pyplot.close(fig)
 
     # Calculate Metrics by Feature Counts
-    highest_metrics = {metric: (0, 0.0) for metric in step00.selected_derivations}
-    lowest_metrics = {metric: (0, 0.0) for metric in step00.selected_derivations}
+    highest_metrics = {metric: (0, 0.0) for metric in step00.derivations}
+    lowest_metrics = {metric: (0, 0.0) for metric in step00.derivations}
     scores = list()
 
     k_fold = sklearn.model_selection.StratifiedKFold(n_splits=10)
@@ -106,7 +112,7 @@ if __name__ == "__main__":
             classifier.fit(x_train, y_train)
             confusion_matrix = numpy.sum(sklearn.metrics.multilabel_confusion_matrix(y_test, classifier.predict(x_test)), axis=0)
 
-            for metric in step00.selected_derivations:
+            for metric in step00.derivations:
                 score = step00.aggregate_confusion_matrix(confusion_matrix, metric)
 
                 scores.append((i, metric, score))
@@ -116,7 +122,7 @@ if __name__ == "__main__":
                 else:
                     score_by_metric[metric] = [score]
 
-        for metric in step00.selected_derivations:
+        for metric in step00.derivations:
             if (highest_metrics[metric][0] == 0) or (highest_metrics[metric][1] < numpy.mean(score_by_metric[metric])):
                 highest_metrics[metric] = (i, numpy.mean(score_by_metric[metric]))
 
@@ -129,15 +135,16 @@ if __name__ == "__main__":
     # Export score data
     tar_files.append("metrics.csv")
     with open(tar_files[-1], "w") as f:
-        f.write("Count,Metrics,Mean,STD\n")
+        f.write("Count,Metrics,Mean,STD,95% CI\n")
         for i in range(1, len(best_features) + 1):
-            for metric in step00.selected_derivations:
+            for metric in step00.derivations:
                 selected_data = list(score_data.loc[(score_data["FeatureCount"] == i) & (score_data["Metrics"] == metric)]["Value"])
-                f.write("%d,%s,%.3f,%.3f\n" % (i, metric, numpy.mean(selected_data), numpy.std(selected_data)))
+                ci = scipy.stats.t.interval(0.95, len(selected_data) - 1, loc=numpy.mean(selected_data), scale=scipy.stats.sem(selected_data))
+                f.write("%d,%s,%.3f,%.3f,%.3f-%.3f\n" % (i, metric, numpy.mean(selected_data), numpy.std(selected_data), ci[0], ci[1]))
 
     # Draw Metrics
     fig, ax = matplotlib.pyplot.subplots(figsize=(32, 18))
-    seaborn.lineplot(data=score_data, x="FeatureCount", y="Value", hue="Metrics", style="Metrics", ax=ax, legend="full", markers=True, markersize=20)
+    seaborn.lineplot(data=score_data.loc[score_data["Metrics"].isin(step00.selected_derivations)], x="FeatureCount", y="Value", hue="Metrics", style="Metrics", ax=ax, legend="full", markers=True, markersize=20, hue_order=sorted(step00.selected_derivations))
     matplotlib.pyplot.grid(True)
     matplotlib.pyplot.ylim(0, 1)
     tar_files.append("metrics.png")
@@ -176,17 +183,13 @@ if __name__ == "__main__":
 
     # Draw Violin Plots
     print("Drawing Violin plot start!!")
-    for i, feature in enumerate(best_features):
-        print("--", feature)
-
-        seaborn.set(context="poster", style="whitegrid")
-        matplotlib.use("Agg")
-        matplotlib.rcParams.update({"font.size": 100, "axes.labelsize": 50, 'axes.titlesize': 100, 'xtick.labelsize': 50, 'ytick.labelsize': 50})
+    for i, feature in enumerate(best_features[:10]):
+        print("--", i, feature)
 
         fig, ax = matplotlib.pyplot.subplots(figsize=(36, 36))
-        seaborn.violinplot(data=data, x="LongStage", y=feature, order=sorted(set(data["LongStage"])) if (args.one or args.two) else step00.long_stage_order, ax=ax, inner="box")
+        seaborn.violinplot(data=data, x="LongStage", y=feature, order=sorted(set(data["LongStage"])) if (args.one or args.two or args.three) else step00.long_stage_order, ax=ax, inner="box")
 
-        statannot.add_stat_annotation(ax, data=data, x="LongStage", y=feature, order=sorted(set(data["LongStage"])) if (args.one or args.two) else step00.long_stage_order, test="t-test_ind", box_pairs=itertools.combinations(sorted(set(data["LongStage"])), 2), text_format="star", loc="inside", verbose=0)
+        statannot.add_stat_annotation(ax, data=data, x="LongStage", y=feature, order=sorted(set(data["LongStage"])) if (args.one or args.two or args.three) else step00.long_stage_order, test="t-test_ind", box_pairs=itertools.combinations(sorted(set(data["LongStage"])), 2), text_format="star", loc="inside", verbose=0)
 
         matplotlib.pyplot.title(" ".join(list(map(lambda x: x[3:], step00.consistency_taxonomy(feature).split("; ")))[5:]))
         matplotlib.pyplot.ylabel("")
@@ -197,9 +200,8 @@ if __name__ == "__main__":
     print("Drawing Violin Plot done!!")
 
     # Draw scatter plot
-    seaborn.set(context="poster", style="whitegrid")
     fig, ax = matplotlib.pyplot.subplots(figsize=(36, 36))
-    seaborn.scatterplot(data=tsne_data, x="tSNE1", y="tSNE2", hue="LongStage", style="LongStage", ax=ax, legend="full")
+    seaborn.scatterplot(data=tsne_data, x="tSNE1", y="tSNE2", hue="LongStage", style="LongStage", ax=ax, legend="full", s=1000)
     tar_files.append("scatter.png")
     fig.savefig(tar_files[-1])
     matplotlib.pyplot.close(fig)
