@@ -36,4 +36,6 @@ if __name__ == "__main__":
     seaborn.violinplot(data=input_data, x="LongStage", y="Index", order=step00.long_stage_order, ax=ax, inner="box")
     statannot.add_stat_annotation(ax, data=input_data, x="LongStage", y="Index", order=step00.long_stage_order, test="t-test_ind", box_pairs=itertools.combinations(step00.long_stage_order, 2), text_format="star", loc="inside", verbose=1)
     fig.savefig(args.output)
+    fig.savefig(args.output.replace(".png", ".pdf"))
+    fig.savefig(args.output.replace(".png", ".svg"))
     matplotlib.pyplot.close(fig)

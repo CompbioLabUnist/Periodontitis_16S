@@ -48,4 +48,6 @@ if __name__ == "__main__":
     matplotlib.pyplot.legend(fontsize="50", title_fontsize="100")
 
     fig.savefig(args.output)
+    fig.savefig(args.output.replace(".png", ".pdf"))
+    fig.savefig(args.output.replace(".png", ".svg"))
     matplotlib.pyplot.close(fig)

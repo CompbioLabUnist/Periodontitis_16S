@@ -92,6 +92,10 @@ if __name__ == "__main__":
     matplotlib.pyplot.grid(True)
     tar_files.append("importances.png")
     fig.savefig(tar_files[-1])
+    tar_files.append("importances.pdf")
+    fig.savefig(tar_files[-1])
+    tar_files.append("importances.svg")
+    fig.savefig(tar_files[-1])
     matplotlib.pyplot.close(fig)
 
     # Calculate Metrics by Feature Counts
@@ -149,6 +153,10 @@ if __name__ == "__main__":
     matplotlib.pyplot.ylim(0, 1)
     tar_files.append("metrics.png")
     fig.savefig(tar_files[-1])
+    tar_files.append("metrics.pdf")
+    fig.savefig(tar_files[-1])
+    tar_files.append("metrics.svg")
+    fig.savefig(tar_files[-1])
     matplotlib.pyplot.close(fig)
 
     # Draw Each Metics
@@ -161,6 +169,10 @@ if __name__ == "__main__":
         matplotlib.pyplot.ylim(0, 1)
         matplotlib.pyplot.title("Higest with %s feature(s) at %.3f" % highest_metrics[metric])
         tar_files.append(metric + ".png")
+        fig.savefig(tar_files[-1])
+        tar_files.append(metric + ".pdf")
+        fig.savefig(tar_files[-1])
+        tar_files.append(metric + ".svg")
         fig.savefig(tar_files[-1])
         matplotlib.pyplot.close(fig)
     print("Drawing scores done!!")
@@ -177,6 +189,10 @@ if __name__ == "__main__":
         sklearn.tree.plot_tree(classifier.fit(data[best_features[:highest_metrics[metric][0]]], data["LongStage"]).estimators_[0], ax=ax, filled=True, class_names=sorted(set(data["LongStage"])))
         matplotlib.pyplot.title("Highest %s with %s feature(s) at %.3f" % ((metric,) + highest_metrics[metric]))
         tar_files.append("highest_" + metric + ".png")
+        fig.savefig(tar_files[-1])
+        tar_files.append("highest_" + metric + ".pdf")
+        fig.savefig(tar_files[-1])
+        tar_files.append("highest_" + metric + ".svg")
         fig.savefig(tar_files[-1])
         matplotlib.pyplot.close(fig)
     print("Drawing highest trees done!!")
@@ -196,6 +212,10 @@ if __name__ == "__main__":
 
         tar_files.append("Feature_" + str(i) + ".png")
         fig.savefig(tar_files[-1])
+        tar_files.append("Feature_" + str(i) + ".pdf")
+        fig.savefig(tar_files[-1])
+        tar_files.append("Feature_" + str(i) + ".svg")
+        fig.savefig(tar_files[-1])
         matplotlib.pyplot.close(fig)
     print("Drawing Violin Plot done!!")
 
@@ -203,6 +223,10 @@ if __name__ == "__main__":
     fig, ax = matplotlib.pyplot.subplots(figsize=(36, 36))
     seaborn.scatterplot(data=tsne_data, x="tSNE1", y="tSNE2", hue="LongStage", style="LongStage", ax=ax, legend="full", s=1000)
     tar_files.append("scatter.png")
+    fig.savefig(tar_files[-1])
+    tar_files.append("scatter.pdf")
+    fig.savefig(tar_files[-1])
+    tar_files.append("scatter.svg")
     fig.savefig(tar_files[-1])
     matplotlib.pyplot.close(fig)
 
