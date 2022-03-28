@@ -19,7 +19,8 @@ if __name__ == "__main__":
         raise ValueError("OUTPUT file must end with .PNG!!")
 
     matplotlib.use("Agg")
-    matplotlib.rcParams.update({"font.size": 100, "axes.labelsize": 50, "axes.titlesize": 100, "xtick.labelsize": 50, "ytick.labelsize": 50, "font.family": "serif"})
+    matplotlib.rcParams.update(step00.matplotlib_parameters)
+    seaborn.set(context="poster", style="whitegrid", rc=step00.matplotlib_parameters)
 
     data = step00.read_pickle(args.input)
     act_column = "k__Bacteria; p__Actinobacteria; c__Actinobacteria; o__Actinomycetales; f__Actinomycetaceae; g__Actinomyces"
@@ -28,7 +29,6 @@ if __name__ == "__main__":
 
     print(data)
 
-    seaborn.set(context="poster", style="whitegrid")
     fig, ax = matplotlib.pyplot.subplots(figsize=(24, 24))
     seaborn.scatterplot(data=data, x=act_column, y=pg_column, hue="LongStage", style="LongStage", ax=ax, legend="full", hue_order=step00.long_stage_order, style_order=step00.long_stage_order, palette=step00.color_stage_order)
     matplotlib.pyplot.legend()

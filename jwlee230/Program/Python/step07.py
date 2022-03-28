@@ -18,7 +18,7 @@ if __name__ == "__main__":
     elif list(filter(lambda x: not x.endswith(".fastq.gz"), args.input)):
         raise ValueError("INPUT file must end with .fastq.gz!!")
 
-    info_data = pandas.read_excel(args.info)
+    info_data = pandas.read_excel(args.info, engine="openpyxl")
 
     data = pandas.DataFrame()
     data["#SampleID"] = sorted(list(set(list(map(lambda x: x.split("_")[0], list(map(lambda x: x.split("/")[-1], args.input)))))))

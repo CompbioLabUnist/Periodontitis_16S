@@ -28,9 +28,9 @@ if __name__ == "__main__":
     input_data["LongStage"] = list(map(step00.change_short_into_long, input_data["ShortStage"]))
     print(input_data)
 
-    seaborn.set(context="poster", style="whitegrid")
     matplotlib.use("Agg")
-    matplotlib.rcParams.update({"font.size": 100, "axes.labelsize": 50, "axes.titlesize": 100, "xtick.labelsize": 50, "ytick.labelsize": 50, "font.family": "serif"})
+    matplotlib.rcParams.update(step00.matplotlib_parameters)
+    seaborn.set(context="poster", style="whitegrid", rc=step00.matplotlib_parameters)
 
     fig, ax = matplotlib.pyplot.subplots(figsize=(36, 36))
     seaborn.violinplot(data=input_data, x="LongStage", y="Index", order=step00.long_stage_order, ax=ax, inner="box")
