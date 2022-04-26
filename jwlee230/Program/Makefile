@@ -415,7 +415,7 @@ Output/Step24:
 	mkdir -p $@
 
 Output/Step24/2D.%.png: Python/step24.py Output/Step17/whole.%.tar.gz | Output/Step24 build.log
-	$(DOCKER) python3 $(addprefix /,$^ $@)
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
 
 step24: Output/Step24/2D.DADA2.homd.png
 .PHONY: step24
@@ -444,3 +444,16 @@ Output/Step26/%.png: Python/step26.py Output/Step25/%.tsv | Output/Step26 build.
 
 step26: Output/Step26/DADA2.evenness.png Output/Step26/DADA2.faith_pd.png Output/Step26/DADA2.observed_features.png Output/Step26/DADA2.shannon.png
 .PHONY: step26
+
+# Step 27 (Beta-diveristy pairwise permanova test)
+Output/Step27/DADA2 Output/Step27/Deblur:
+	mkdir -p $@
+
+Output/Step27/DADA2/whole.%.qzv: Output/Step10/DADA2/whole.%_distance_matrix.qza Output/Step07/whole.tsv | build.log Output/Step27/DADA2
+	$(DOCKER) qiime diversity beta-group-significance --i-distance-matrix $(addprefix /,$(filter %.qza,$^)) --m-metadata-file $(addprefix /,$(filter %.tsv,$^)) --m-metadata-column "LongStage" --p-pairwise --o-visualization $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
+
+Output/Step27/Deblur/whole.%.qzv: Output/Step10/Deblur/whole.%_distance_matrix.qza Output/Step07/whole.tsv | build.log Output/Step27/Deblur
+	$(DOCKER) qiime diversity beta-group-significance --i-distance-matrix $(addprefix /,$(filter %.qza,$^)) --m-metadata-file $(addprefix /,$(filter %.tsv,$^)) --m-metadata-column "LongStage" --p-pairwise --o-visualization $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
+
+step27: Output/Step27/DADA2/whole.unweighted_unifrac.qzv Output/Step27/DADA2/whole.weighted_unifrac.qzv Output/Step27/DADA2/whole.jaccard.qzv Output/Step27/DADA2/whole.bray_curtis.qzv Output/Step27/Deblur/whole.unweighted_unifrac.qzv Output/Step27/Deblur/whole.weighted_unifrac.qzv Output/Step27/Deblur/whole.jaccard.qzv Output/Step27/Deblur/whole.bray_curtis.qzv
+.PHONY: step27

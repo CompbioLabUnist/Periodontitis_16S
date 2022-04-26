@@ -6,6 +6,7 @@ import itertools
 import matplotlib
 import matplotlib.pyplot
 import pandas
+import scipy.stats
 import seaborn
 import statannot
 import step00
@@ -33,8 +34,17 @@ if __name__ == "__main__":
     seaborn.set(context="poster", style="whitegrid", rc=step00.matplotlib_parameters)
 
     fig, ax = matplotlib.pyplot.subplots(figsize=(36, 36))
-    seaborn.violinplot(data=input_data, x="LongStage", y="Index", order=step00.long_stage_order, ax=ax, inner="box")
-    statannot.add_stat_annotation(ax, data=input_data, x="LongStage", y="Index", order=step00.long_stage_order, test="t-test_ind", box_pairs=itertools.combinations(step00.long_stage_order, 2), text_format="star", loc="inside", verbose=1)
+
+    seaborn.violinplot(data=input_data, x="LongStage", y="Index", order=step00.long_stage_order, ax=ax, inner="box", palette=step00.color_stage_dict, cut=1)
+    statannot.add_stat_annotation(ax, data=input_data, x="LongStage", y="Index", order=step00.long_stage_order, test="Mann-Whitney", box_pairs=itertools.combinations(step00.long_stage_order, 2), text_format="simple", loc="inside", verbose=1)
+
+    stat, p = scipy.stats.kruskal(*[input_data.loc[(input_data["LongStage"] == stage), "Index"] for stage in step00.long_stage_order])
+
+    matplotlib.pyplot.xlabel("")
+    matplotlib.pyplot.ylabel("")
+    matplotlib.pyplot.title(f"Kruskal-Wallis p={p:.2f}")
+    matplotlib.pyplot.tight_layout()
+
     fig.savefig(args.output)
     fig.savefig(args.output.replace(".png", ".pdf"))
     fig.savefig(args.output.replace(".png", ".svg"))

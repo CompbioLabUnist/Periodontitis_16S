@@ -44,10 +44,13 @@ if __name__ == "__main__":
     seaborn.set(context="poster", style="whitegrid", rc=step00.matplotlib_parameters)
 
     fig, ax = matplotlib.pyplot.subplots(figsize=(36, 36))
+
     seaborn.scatterplot(data=tsne_data, x="tSNE1", y="tSNE2", hue="LongStage", style="LongStage", ax=ax, legend="full", hue_order=step00.long_stage_order, style_order=step00.long_stage_order, palette=step00.color_stage_order, s=1000, edgecolor="none")
     matplotlib.pyplot.legend(fontsize="50", title_fontsize="100")
+    matplotlib.pyplot.tight_layout()
 
     fig.savefig(args.output)
     fig.savefig(args.output.replace(".png", ".pdf"))
     fig.savefig(args.output.replace(".png", ".svg"))
+
     matplotlib.pyplot.close(fig)

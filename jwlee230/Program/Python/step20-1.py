@@ -1,5 +1,5 @@
 """
-step20: Random Forest Classifier
+step20-1: Random Forest Classifier
 """
 import argparse
 import itertools
@@ -52,8 +52,8 @@ if __name__ == "__main__":
     train_columns = sorted(set(data.columns) - {"LongStage"})
 
     if args.one:
-        data["LongStage"] = list(map(lambda x: "Healthy+Slight" if (x in ["Healthy", "Slight"]) else x, data["LongStage"]))
-        tsne_data["LongStage"] = list(map(lambda x: "Healthy+Slight" if (x in ["Healthy", "Slight"]) else x, tsne_data["LongStage"]))
+        data = data.loc[(data["LongStage"].isin(["Healthy", "Slight"]))]
+        tsne_data = tsne_data.loc[(tsne_data["LongStage"].isin(["Healthy", "Slight"]))]
     elif args.two:
         data["LongStage"] = list(map(lambda x: "Moderate+Severe" if (x in ["Moderate", "Severe"]) else x, data["LongStage"]))
         tsne_data["LongStage"] = list(map(lambda x: "Moderate+Severe" if (x in ["Moderate", "Severe"]) else x, tsne_data["LongStage"]))
@@ -90,6 +90,7 @@ if __name__ == "__main__":
     matplotlib.pyplot.xlabel("Feature Importances")
     matplotlib.pyplot.ylabel("Counts")
     matplotlib.pyplot.grid(True)
+    matplotlib.pyplot.tight_layout()
     tar_files.append("importances.png")
     fig.savefig(tar_files[-1])
     tar_files.append("importances.pdf")
@@ -151,6 +152,8 @@ if __name__ == "__main__":
     seaborn.lineplot(data=score_data.loc[score_data["Metrics"].isin(step00.selected_derivations)], x="FeatureCount", y="Value", hue="Metrics", style="Metrics", ax=ax, legend="full", markers=True, markersize=20, hue_order=sorted(step00.selected_derivations))
     matplotlib.pyplot.grid(True)
     matplotlib.pyplot.ylim(0, 1)
+    ax.invert_xaxis()
+    matplotlib.pyplot.tight_layout()
     tar_files.append("metrics.png")
     fig.savefig(tar_files[-1])
     tar_files.append("metrics.pdf")
@@ -168,6 +171,7 @@ if __name__ == "__main__":
         matplotlib.pyplot.grid(True)
         matplotlib.pyplot.ylim(0, 1)
         matplotlib.pyplot.title("Higest with %s feature(s) at %.3f" % highest_metrics[metric])
+        matplotlib.pyplot.tight_layout()
         tar_files.append(metric + ".png")
         fig.savefig(tar_files[-1])
         tar_files.append(metric + ".pdf")
@@ -188,6 +192,7 @@ if __name__ == "__main__":
         fig, ax = matplotlib.pyplot.subplots(figsize=(36, 36))
         sklearn.tree.plot_tree(classifier.fit(data[best_features[:highest_metrics[metric][0]]], data["LongStage"]).estimators_[0], ax=ax, filled=True, class_names=sorted(set(data["LongStage"])))
         matplotlib.pyplot.title("Highest %s with %s feature(s) at %.3f" % ((metric,) + highest_metrics[metric]))
+        matplotlib.pyplot.tight_layout()
         tar_files.append("highest_" + metric + ".png")
         fig.savefig(tar_files[-1])
         tar_files.append("highest_" + metric + ".pdf")
@@ -202,13 +207,17 @@ if __name__ == "__main__":
     for i, feature in enumerate(best_features[:10]):
         print("--", i, feature)
 
+        order = sorted(set(data["LongStage"])) if (args.two or args.three) else step00.long_stage_order
+
         fig, ax = matplotlib.pyplot.subplots(figsize=(36, 36))
-        seaborn.violinplot(data=data, x="LongStage", y=feature, order=sorted(set(data["LongStage"])) if (args.one or args.two or args.three) else step00.long_stage_order, ax=ax, inner="box")
+        seaborn.violinplot(data=data, x="LongStage", y=feature, order=order, ax=ax, inner="box", cut=1, palette=step00.color_stage_dict)
 
-        statannot.add_stat_annotation(ax, data=data, x="LongStage", y=feature, order=sorted(set(data["LongStage"])) if (args.one or args.two or args.three) else step00.long_stage_order, test="t-test_ind", box_pairs=itertools.combinations(sorted(set(data["LongStage"])), 2), text_format="star", loc="inside", verbose=0)
+        statannot.add_stat_annotation(ax, data=data, x="LongStage", y=feature, order=order, test="Mann-Whitney", box_pairs=itertools.combinations(sorted(set(data["LongStage"])), 2), text_format="simple", loc="inside", verbose=0)
+        stat, p = scipy.stats.kruskal(*[data.loc[(data["LongStage"] == stage), feature] for stage in order])
 
-        matplotlib.pyplot.title(" ".join(list(map(lambda x: x[3:], step00.consistency_taxonomy(feature).split("; ")))[5:]))
+        matplotlib.pyplot.title(" ".join(list(map(lambda x: x[3:], step00.consistency_taxonomy(feature).split("; ")))[5:]) + f" (K.W p={p:.2f})")
         matplotlib.pyplot.ylabel("")
+        matplotlib.pyplot.tight_layout()
 
         tar_files.append("Feature_" + str(i) + ".png")
         fig.savefig(tar_files[-1])
@@ -222,6 +231,7 @@ if __name__ == "__main__":
     # Draw scatter plot
     fig, ax = matplotlib.pyplot.subplots(figsize=(36, 36))
     seaborn.scatterplot(data=tsne_data, x="tSNE1", y="tSNE2", hue="LongStage", style="LongStage", ax=ax, legend="full", s=1000)
+    matplotlib.pyplot.tight_layout()
     tar_files.append("scatter.png")
     fig.savefig(tar_files[-1])
     tar_files.append("scatter.pdf")

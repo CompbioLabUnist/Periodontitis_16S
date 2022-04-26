@@ -11,7 +11,7 @@ import typing
 import numpy
 
 key = bytes("asdf", "UTF-8")
-matplotlib_parameters = {"font.size": 50, "axes.labelsize": 50, "axes.titlesize": 75, "xtick.labelsize": 50, "ytick.labelsize": 50, "font.family": "sans", "legend.fontsize": 30, "legend.title_fontsize": 30, "figure.dpi": 300}
+matplotlib_parameters = {"font.size": 50, "axes.labelsize": 50, "axes.titlesize": 75, "xtick.labelsize": 50, "ytick.labelsize": 50, "font.family": "Arial", "legend.fontsize": 30, "legend.title_fontsize": 30, "figure.dpi": 300, "pdf.fonttype": 42, "ps.fonttype": 42}
 
 
 def file_list(path: str) -> typing.List[str]:
@@ -143,6 +143,7 @@ short_stage_order = ["H", "Sli", "M", "S"]
 number_stage_order = ["0", "1", "2", "3"]
 long_stage_order = ["Healthy", "Slight", "Moderate", "Severe"]
 color_stage_order = ["tab:green", "tab:olive", "tab:red", "tab:gray"]
+color_stage_dict = dict(zip(long_stage_order, color_stage_order))
 
 
 def change_ID_into_short_stage(ID: str) -> str:
@@ -174,6 +175,3 @@ def change_short_into_long(given_short: str) -> str:
         if short == given_short:
             return long_stage
     raise Exception("Something went wrong!!")
-
-
-matplotlib_parameters = {"font.size": 50, "axes.labelsize": 50, "axes.titlesize": 75, "xtick.labelsize": 50, "ytick.labelsize": 50, "font.family": "serif", "legend.fontsize": 30, "legend.title_fontsize": 30, "figure.dpi": 200}
