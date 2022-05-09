@@ -30,10 +30,16 @@ if __name__ == "__main__":
     print(data)
 
     fig, ax = matplotlib.pyplot.subplots(figsize=(24, 24))
-    seaborn.scatterplot(data=data, x=act_column, y=pg_column, hue="LongStage", style="LongStage", ax=ax, legend="full", hue_order=step00.long_stage_order, style_order=step00.long_stage_order, palette=step00.color_stage_order)
+
+    seaborn.scatterplot(data=data, x=act_column, y=pg_column, hue="LongStage", style="LongStage", ax=ax, legend="full", hue_order=step00.long_stage_order, style_order=step00.long_stage_order, palette=step00.color_stage_dict, s=1000)
+
     matplotlib.pyplot.legend()
     matplotlib.pyplot.xlabel("Actinomyces")
     matplotlib.pyplot.ylabel("Porphyromonas gingivalis")
     matplotlib.pyplot.grid(True)
+    matplotlib.pyplot.tight_layout()
+
     fig.savefig(args.output)
+    fig.savefig(args.output.replace(".png", ".pdf"))
+    fig.savefig(args.output.replace(".png", ".svg"))
     matplotlib.pyplot.close(fig)

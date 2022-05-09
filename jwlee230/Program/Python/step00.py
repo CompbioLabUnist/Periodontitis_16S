@@ -11,7 +11,7 @@ import typing
 import numpy
 
 key = bytes("asdf", "UTF-8")
-matplotlib_parameters = {"font.size": 50, "axes.labelsize": 50, "axes.titlesize": 75, "xtick.labelsize": 50, "ytick.labelsize": 50, "font.family": "Arial", "legend.fontsize": 30, "legend.title_fontsize": 30, "figure.dpi": 300, "pdf.fonttype": 42, "ps.fonttype": 42}
+matplotlib_parameters = {"font.size": 50, "axes.labelsize": 50, "axes.titlesize": 75, "xtick.labelsize": 50, "ytick.labelsize": 50, "font.family": "Arial", "legend.fontsize": 50, "legend.title_fontsize": 50,"figure.dpi": 300, "pdf.fonttype": 42, "ps.fonttype": 42}
 
 
 def file_list(path: str) -> typing.List[str]:

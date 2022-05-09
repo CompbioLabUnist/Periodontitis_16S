@@ -115,7 +115,10 @@ if __name__ == "__main__":
             y_train, y_test = data.iloc[train_index]["LongStage"], data.iloc[test_index]["LongStage"]
 
             classifier.fit(x_train, y_train)
-            confusion_matrix = numpy.sum(sklearn.metrics.multilabel_confusion_matrix(y_test, classifier.predict(x_test)), axis=0)
+            if args.one or args.three:
+                confusion_matrix = sklearn.metrics.confusion_matrix(y_test, classifier.predict(x_test))
+            else:
+                confusion_matrix = numpy.sum(sklearn.metrics.multilabel_confusion_matrix(y_test, classifier.predict(x_test)), axis=0)
 
             for metric in step00.derivations:
                 score = step00.aggregate_confusion_matrix(confusion_matrix, metric)
@@ -150,8 +153,13 @@ if __name__ == "__main__":
     # Draw Metrics
     fig, ax = matplotlib.pyplot.subplots(figsize=(32, 18))
     seaborn.lineplot(data=score_data.loc[score_data["Metrics"].isin(step00.selected_derivations)], x="FeatureCount", y="Value", hue="Metrics", style="Metrics", ax=ax, legend="full", markers=True, markersize=20, hue_order=sorted(step00.selected_derivations))
+    matplotlib.pyplot.axvline(x=highest_metrics["balanced_accuracy"][0], color="k", linestyle="--")
+    matplotlib.pyplot.text(x=highest_metrics["balanced_accuracy"][0], y=0.3, s=f"Highest BA {highest_metrics['balanced_accuracy'][1]:.2f} with {highest_metrics['balanced_accuracy'][0]} features", horizontalalignment="right", verticalalignment="center", rotation="vertical", fontsize="x-small", color="k")
     matplotlib.pyplot.grid(True)
     matplotlib.pyplot.ylim(0, 1)
+    matplotlib.pyplot.ylabel("Metrics")
+    matplotlib.pyplot.xlabel("Feature Counts")
+    matplotlib.pyplot.xticks(sorted(set(score_data["FeatureCount"])), sorted(set(score_data["FeatureCount"])))
     ax.invert_xaxis()
     matplotlib.pyplot.tight_layout()
     tar_files.append("metrics.png")
@@ -206,15 +214,25 @@ if __name__ == "__main__":
     print("Drawing Violin plot start!!")
     for i, feature in enumerate(best_features[:10]):
         print("--", i, feature)
+
         order = sorted(set(data["LongStage"])) if (args.two or args.three) else step00.long_stage_order
+        box_pairs = list()
+        for s1, s2 in itertools.combinations(order, 2):
+            _, p = scipy.stats.mannwhitneyu(data.loc[(data["LongStage"] == s1), feature], data.loc[(data["LongStage"] == s2), feature])
+            if p < 0.05:
+                box_pairs.append((s1, s2))
 
-        fig, ax = matplotlib.pyplot.subplots(figsize=(36, 36))
-        seaborn.violinplot(data=data, x="LongStage", y=feature, order=order, ax=ax, inner="box", cut=1, palette=step00.color_stage_dict)
+        fig, ax = matplotlib.pyplot.subplots(figsize=(18, 18))
+        if args.two or args.three:
+            seaborn.violinplot(data=data, x="LongStage", y=feature, order=order, ax=ax, inner="box", cut=1, linewidth=10)
+        else:
+            seaborn.violinplot(data=data, x="LongStage", y=feature, order=order, ax=ax, inner="box", cut=1, palette=step00.color_stage_dict, linewidth=10)
 
-        statannot.add_stat_annotation(ax, data=data, x="LongStage", y=feature, order=order, test="Mann-Whitney", box_pairs=itertools.combinations(sorted(set(data["LongStage"])), 2), text_format="simple", loc="inside", verbose=0)
+        if box_pairs:
+            statannot.add_stat_annotation(ax, data=data, x="LongStage", y=feature, order=order, test="Mann-Whitney", box_pairs=box_pairs, text_format="star", loc="inside", verbose=0, comparisons_correction=None)
         stat, p = scipy.stats.kruskal(*[data.loc[(data["LongStage"] == stage), feature] for stage in order])
 
-        matplotlib.pyplot.title(" ".join(list(map(lambda x: x[3:], step00.consistency_taxonomy(feature).split("; ")))[5:]) + f" (K.W p={p:.2f})")
+        matplotlib.pyplot.title(" ".join(list(map(lambda x: x[3:], step00.consistency_taxonomy(feature).split("; ")))[5:]) + f" (K.W. p={p:.2f})")
         matplotlib.pyplot.ylabel("")
         matplotlib.pyplot.tight_layout()
 

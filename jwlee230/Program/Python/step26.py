@@ -29,20 +29,25 @@ if __name__ == "__main__":
     input_data["LongStage"] = list(map(step00.change_short_into_long, input_data["ShortStage"]))
     print(input_data)
 
+    box_pairs = list()
+    for s1, s2 in itertools.combinations(step00.long_stage_order, 2):
+        _, p = scipy.stats.mannwhitneyu(input_data.loc[(input_data["LongStage"] == s1), "Index"], input_data.loc[(input_data["LongStage"] == s2), "Index"])
+        if p < 0.05:
+            box_pairs.append((s1, s2))
+
     matplotlib.use("Agg")
     matplotlib.rcParams.update(step00.matplotlib_parameters)
     seaborn.set(context="poster", style="whitegrid", rc=step00.matplotlib_parameters)
 
-    fig, ax = matplotlib.pyplot.subplots(figsize=(36, 36))
+    fig, ax = matplotlib.pyplot.subplots(figsize=(18, 18))
 
-    seaborn.violinplot(data=input_data, x="LongStage", y="Index", order=step00.long_stage_order, ax=ax, inner="box", palette=step00.color_stage_dict, cut=1)
-    statannot.add_stat_annotation(ax, data=input_data, x="LongStage", y="Index", order=step00.long_stage_order, test="Mann-Whitney", box_pairs=itertools.combinations(step00.long_stage_order, 2), text_format="simple", loc="inside", verbose=1)
+    seaborn.violinplot(data=input_data, x="LongStage", y="Index", order=step00.long_stage_order, ax=ax, inner="box", palette=step00.color_stage_dict, cut=1, linewidth=10)
+    statannot.add_stat_annotation(ax, data=input_data, x="LongStage", y="Index", order=step00.long_stage_order, test="Mann-Whitney", box_pairs=box_pairs, text_format="star", loc="inside", verbose=1, comparisons_correction=None)
 
     stat, p = scipy.stats.kruskal(*[input_data.loc[(input_data["LongStage"] == stage), "Index"] for stage in step00.long_stage_order])
 
     matplotlib.pyplot.xlabel("")
-    matplotlib.pyplot.ylabel("")
-    matplotlib.pyplot.title(f"Kruskal-Wallis p={p:.2f}")
+    matplotlib.pyplot.title(f"Kruskal-Wallis p={p:.2e}")
     matplotlib.pyplot.tight_layout()
 
     fig.savefig(args.output)
