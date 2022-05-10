@@ -20,6 +20,7 @@ if __name__ == "__main__":
 
     raw_data = step00.read_pickle(args.input)
     raw_data.drop(labels=["ShortStage", "LongStage"], axis="columns", inplace=True)
+    print(raw_data)
 
     tsne_data = pandas.DataFrame(sklearn.manifold.TSNE(n_components=2, init="pca", random_state=0, method="exact", n_jobs=args.cpu).fit_transform(raw_data), columns=["tSNE1", "tSNE2"])
 

@@ -160,6 +160,7 @@ if __name__ == "__main__":
     matplotlib.pyplot.ylabel("Metrics")
     matplotlib.pyplot.xlabel("Feature Counts")
     matplotlib.pyplot.xticks(sorted(set(score_data["FeatureCount"])), sorted(set(score_data["FeatureCount"])))
+    matplotlib.pyplot.legend(loc="lower left")
     ax.invert_xaxis()
     matplotlib.pyplot.tight_layout()
     tar_files.append("metrics.png")
@@ -232,7 +233,7 @@ if __name__ == "__main__":
             statannot.add_stat_annotation(ax, data=data, x="LongStage", y=feature, order=order, test="Mann-Whitney", box_pairs=box_pairs, text_format="star", loc="inside", verbose=0, comparisons_correction=None)
         stat, p = scipy.stats.kruskal(*[data.loc[(data["LongStage"] == stage), feature] for stage in order])
 
-        matplotlib.pyplot.title(" ".join(list(map(lambda x: x[3:], step00.consistency_taxonomy(feature).split("; ")))[5:]) + f" (K.W. p={p:.2f})")
+        matplotlib.pyplot.title(" ".join(list(map(lambda x: x[3:], step00.consistency_taxonomy(feature).split("; ")))[5:]) + f" (K.W. p={p:.2e})", fontsize=50)
         matplotlib.pyplot.ylabel("")
         matplotlib.pyplot.tight_layout()
 
