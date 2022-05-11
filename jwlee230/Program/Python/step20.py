@@ -78,9 +78,9 @@ if __name__ == "__main__":
         for i, (feature, importance) in enumerate(zip(best_features, sorted(feature_importances, reverse=True))):
             f.write(str(i))
             f.write(",")
-            f.write(" ".join(step00.simplified_taxonomy(feature).split("_")))
+            f.write(" ".join(step00.consistency_taxonomy(feature).split("; ")[5:]))
             f.write(",")
-            f.write(str(importance))
+            f.write(f"{importance:.3f}")
             f.write("\n")
 
     # Draw Feature Importances
@@ -145,7 +145,7 @@ if __name__ == "__main__":
     with open(tar_files[-1], "w") as f:
         f.write("Count,Metrics,Mean,STD,95% CI\n")
         for i in range(1, len(best_features) + 1):
-            for metric in step00.derivations:
+            for metric in sorted(step00.derivations):
                 selected_data = list(score_data.loc[(score_data["FeatureCount"] == i) & (score_data["Metrics"] == metric)]["Value"])
                 ci = scipy.stats.t.interval(0.95, len(selected_data) - 1, loc=numpy.mean(selected_data), scale=scipy.stats.sem(selected_data))
                 f.write("%d,%s,%.3f,%.3f,%.3f-%.3f\n" % (i, metric, numpy.mean(selected_data), numpy.std(selected_data), ci[0], ci[1]))
