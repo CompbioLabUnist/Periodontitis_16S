@@ -234,6 +234,7 @@ if __name__ == "__main__":
         stat, p = scipy.stats.kruskal(*[data.loc[(data["LongStage"] == stage), feature] for stage in order])
 
         matplotlib.pyplot.title(" ".join(feature.split("; ")[-2:]).replace("_", " ") + f" (K.W. p={p:.2e})", fontsize=50)
+        matplotlib.pyplot.xlabel("")
         matplotlib.pyplot.ylabel("Abundance")
         matplotlib.pyplot.tight_layout()
 
