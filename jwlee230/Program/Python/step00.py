@@ -11,7 +11,7 @@ import typing
 import numpy
 
 key = bytes("asdf", "UTF-8")
-matplotlib_parameters = {"font.size": 50, "axes.labelsize": 50, "axes.titlesize": 75, "xtick.labelsize": 50, "ytick.labelsize": 50, "font.family": "Arial", "legend.fontsize": 50, "legend.title_fontsize": 50,"figure.dpi": 300, "pdf.fonttype": 42, "ps.fonttype": 42}
+matplotlib_parameters = {"font.size": 50, "axes.labelsize": 50, "axes.titlesize": 75, "xtick.labelsize": 50, "ytick.labelsize": 50, "font.family": "Arial", "legend.fontsize": 50, "legend.title_fontsize": 50, "figure.dpi": 300, "pdf.fonttype": 42, "ps.fonttype": 42}
 
 
 def file_list(path: str) -> typing.List[str]:
@@ -80,18 +80,27 @@ def read_pickle(path: str) -> typing.Any:
     return pickle.loads(pkl)
 
 
+def add_spp(taxonomy: str) -> str:
+    if taxonomy.endswith(";__"):
+        return taxonomy[:-2] + ";s__spp."
+    elif len(taxonomy.split(";")) == 6:
+        return taxonomy + "; s__spp."
+    else:
+        return taxonomy
+
+
 def consistency_taxonomy(taxonomy: str) -> str:
     """
     consistency_taxonomy: make taxonomy information with consistency
     """
-    return "; ".join(list(filter(lambda x: not x.endswith("__"), list(map(lambda x: x.strip()[3:], taxonomy.split(";"))))))
+    return "; ".join(list(filter(None, list(map(lambda x: x.strip()[3:], add_spp(taxonomy).split(";"))))))
 
 
 def simplified_taxonomy(taxonomy: str) -> str:
     """
     simplified_taxonomy: simplified taxonomy information for file name
     """
-    return "_".join(list(filter(None, list(map(lambda x: x.strip().replace("[", "").replace("]", "")[3:], taxonomy.split(";"))))))
+    return "_".join(list(filter(None, list(map(lambda x: x.strip().replace("[", "").replace("]", "")[3:], add_spp(taxonomy).split(";"))))))
 
 
 derivations = ("sensitivity", "specificity", "precision", "negative_predictive_value", "miss_rate", "fall_out", "false_discovery_rate", "false_ommission_rate", "accuracy", "F1_score", "odds_ratio", "balanced_accuracy", "threat_score")
@@ -142,7 +151,7 @@ short_stage_dict = {"H": "H", "E": "Sli", "M": "M", "S": "S"}
 short_stage_order = ["H", "Sli", "M", "S"]
 number_stage_order = ["0", "1", "2", "3"]
 long_stage_order = ["Healthy", "Slight", "Moderate", "Severe"]
-color_stage_order = ["tab:green", "tab:olive", "tab:red", "tab:gray"]
+color_stage_order = ["tab:green", "tab:cyan", "tab:olive", "tab:red"]
 color_stage_dict = dict(zip(long_stage_order, color_stage_order))
 
 
@@ -175,3 +184,14 @@ def change_short_into_long(given_short: str) -> str:
         if short == given_short:
             return long_stage
     raise Exception("Something went wrong!!")
+
+
+def change_ID_into_long_stage(ID: str) -> str:
+    return change_short_into_long(change_ID_into_short_stage(ID))
+
+
+def sorting(ID: str) -> typing.Tuple[int, str]:
+    """
+    sorting: sorting key by patient-type
+    """
+    return (long_stage_order.index(change_ID_into_long_stage(ID)), ID)

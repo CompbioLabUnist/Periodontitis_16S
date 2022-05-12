@@ -6,7 +6,7 @@ CPUS = 10
 MEMS = 100G
 SHELL := /bin/bash
 PWD := $(shell pwd)
-TOOLS = 
+TOOLS =
 DOCKER = docker run --rm $(VOLUME_OPTS) $(RUN_OPTS) $(IMAGE_NAME)
 
 # Options
@@ -415,7 +415,7 @@ Output/Step24:
 	mkdir -p $@
 
 Output/Step24/2D.%.png: Python/step24.py Output/Step17/whole.%.tar.gz | Output/Step24 build.log
-	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.sterr
 
 step24: Output/Step24/2D.DADA2.homd.png
 .PHONY: step24
@@ -457,3 +457,23 @@ Output/Step27/Deblur/whole.%.qzv: Output/Step10/Deblur/whole.%_distance_matrix.q
 
 step27: Output/Step27/DADA2/whole.unweighted_unifrac.qzv Output/Step27/DADA2/whole.weighted_unifrac.qzv Output/Step27/DADA2/whole.jaccard.qzv Output/Step27/DADA2/whole.bray_curtis.qzv Output/Step27/Deblur/whole.unweighted_unifrac.qzv Output/Step27/Deblur/whole.weighted_unifrac.qzv Output/Step27/Deblur/whole.jaccard.qzv Output/Step27/Deblur/whole.bray_curtis.qzv
 .PHONY: step27
+
+# Step 28 (ANCOM cluster map)
+Output/Step28:
+	mkdir -p $@
+
+Output/Step28/%.png: Python/step28.py Output/Step17/%.tar.gz | Output/Step28 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+step28: Output/Step28/whole.DADA2.homd.png
+.PHONY: step28
+
+# Step 29 (ANCOM violin plot)
+Output/Step29:
+	mkdir -p $@
+
+Output/Step29/%.png: Python/step29.py Output/Step17/%.tar.gz | Output/Step29 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+step29: Output/Step29/whole.DADA2.homd.png
+.PHONY: step29

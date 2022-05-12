@@ -4,9 +4,39 @@ step19.py: draw default t-SNE
 import argparse
 import pandas
 import matplotlib
+from matplotlib.patches import Ellipse
 import matplotlib.pyplot
+import matplotlib.transforms
+import numpy
 import seaborn
 import step00
+
+
+def confidence_ellipse(x, y, ax, n_std=2.0, **kwargs):
+    """
+    Create a plot of the covariance confidence ellipse of *x* and *y*.
+    """
+    if x.size != y.size:
+        raise ValueError("x and y must be the same size")
+
+    cov = numpy.cov(x, y)
+    pearson = cov[0, 1] / numpy.sqrt(cov[0, 0] * cov[1, 1])
+
+    ell_radius_x = numpy.sqrt(1 + pearson)
+    ell_radius_y = numpy.sqrt(1 - pearson)
+    ellipse = Ellipse((0, 0), width=ell_radius_x * 2, height=ell_radius_y * 2, **kwargs)
+
+    scale_x = numpy.sqrt(cov[0, 0]) * n_std
+    mean_x = numpy.mean(x)
+
+    scale_y = numpy.sqrt(cov[1, 1]) * n_std
+    mean_y = numpy.mean(y)
+
+    transf = matplotlib.transforms.Affine2D().rotate_deg(45).scale(scale_x, scale_y).translate(mean_x, mean_y)
+
+    ellipse.set_transform(transf + ax.transData)
+    return ax.add_patch(ellipse)
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -27,9 +57,13 @@ if __name__ == "__main__":
     matplotlib.use("Agg")
     matplotlib.rcParams.update(step00.matplotlib_parameters)
     seaborn.set(context="poster", style="whitegrid", rc=step00.matplotlib_parameters)
-    fig, ax = matplotlib.pyplot.subplots(figsize=(36, 36))
+    fig, ax = matplotlib.pyplot.subplots(figsize=(24, 24))
 
-    seaborn.scatterplot(data=data, x="tSNE1", y="tSNE2", hue="LongStage", style="LongStage", ax=ax, legend="full", hue_order=step00.long_stage_order, style_order=step00.long_stage_order, palette=step00.color_stage_order, s=1000, edgecolor="none")
+    seaborn.scatterplot(data=data, x="tSNE1", y="tSNE2", hue="LongStage", ax=ax, legend="full", hue_order=step00.long_stage_order, palette=step00.color_stage_order, s=1000, edgecolor="none")
+
+    for stage, color in zip(step00.long_stage_order, step00.color_stage_order):
+        confidence_ellipse(data.loc[(data["LongStage"] == stage), "tSNE1"], data.loc[(data["LongStage"] == stage), "tSNE2"], ax, color=color, alpha=0.2)
+
     legend = matplotlib.pyplot.legend()
     for handle in legend.legendHandles:
         handle.set_sizes([1000])

@@ -157,7 +157,7 @@ if __name__ == "__main__":
     matplotlib.pyplot.text(x=highest_metrics["balanced_accuracy"][0], y=0.3, s=f"Highest BA {highest_metrics['balanced_accuracy'][1]:.2f} with {highest_metrics['balanced_accuracy'][0]} features", horizontalalignment="right", verticalalignment="center", rotation="vertical", fontsize="x-small", color="k")
     matplotlib.pyplot.grid(True)
     matplotlib.pyplot.ylim(0, 1)
-    matplotlib.pyplot.ylabel("Metrics")
+    matplotlib.pyplot.ylabel("Evaluations")
     matplotlib.pyplot.xlabel("Feature Counts")
     matplotlib.pyplot.xticks(sorted(set(score_data["FeatureCount"])), sorted(set(score_data["FeatureCount"])))
     matplotlib.pyplot.legend(loc="lower left")
@@ -233,8 +233,8 @@ if __name__ == "__main__":
             statannot.add_stat_annotation(ax, data=data, x="LongStage", y=feature, order=order, test="Mann-Whitney", box_pairs=box_pairs, text_format="star", loc="inside", verbose=0, comparisons_correction=None)
         stat, p = scipy.stats.kruskal(*[data.loc[(data["LongStage"] == stage), feature] for stage in order])
 
-        matplotlib.pyplot.title(" ".join(list(map(lambda x: x[3:], step00.consistency_taxonomy(feature).split("; ")))[5:]) + f" (K.W. p={p:.2e})", fontsize=50)
-        matplotlib.pyplot.ylabel("")
+        matplotlib.pyplot.title(" ".join(feature.split("; ")[-2:]).replace("_", " ") + f" (K.W. p={p:.2e})", fontsize=50)
+        matplotlib.pyplot.ylabel("Abundance")
         matplotlib.pyplot.tight_layout()
 
         tar_files.append("Feature_" + str(i) + ".png")

@@ -43,7 +43,7 @@ if __name__ == "__main__":
     fig, ax = matplotlib.pyplot.subplots(figsize=(18, 18))
 
     seaborn.violinplot(data=input_data, x="LongStage", y="Index", order=step00.long_stage_order, ax=ax, inner="box", palette=step00.color_stage_dict, cut=1, linewidth=10)
-    statannot.add_stat_annotation(ax, data=input_data, x="LongStage", y="Index", order=step00.long_stage_order, test="Mann-Whitney", box_pairs=box_pairs, text_format="star", loc="inside", verbose=1, comparisons_correction=None)
+    statannot.add_stat_annotation(ax, data=input_data, x="LongStage", y="Index", order=step00.long_stage_order, test="Mann-Whitney", box_pairs=box_pairs, text_format="star", loc="inside", verbose=0, comparisons_correction=None)
 
     stat, p = scipy.stats.kruskal(*[input_data.loc[(input_data["LongStage"] == stage), "Index"] for stage in step00.long_stage_order])
 
