@@ -19,7 +19,6 @@ if __name__ == "__main__":
         raise ValueError("ANCOM file must end with .TSV!!")
 
     data = step00.read_pickle(args.input)
-    print(list(data.columns))
     print(data)
 
     ancom_data = pandas.read_csv(args.ancom, sep="\t", names=["Bacteria", "W", "Reject"], header=0)

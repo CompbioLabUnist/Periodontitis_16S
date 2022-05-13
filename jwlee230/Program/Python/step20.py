@@ -49,7 +49,7 @@ if __name__ == "__main__":
 
     data = step00.read_pickle(args.input)
     del data["ShortStage"]
-    train_columns = sorted(set(data.columns) - {"LongStage"})
+    train_columns = list(data.columns)[:-1]
 
     if args.one:
         data = data.loc[(data["LongStage"].isin(["Healthy", "Slight"]))]
@@ -66,19 +66,19 @@ if __name__ == "__main__":
     print(set(data["LongStage"]))
 
     # Get Feature Importances
-    classifier = sklearn.ensemble.RandomForestClassifier(max_features=None, n_jobs=args.cpu, random_state=0)
+    classifier = sklearn.ensemble.RandomForestClassifier(max_features=None, n_jobs=args.cpu, random_state=42)
     classifier.fit(data[train_columns], data["LongStage"])
     feature_importances = list(classifier.feature_importances_)
-    best_features = list(map(lambda x: x[1], sorted(list(filter(lambda x: (x[0] > 0), zip(feature_importances, train_columns))), reverse=True)))
+    best_features = list(map(lambda x: x[1], sorted(zip(feature_importances, train_columns), reverse=True)))
 
     # Save Features
-    tar_files.append("features.csv")
+    tar_files.append("Features.csv")
     with open(tar_files[-1], "w") as f:
         f.write("Order,Taxonomy Classification,Importances\n")
         for i, (feature, importance) in enumerate(zip(best_features, sorted(feature_importances, reverse=True))):
             f.write(str(i))
             f.write(",")
-            f.write(" ".join(step00.consistency_taxonomy(feature).split("; ")[5:]))
+            f.write(" ".join(feature.split("; ")[5:]).replace("_", " "))
             f.write(",")
             f.write(f"{importance:.3f}")
             f.write("\n")
@@ -131,11 +131,12 @@ if __name__ == "__main__":
                     score_by_metric[metric] = [score]
 
         for metric in step00.derivations:
-            if (highest_metrics[metric][0] == 0) or (highest_metrics[metric][1] < numpy.mean(score_by_metric[metric])):
-                highest_metrics[metric] = (i, numpy.mean(score_by_metric[metric]))
+            tmp = numpy.mean(score_by_metric[metric])
+            if (highest_metrics[metric][0] == 0) or (highest_metrics[metric][1] < tmp):
+                highest_metrics[metric] = (i, tmp)
 
-            if (lowest_metrics[metric][0] == 0) or (lowest_metrics[metric][1] > numpy.mean(score_by_metric[metric])):
-                lowest_metrics[metric] = (i, numpy.mean(score_by_metric[metric]))
+            if (lowest_metrics[metric][0] == 0) or (lowest_metrics[metric][1] > tmp):
+                lowest_metrics[metric] = (i, tmp)
 
     score_data = pandas.DataFrame.from_records(scores, columns=["FeatureCount", "Metrics", "Value"])
     print(score_data)
@@ -154,13 +155,14 @@ if __name__ == "__main__":
     fig, ax = matplotlib.pyplot.subplots(figsize=(32, 18))
     seaborn.lineplot(data=score_data.loc[score_data["Metrics"].isin(step00.selected_derivations)], x="FeatureCount", y="Value", hue="Metrics", style="Metrics", ax=ax, legend="full", markers=True, markersize=20, hue_order=sorted(step00.selected_derivations))
     matplotlib.pyplot.axvline(x=highest_metrics["balanced_accuracy"][0], color="k", linestyle="--")
-    matplotlib.pyplot.text(x=highest_metrics["balanced_accuracy"][0], y=0.3, s=f"Highest BA {highest_metrics['balanced_accuracy'][1]:.2f} with {highest_metrics['balanced_accuracy'][0]} features", horizontalalignment="right", verticalalignment="center", rotation="vertical", fontsize="x-small", color="k")
+    matplotlib.pyplot.text(x=highest_metrics["balanced_accuracy"][0], y=0.3, s=f"Highest BA {highest_metrics['balanced_accuracy'][1]:.3f} with {highest_metrics['balanced_accuracy'][0]} features", horizontalalignment="right", verticalalignment="center", rotation="vertical", fontsize="x-small", color="k")
     matplotlib.pyplot.grid(True)
     matplotlib.pyplot.ylim(0, 1)
     matplotlib.pyplot.ylabel("Evaluations")
     matplotlib.pyplot.xlabel("Feature Counts")
     matplotlib.pyplot.xticks(sorted(set(score_data["FeatureCount"])), sorted(set(score_data["FeatureCount"])))
-    matplotlib.pyplot.legend(loc="lower left")
+    matplotlib.pyplot.legend()
+    matplotlib.pyplot.title("Write something")
     ax.invert_xaxis()
     matplotlib.pyplot.tight_layout()
     tar_files.append("metrics.png")
@@ -213,7 +215,7 @@ if __name__ == "__main__":
 
     # Draw Violin Plots
     print("Drawing Violin plot start!!")
-    for i, feature in enumerate(best_features[:10]):
+    for i, feature in enumerate(best_features[:9]):
         print("--", i, feature)
 
         order = sorted(set(data["LongStage"])) if (args.two or args.three) else step00.long_stage_order
@@ -225,12 +227,12 @@ if __name__ == "__main__":
 
         fig, ax = matplotlib.pyplot.subplots(figsize=(18, 18))
         if args.two or args.three:
-            seaborn.violinplot(data=data, x="LongStage", y=feature, order=order, ax=ax, inner="box", cut=1, linewidth=10)
+            seaborn.violinplot(data=data, x="LongStage", y=feature, order=order, ax=ax, inner="box", cut=1, linewidth=5)
         else:
-            seaborn.violinplot(data=data, x="LongStage", y=feature, order=order, ax=ax, inner="box", cut=1, palette=step00.color_stage_dict, linewidth=10)
+            seaborn.violinplot(data=data, x="LongStage", y=feature, order=order, ax=ax, inner="box", cut=1, palette=step00.color_stage_dict, linewidth=5)
 
         if box_pairs:
-            statannot.add_stat_annotation(ax, data=data, x="LongStage", y=feature, order=order, test="Mann-Whitney", box_pairs=box_pairs, text_format="star", loc="inside", verbose=0, comparisons_correction=None)
+            statannot.add_stat_annotation(ax, data=data, x="LongStage", y=feature, order=order, test="Mann-Whitney", box_pairs=box_pairs, text_format="star", loc="inside", verbose=1, comparisons_correction=None)
         stat, p = scipy.stats.kruskal(*[data.loc[(data["LongStage"] == stage), feature] for stage in order])
 
         matplotlib.pyplot.title(" ".join(feature.split("; ")[-2:]).replace("_", " ") + f" (K.W. p={p:.2e})", fontsize=50)
