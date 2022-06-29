@@ -9,6 +9,7 @@ import matplotlib.transforms
 import numpy
 import pandas
 import seaborn
+import skbio.stats
 import sklearn.manifold
 import sklearn.preprocessing
 import step00
@@ -69,6 +70,9 @@ if __name__ == "__main__":
     tsne_data["LongStage"] = list(map(step00.change_short_into_long, tsne_data["ShortStage"]))
     print(tsne_data)
 
+    p_value = skbio.stats.distance.permanova(skbio.stats.distance.DistanceMatrix(raw_data, ids=list(raw_data.index)), grouping=list(tsne_data["LongStage"]))["p-value"]
+    print(p_value)
+
     matplotlib.use("Agg")
     matplotlib.rcParams.update(step00.matplotlib_parameters)
     seaborn.set(context="poster", style="whitegrid", rc=step00.matplotlib_parameters)
@@ -79,6 +83,8 @@ if __name__ == "__main__":
 
     for stage, color in zip(step00.long_stage_order, step00.color_stage_order):
         confidence_ellipse(tsne_data.loc[(tsne_data["LongStage"] == stage), "tSNE1"], tsne_data.loc[(tsne_data["LongStage"] == stage), "tSNE2"], ax, color=color, alpha=0.3)
+
+    matplotlib.pyplot.title(f"PERMANOVA p={p_value:.2e}")
 
     legend = matplotlib.pyplot.legend()
     for handle in legend.legendHandles:

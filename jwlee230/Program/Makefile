@@ -2,8 +2,8 @@
 DATE := $(shell date "+%y%m%d")
 RANDOM := $(shell bash -c 'echo $$RANDOM')
 IMAGE_NAME = periodontitis:latest
-CPUS = 10
-MEMS = 100G
+CPUS = 30
+MEMS = 300G
 SHELL := /bin/bash
 PWD := $(shell pwd)
 TOOLS =

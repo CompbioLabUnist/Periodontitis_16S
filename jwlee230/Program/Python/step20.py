@@ -220,9 +220,11 @@ if __name__ == "__main__":
 
         order = sorted(set(data["LongStage"])) if (args.two or args.three) else step00.long_stage_order
         box_pairs = list()
-        for s1, s2 in itertools.combinations(order, 2):
+        for s1, s2 in itertools.product(order, repeat=2):
+            if s1 == s2:
+                continue
             _, p = scipy.stats.mannwhitneyu(data.loc[(data["LongStage"] == s1), feature], data.loc[(data["LongStage"] == s2), feature])
-            if p < 0.05:
+            if (p < 0.05) and ((s2, s1) not in box_pairs):
                 box_pairs.append((s1, s2))
 
         fig, ax = matplotlib.pyplot.subplots(figsize=(18, 18))
