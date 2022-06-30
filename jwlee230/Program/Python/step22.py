@@ -61,7 +61,7 @@ if __name__ == "__main__":
     raw_data.set_index(keys="Unnamed: 0", inplace=True, verify_integrity=True)
     print(raw_data)
 
-    tsne_data = pandas.DataFrame(sklearn.manifold.TSNE(n_components=2, init="pca", random_state=0, method="exact", n_jobs=args.cpu).fit_transform(raw_data), columns=["tSNE1", "tSNE2"])
+    tsne_data = pandas.DataFrame(sklearn.manifold.TSNE(n_components=2, init="pca", random_state=42, method="exact", n_jobs=args.cpu).fit_transform(raw_data), columns=["tSNE1", "tSNE2"])
 
     for column in tsne_data.columns:
         tsne_data[column] = sklearn.preprocessing.scale(tsne_data[column])

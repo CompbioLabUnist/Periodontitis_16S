@@ -8,7 +8,7 @@ import matplotlib.pyplot
 import pandas
 import scipy.stats
 import seaborn
-import statannot
+import statannotations.Annotator
 import step00
 
 if __name__ == "__main__":
@@ -37,6 +37,7 @@ if __name__ == "__main__":
         print(s1, s2, p)
         if (p < 0.05) and ((s2, s1) not in box_pairs):
             box_pairs.append((s1, s2))
+    print(box_pairs)
 
     matplotlib.use("Agg")
     matplotlib.rcParams.update(step00.matplotlib_parameters)
@@ -45,7 +46,7 @@ if __name__ == "__main__":
     fig, ax = matplotlib.pyplot.subplots(figsize=(18, 18))
 
     seaborn.violinplot(data=input_data, x="LongStage", y="Index", order=step00.long_stage_order, ax=ax, inner="box", palette=step00.color_stage_dict, cut=1, linewidth=10)
-    statannot.add_stat_annotation(ax, data=input_data, x="LongStage", y="Index", order=step00.long_stage_order, test="Mann-Whitney", box_pairs=box_pairs, text_format="star", loc="inside", verbose=1, comparisons_correction=None)
+    statannotations.Annotator.Annotator(ax, box_pairs, data=input_data, x="LongStage", y="Index", order=step00.long_stage_order).configure(test="Mann-Whitney", text_format="star", loc="inside").apply_and_annotate()
 
     stat, p = scipy.stats.kruskal(*[input_data.loc[(input_data["LongStage"] == stage), "Index"] for stage in step00.long_stage_order])
 
