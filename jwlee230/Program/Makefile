@@ -2,8 +2,8 @@
 DATE := $(shell date "+%y%m%d")
 RANDOM := $(shell bash -c 'echo $$RANDOM')
 IMAGE_NAME = periodontitis:latest
-CPUS = 30
-MEMS = 300G
+CPUS = 10
+MEMS = 100G
 SHELL := /bin/bash
 PWD := $(shell pwd)
 TOOLS =
@@ -298,7 +298,10 @@ Output/Step15/whole.Deblur.%.tsv: Output/Step05/whole.table.qza Output/Step13/wh
 	$(DOCKER) biom convert --input-fp /Output/Step15/tmp/tmp.biom --output-fp $(addprefix /,$@) --to-tsv --process-obs-metadata "taxonomy" --tsv-metadata-formatter "sc_separated" --header-key "taxonomy"
 	$(DOCKER) rm -rfv /Output/Step15/tmp
 
-step15: Output/Step15/whole.DADA2.homd.tsv
+Output/Step15/%.tsv: Python/step15.py Output/Step15/%.Proportion.tsv | build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+step15: Output/Step15/whole.DADA2.homd.tsv Output/Step15/whole.DADA2.homd.Proportion.tsv
 .PHONY: step15
 
 # Step 16 (Clearify raw TSV into pandas)
