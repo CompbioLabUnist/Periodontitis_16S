@@ -1,4 +1,21 @@
 Order,Taxonomy Classification,Importances
-0,Bacteria Actinobacteria Actinobacteria Actinomycetales Actinomycetaceae Actinomyces,0.33184235755114905
-1,Bacteria Spirochaetes Spirochaetia Spirochaetales Spirochaetaceae Treponema,0.32946935972610425
-2,Bacteria Synergistetes Synergistia Synergistales Synergistaceae Fretibacterium,0.049427879731767196
+0,Porphyromonas gingivalis,0.345
+1,Actinomyces spp.,0.311
+2,Filifactor alocis,0.048
+3,Prevotella intermedia,0.044
+4,Corynebacterium durum,0.042
+5,Actinomyces graevenitzii,0.036
+6,Porphyromonas sp. HMT 285,0.028
+7,Campylobacter showae,0.018
+8,Tannerella forsythia,0.015
+9,Treponema putidum,0.014
+10,Peptostreptococcaceae [XI][G-9] brachy,0.014
+11,Treponema spp.,0.014
+12,Lachnospiraceae [G-8] bacterium HMT 500,0.014
+13,Prevotella sp. HMT 304,0.012
+14,Peptostreptococcaceae [XI][G-5] saphenum,0.009
+15,Prevotella sp. HMT 526,0.008
+16,Fretibacterium spp.,0.008
+17,Peptostreptococcaceae [XI][G-6] nodatum,0.007
+18,Mycoplasma faucium,0.007
+19,Treponema sp. HMT 260,0.005
