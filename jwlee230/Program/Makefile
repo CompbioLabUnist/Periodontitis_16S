@@ -483,3 +483,29 @@ Output/Step29/%.png: Python/step29.py Output/Step17/%.tar.gz | Output/Step29 bui
 
 step29: Output/Step29/whole.DADA2.homd.png
 .PHONY: step29
+
+# Step 30 (LefSe)
+Output/Step30 Output/Step30/Default Output/Step30/Cladogram:
+	mkdir -p $@
+	chmod 777 $@
+
+Output/Step30/%.tsv: Python/step30.py Output/Step16/whole.%.tar.gz | Output/Step30 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+Output/Step30/%.in: Output/Step30/%.tsv | build.log
+	docker run --rm $(VOLUME_OPTS) $(RUN_OPTS) biobakery/lefse format_input.py $(addprefix /,$^ $@) -c 2 -u 1 1> $@.stdout 2> $@.stderr
+
+Output/Step30/%.res: Output/Step30/%.in | build.log
+	docker run --rm $(VOLUME_OPTS) $(RUN_OPTS) biobakery/lefse run_lefse.py $(addprefix /,$^ $@) --verbose 1 -y 1 1> $@.stdout 2> $@.stderr
+
+Output/Step30/Default/%.pdf: Output/Step30/%.res | build.log Output/Step30/Default
+	docker run --rm $(VOLUME_OPTS) $(RUN_OPTS) biobakery/lefse plot_res.py $(addprefix /,$^ $@) --format pdf 1> $@.stdout 2> $@.stderr || $(DOCKER) touch $(addprefix /,$@)
+
+Output/Step30/Cladogram/%.res: Output/Step30/%.res | build.log Output/Step30/Cladogram
+	grep --perl-regexp "True|False" $^ > $@ || cp -f $^ $@
+
+Output/Step30/Cladogram/%.pdf: Output/Step30/Cladogram/%.res | build.log
+	docker run --rm $(VOLUME_OPTS) $(RUN_OPTS) biobakery/lefse plot_cladogram.py $(addprefix /,$^ $@) --format pdf 1> $@.stdout 2> $@.stderr || $(DOCKER) touch $(addprefix /,$@)
+
+step30: Output/Step30/DADA2.homd.tsv Output/Step30/DADA2.homd.in Output/Step30/DADA2.homd.res Output/Step30/Default/DADA2.homd.pdf Output/Step30/Cladogram/DADA2.homd.res Output/Step30/Cladogram/DADA2.homd.pdf
+.PHONY: step30
