@@ -59,7 +59,10 @@ if __name__ == "__main__":
     seaborn.set(context="poster", style="whitegrid", rc=step00.matplotlib_parameters)
     fig, ax = matplotlib.pyplot.subplots(figsize=(24, 24))
 
-    seaborn.scatterplot(data=data, x="tSNE1", y="tSNE2", hue="LongStage", ax=ax, legend="full", hue_order=step00.long_stage_order, palette=step00.color_stage_order, s=1000, edgecolor="none")
+    seaborn.scatterplot(data=data, x="tSNE1", y="tSNE2", hue="LongStage", ax=ax, legend="full", hue_order=step00.long_stage_order, palette=step00.color_stage_dict, s=1000, edgecolor="none")
+
+    for stage, color in step00.color_stage_dict.items():
+        confidence_ellipse(data.loc[(data["LongStage"] == stage), "tSNE1"], data.loc[(data["LongStage"] == stage), "tSNE2"], ax, color=color, alpha=0.3)
 
     legend = matplotlib.pyplot.legend()
     for handle in legend.legendHandles:
