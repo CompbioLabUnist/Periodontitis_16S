@@ -9,12 +9,12 @@ import pandas
 import matplotlib
 import matplotlib.pyplot
 import numpy
+import scipy.stats
 import seaborn
 import sklearn.ensemble
 import sklearn.metrics
 import sklearn.model_selection
 import statannot
-import scipy.stats
 import step00
 
 if __name__ == "__main__":
@@ -154,8 +154,8 @@ if __name__ == "__main__":
     # Draw Metrics
     fig, ax = matplotlib.pyplot.subplots(figsize=(32, 18))
     seaborn.lineplot(data=score_data.loc[score_data["Metrics"].isin(step00.selected_derivations)], x="FeatureCount", y="Value", hue="Metrics", style="Metrics", ax=ax, legend="full", markers=True, markersize=20, hue_order=sorted(step00.selected_derivations))
-    matplotlib.pyplot.axvline(x=highest_metrics["balanced_accuracy"][0], color="k", linestyle="--")
-    matplotlib.pyplot.text(x=highest_metrics["balanced_accuracy"][0], y=0.3, s=f"Highest BA {highest_metrics['balanced_accuracy'][1]:.3f} with {highest_metrics['balanced_accuracy'][0]} features", horizontalalignment="right", verticalalignment="center", rotation="vertical", fontsize="x-small", color="k")
+    matplotlib.pyplot.axvline(x=highest_metrics["BA"][0], color="k", linestyle="--")
+    matplotlib.pyplot.text(x=highest_metrics["BA"][0], y=0.3, s=f"Highest BA {highest_metrics['BA'][1]:.3f} with {highest_metrics['BA'][0]} features", horizontalalignment="right", verticalalignment="center", rotation="vertical", fontsize="x-small", color="k")
     matplotlib.pyplot.grid(True)
     matplotlib.pyplot.ylim(0, 1)
     matplotlib.pyplot.ylabel("Evaluations")
