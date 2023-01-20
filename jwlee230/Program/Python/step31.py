@@ -41,9 +41,9 @@ if __name__ == "__main__":
 
     for i, (taxon, color) in list(enumerate(zip(taxa, itertools.cycle(matplotlib.colors.XKCD_COLORS)))):
         if i < 5:
-            matplotlib.pyplot.bar(range(input_data.shape[0]), input_data.iloc[:, i], bottom=numpy.sum(input_data.iloc[:, :i], axis=1), color=color, label="".join(taxon.split(";")[-2:]))
+            matplotlib.pyplot.bar(range(input_data.shape[0]), input_data.iloc[:, i], bottom=numpy.sum(input_data.iloc[:, :i], axis=1), color=color, linewidth=0, label="".join(taxon.split(";")[-2:]).replace("_", " "))
         else:
-            matplotlib.pyplot.bar(range(input_data.shape[0]), input_data.iloc[:, i], bottom=numpy.sum(input_data.iloc[:, :i], axis=1), color=color)
+            matplotlib.pyplot.bar(range(input_data.shape[0]), input_data.iloc[:, i], bottom=numpy.sum(input_data.iloc[:, :i], axis=1), color=color, linewidth=0)
 
     matplotlib.pyplot.xticks([])
     matplotlib.pyplot.xlabel(f"{input_data.shape[0]} Samples")
