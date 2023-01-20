@@ -52,7 +52,7 @@ run: tmp.sh | log Output
 .PHONY: run
 
 # Actual
-latest: step05 step15 step16 step17 step18 step19 step20 step22 step24 step26 step27 step28 step29
+latest: step05 step15 step16 step17 step18 step19 step20 step22 step24 step26 step27 step28 step29 step30 step31
 .PHONY: latest
 
 # Step 01 (Make manifest files)
@@ -509,3 +509,16 @@ Output/Step30/Cladogram/%.pdf: Output/Step30/Cladogram/%.res | build.log
 
 step30: Output/Step30/DADA2.homd.tsv Output/Step30/DADA2.homd.in Output/Step30/DADA2.homd.res Output/Step30/Default/DADA2.homd.pdf Output/Step30/Cladogram/DADA2.homd.res Output/Step30/Cladogram/DADA2.homd.pdf
 .PHONY: step30
+
+# Step 31 (Data composition)
+Output/Step31:
+	mkdir -p $@
+
+Output/Step31/whole.png: Python/step31.py Output/Step16/whole.DADA2.homd.tar.gz | build.log Output/Step31
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+Output/Step31/ANCOM.png: Python/step31.py Output/Step17/whole.DADA2.homd.tar.gz | build.log Output/Step31
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+step31: Output/Step31/whole.png Output/Step31/ANCOM.png
+.PHONY: step31

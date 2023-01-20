@@ -26,6 +26,7 @@ if __name__ == "__main__":
 
     data = step00.read_pickle(args.input)
     print(data)
+
     data = data.iloc[:, :-2]
     data.columns = list(map(lambda x: " ".join(x.split("; ")[-2:]).replace("_", " "), list(data.columns)))
     data = data.T
