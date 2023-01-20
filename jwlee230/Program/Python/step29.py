@@ -2,10 +2,13 @@
 step29.py: ANCOM violin plot
 """
 import argparse
+import itertools
 import matplotlib
 import matplotlib.pyplot
 import pandas
+import scipy.stats
 import seaborn
+import statannot
 import step00
 
 if __name__ == "__main__":
@@ -32,14 +35,24 @@ if __name__ == "__main__":
     taxa = list(data.columns)[:-2]
     raw_output_data = list()
     for index, row in data.iterrows():
-        for taxo in taxa:
-            raw_output_data.append((taxo, row["LongStage"], row[taxo]))
-    output_data = pandas.DataFrame(raw_output_data, columns=["Taxonomy", "LongStage", "Value"])
+        for taxon in taxa:
+            raw_output_data.append((taxon, row["LongStage"], row[taxon]))
+    output_data = pandas.DataFrame(raw_output_data, columns=["taxonnomy", "LongStage", "Value"])
     print(output_data)
 
     fig, ax = matplotlib.pyplot.subplots(figsize=(1.5 * len(taxa), 24))
 
-    seaborn.boxplot(data=output_data, x="Taxonomy", y="Value", hue="LongStage", palette=step00.color_stage_dict, order=taxa, hue_order=step00.long_stage_order, ax=ax)
+    seaborn.boxplot(data=output_data, x="taxonnomy", y="Value", hue="LongStage", order=taxa, hue_order=step00.long_stage_order, palette=step00.color_stage_dict, ax=ax)
+
+    box_pairs = list()
+    for taxon in taxa:
+        for s1, s2 in itertools.combinations(step00.long_stage_order, r=2):
+            p = scipy.stats.mannwhitneyu(data.loc[(data["LongStage"] == s1), taxon], data.loc[(data["LongStage"] == s2), taxon])[1]
+            if p < 0.05:
+                box_pairs.append(((taxon, s1), (taxon, s2)))
+
+    if box_pairs and False:
+        statannot.add_stat_annotation(ax, data=output_data, x="taxonnomy", y="Value", hue="LongStage", order=taxa, hue_order=step00.long_stage_order, test="Mann-Whitney", box_pairs=box_pairs, text_format="star", loc="inside", verbose=0, comparisons_correction=None)
 
     matplotlib.pyplot.xlabel("")
     matplotlib.pyplot.ylabel("Proprotion")

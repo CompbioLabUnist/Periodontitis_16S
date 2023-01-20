@@ -474,7 +474,7 @@ Output/Step28/%.png: Python/step28.py Output/Step17/%.tar.gz | Output/Step28 bui
 step28: Output/Step28/whole.DADA2.homd.png
 .PHONY: step28
 
-# Step 29 (ANCOM violin plot)
+# Step 29 (ANCOM box plot)
 Output/Step29:
 	mkdir -p $@
 
