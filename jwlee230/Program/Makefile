@@ -522,3 +522,10 @@ Output/Step31/ANCOM.png: Python/step31.py Output/Step17/whole.DADA2.homd.tar.gz 
 
 step31: Output/Step31/whole.png Output/Step31/ANCOM.png
 .PHONY: step31
+
+# Step 32 (Draw pairplot)
+Output/Step32:
+	mkdir -p $@
+
+Output/Step32/whole.png: Python/step32.py Output/Step17/whole.DADA2.homd.tar.gz | build.log Output/Step32
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
