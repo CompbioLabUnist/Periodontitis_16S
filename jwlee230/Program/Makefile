@@ -2,8 +2,8 @@
 DATE := $(shell date "+%y%m%d")
 RANDOM := $(shell bash -c 'echo $$RANDOM')
 IMAGE_NAME = periodontitis:latest
-CPUS = 10
-MEMS = 100G
+CPUS = 20
+MEMS = 200G
 SHELL := /bin/bash
 PWD := $(shell pwd)
 TOOLS =
@@ -378,7 +378,7 @@ Output/Step20/ANCOM.two.%.tar: Python/step20.py Output/Step17/whole.%.tar.gz Out
 Output/Step20/ANCOM.three.%.tar: Python/step20.py Output/Step17/whole.%.tar.gz Output/Step18/ANCOM.%.tar.gz | Output/Step20 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --three 1> $@.stdout 2> $@.stderr
 
-step20: Output/Step20/DADA2.homd.tar Output/Step20/one.DADA2.homd.tar Output/Step20/two.DADA2.homd.tar Output/Step20/three.DADA2.homd.tar Output/Step20/ANCOM.DADA2.homd.tar Output/Step20/ANCOM.one.DADA2.homd.tar Output/Step20/ANCOM.two.DADA2.homd.tar Output/Step20/ANCOM.three.DADA2.homd.tar Output/Step20/DADA2.homd.Proportion.tar Output/Step20/one.DADA2.homd.Proportion.tar Output/Step20/two.DADA2.homd.Proportion.tar Output/Step20/three.DADA2.homd.Proportion.tar Output/Step20/ANCOM.DADA2.homd.Proportion.tar Output/Step20/ANCOM.one.DADA2.homd.Proportion.tar Output/Step20/ANCOM.two.DADA2.homd.Proportion.tar Output/Step20/ANCOM.three.DADA2.homd.Proportion.tar
+step20: Output/Step20/DADA2.homd.Proportion.tar Output/Step20/one.DADA2.homd.Proportion.tar Output/Step20/two.DADA2.homd.Proportion.tar Output/Step20/three.DADA2.homd.Proportion.tar Output/Step20/ANCOM.DADA2.homd.Proportion.tar Output/Step20/ANCOM.one.DADA2.homd.Proportion.tar Output/Step20/ANCOM.two.DADA2.homd.Proportion.tar Output/Step20/ANCOM.three.DADA2.homd.Proportion.tar
 .PHONY: step20
 
 # Step 21 (Extract TSV from Beta-diversity)
@@ -529,3 +529,6 @@ Output/Step32:
 
 Output/Step32/whole.png: Python/step32.py Output/Step17/whole.DADA2.homd.tar.gz | build.log Output/Step32
 	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+step32: Output/Step32/whole.png
+.PHONY: step32

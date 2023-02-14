@@ -235,7 +235,7 @@ if __name__ == "__main__":
 
         matplotlib.pyplot.title(" ".join(feature.split("; ")[-2:]).replace("_", " ") + f" (K.W. p={p:.2e})", fontsize=50)
         matplotlib.pyplot.xlabel("")
-        matplotlib.pyplot.ylabel("Abundance")
+        matplotlib.pyplot.ylabel("Proportion")
         matplotlib.pyplot.tight_layout()
 
         tar_files.append("Feature_" + str(i) + ".png")
