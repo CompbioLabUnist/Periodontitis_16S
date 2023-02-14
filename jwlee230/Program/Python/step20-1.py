@@ -52,14 +52,14 @@ if __name__ == "__main__":
     train_columns = sorted(set(data.columns) - {"LongStage"})
 
     if args.one:
-        data = data.loc[(data["LongStage"].isin(["Healthy", "Slight"]))]
-        tsne_data = tsne_data.loc[(tsne_data["LongStage"].isin(["Healthy", "Slight"]))]
+        data = data.loc[(data["LongStage"].isin(["Healthy", "Stage I"]))]
+        tsne_data = tsne_data.loc[(tsne_data["LongStage"].isin(["Healthy", "Stage I"]))]
     elif args.two:
-        data["LongStage"] = list(map(lambda x: "Moderate+Severe" if (x in ["Moderate", "Severe"]) else x, data["LongStage"]))
-        tsne_data["LongStage"] = list(map(lambda x: "Moderate+Severe" if (x in ["Moderate", "Severe"]) else x, tsne_data["LongStage"]))
+        data["LongStage"] = list(map(lambda x: "Stage II/III" if (x in ["Stage II", "Stage III"]) else x, data["LongStage"]))
+        tsne_data["LongStage"] = list(map(lambda x: "Stage II/III" if (x in ["Stage II", "Stage III"]) else x, tsne_data["LongStage"]))
     elif args.three:
-        data["LongStage"] = list(map(lambda x: "Slight+Moderate+Severe" if (x in ["Slight", "Moderate", "Severe"]) else x, data["LongStage"]))
-        tsne_data["LongStage"] = list(map(lambda x: "Slight+Moderate+Severe" if (x in ["Slight", "Moderate", "Severe"]) else x, tsne_data["LongStage"]))
+        data["LongStage"] = list(map(lambda x: "Stage I/II/III" if (x in ["Stage I", "Stage II", "Stage III"]) else x, data["LongStage"]))
+        tsne_data["LongStage"] = list(map(lambda x: "Stage I/II/III" if (x in ["Stage I", "Stage II", "Stage III"]) else x, tsne_data["LongStage"]))
 
     print(tsne_data)
     print(data)

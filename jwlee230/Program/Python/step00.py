@@ -180,10 +180,8 @@ def change_short_into_long(given_short: str) -> str:
     """
     change_short_into_long: change short stage into long stage
     """
-    for short, long_stage in zip(short_stage_order, long_stage_order):
-        if short == given_short:
-            return long_stage
-    raise Exception("Something went wrong!!")
+    d = dict(zip(short_stage_order, long_stage_order))
+    return d[given_short]
 
 
 def change_ID_into_long_stage(ID: str) -> str:

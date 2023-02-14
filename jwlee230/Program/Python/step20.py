@@ -46,22 +46,22 @@ if __name__ == "__main__":
     tsne_data = step00.read_pickle(args.tsne)
     tsne_data["ShortStage"] = list(map(step00.change_ID_into_short_stage, tsne_data["ID"]))
     tsne_data["LongStage"] = list(map(step00.change_short_into_long, tsne_data["ShortStage"]))
+    print(tsne_data)
 
     data = step00.read_pickle(args.input)
     del data["ShortStage"]
     train_columns = list(data.columns)[:-1]
 
     if args.one:
-        data = data.loc[(data["LongStage"].isin(["Healthy", "Slight"]))]
-        tsne_data = tsne_data.loc[(tsne_data["LongStage"].isin(["Healthy", "Slight"]))]
+        data = data.loc[(data["LongStage"].isin(["Healthy", "Stage I"]))]
+        tsne_data = tsne_data.loc[(tsne_data["LongStage"].isin(["Healthy", "Stage I"]))]
     elif args.two:
-        data["LongStage"] = list(map(lambda x: "Moderate+Severe" if (x in ["Moderate", "Severe"]) else x, data["LongStage"]))
-        tsne_data["LongStage"] = list(map(lambda x: "Moderate+Severe" if (x in ["Moderate", "Severe"]) else x, tsne_data["LongStage"]))
+        data["LongStage"] = list(map(lambda x: "Stage II/III" if (x in ["Stage II", "Stage III"]) else x, data["LongStage"]))
+        tsne_data["LongStage"] = list(map(lambda x: "Stage II/III" if (x in ["Stage II", "Stage III"]) else x, tsne_data["LongStage"]))
     elif args.three:
-        data["LongStage"] = list(map(lambda x: "Slight+Moderate+Severe" if (x in ["Slight", "Moderate", "Severe"]) else x, data["LongStage"]))
-        tsne_data["LongStage"] = list(map(lambda x: "Slight+Moderate+Severe" if (x in ["Slight", "Moderate", "Severe"]) else x, tsne_data["LongStage"]))
+        data["LongStage"] = list(map(lambda x: "Stage I/II/III" if (x in ["Stage I", "Stage II", "Stage III"]) else x, data["LongStage"]))
+        tsne_data["LongStage"] = list(map(lambda x: "Stage I/II/III" if (x in ["Stage I", "Stage II", "Stage III"]) else x, tsne_data["LongStage"]))
 
-    print(tsne_data)
     print(data)
     print(set(data["LongStage"]))
 
