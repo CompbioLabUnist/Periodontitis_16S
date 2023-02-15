@@ -34,7 +34,6 @@ if __name__ == "__main__":
         if s1 == s2:
             continue
         _, p = scipy.stats.mannwhitneyu(input_data.loc[(input_data["LongStage"] == s1), "Index"], input_data.loc[(input_data["LongStage"] == s2), "Index"])
-        print(s1, s2, p)
         if (p < 0.05) and ((s2, s1) not in box_pairs):
             box_pairs.append((s1, s2))
     print(box_pairs)
