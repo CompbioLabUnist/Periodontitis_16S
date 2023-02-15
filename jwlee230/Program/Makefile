@@ -3,7 +3,7 @@ DATE := $(shell date "+%y%m%d")
 RANDOM := $(shell bash -c 'echo $$RANDOM')
 IMAGE_NAME = periodontitis:latest
 CPUS = 20
-MEMS = 200G
+MEMS = 100G
 SHELL := /bin/bash
 PWD := $(shell pwd)
 TOOLS =
@@ -532,3 +532,13 @@ Output/Step32/whole.png: Python/step32.py Output/Step17/whole.DADA2.homd.tar.gz 
 
 step32: Output/Step32/whole.png
 .PHONY: step32
+
+# Step 33 (Clinical statistics)
+Output/Step33:
+	mkdir -p $@
+
+Output/Step33/stat.csv: Python/step33.py Data/치주염선정샘플_250샘플.xlsx Data/metadata.csv | Output/Step33 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+step33: Output/Step33/stat.csv
+.PHONY: step33
