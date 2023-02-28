@@ -45,25 +45,27 @@ if __name__ == "__main__":
 
     raw_output_data = list()
     for clinical_column in ["나이", "Plaque Index", "Gingival Index", "PD", "AL", "RE", "No. of teeth"]:
-        healthy_data = metadata.loc[(metadata["Stage"] == "Healthy"), clinical_column]
+        d = [clinical_column]
         for stage in step00.long_stage_order:
             selected_data = metadata.loc[(metadata["Stage"] == stage), clinical_column]
-            p = scipy.stats.ttest_ind(healthy_data, selected_data)[1]
-            raw_output_data.append([clinical_column, stage, f"{numpy.mean(selected_data):.2f}±{numpy.std(selected_data):.2f}", f"{p:.1e}"])
+            d.append(f"{numpy.mean(selected_data):.2f}±{numpy.std(selected_data):.2f}")
+        p = scipy.stats.kruskal(*[metadata.loc[(metadata["Stage"] == stage), clinical_column] for stage in step00.long_stage_order])[1]
+        d.append(f"{p:.2e}")
+        raw_output_data.append(d)
 
+    true_values = {"성별": "남", "항생제": "예", "치과치료 유무": "예", "스케일링 유무": "예"}
     for clinical_column in ["성별", "항생제", "치과치료 유무", "스케일링 유무"]:
-        true_values = {"성별": "남", "항생제": "예", "치과치료 유무": "예", "스케일링 유무": "예"}
-        table = numpy.array([[-1, -1], [-1, -1]])
-        table[0, :] = [len(metadata.loc[(metadata["Stage"] == "Healthy") & (metadata[clinical_column] == true_values[clinical_column])]), len(metadata.loc[(metadata["Stage"] == "Healthy") & (metadata[clinical_column] != true_values[clinical_column])])]
+        d = [clinical_column]
         for stage in step00.long_stage_order:
             true_count = len(metadata.loc[(metadata["Stage"] == stage) & (metadata[clinical_column] == true_values[clinical_column])])
             false_count = len(metadata.loc[(metadata["Stage"] == stage) & (metadata[clinical_column] != true_values[clinical_column])])
             proportion = true_count / (true_count + false_count) * 100
+            d.append(f"{true_count} ({proportion:.1f}%)")
+        d.append("NA")
+        raw_output_data.append(d)
 
-            table[1, :] = [true_count, false_count]
-            p = scipy.stats.fisher_exact(table)[1]
-            raw_output_data.append([clinical_column, stage, f"{true_count} ({proportion:.1f}%)", f"{p:.1e}"])
+    output_data = pandas.DataFrame(raw_output_data, columns=["Clinical", "Healthy", "Stage I", "Stage II", "Stage III", "p-value"])
+    print(output_data)
 
-    output_data = pandas.DataFrame(raw_output_data, columns=["Clinical", "Stage", "Value", "p-value"])
     output_data.to_csv(args.output, index=False, encoding="utf-8-sig")
     output_data.to_latex(args.output.replace(".csv", ".tex"), index=False, column_format="llrr")
