@@ -530,6 +530,9 @@ Output/Step32:
 Output/Step32/whole.png: Python/step32.py Output/Step17/whole.DADA2.homd.tar.gz | build.log Output/Step32
 	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
 
+Output/Step32/whole.tar: Python/step32-1.py Output/Step17/whole.DADA2.homd.tar.gz | build.log Output/Step32
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
 step32: Output/Step32/whole.png
 .PHONY: step32
 
