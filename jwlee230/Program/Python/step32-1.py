@@ -49,10 +49,8 @@ if __name__ == "__main__":
 
         seaborn.scatterplot(data=input_data, x=taxon1, y=taxon2, hue="LongStage", hue_order=step00.long_stage_order, palette=step00.color_stage_dict, legend="brief", s=400, ax=ax)
         matplotlib.pyplot.axline((numpy.mean(input_data[taxon1]), numpy.mean(input_data[taxon2])), slope=stat, color="k", linestyle="--", linewidth=4)
-        matplotlib.pyplot.text(x=0.5, y=0.6, s=f"r={stat:.3f}\np={p:.3f}", color="k", ha="center", va="center")
 
-        matplotlib.pyplot.xlim((-0.05, 1.05))
-        matplotlib.pyplot.ylim((-0.05, 1.05))
+        matplotlib.pyplot.title("r={stat:.3f}\np={p:.3f}")
         matplotlib.pyplot.xlabel(f"{taxon1} proportion")
         matplotlib.pyplot.ylabel(f"{taxon2} proportion")
         matplotlib.pyplot.legend(title="")
