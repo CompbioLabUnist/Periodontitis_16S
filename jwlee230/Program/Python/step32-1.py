@@ -76,6 +76,7 @@ if __name__ == "__main__":
         fig, ax = matplotlib.pyplot.subplots(figsize=(24, 24))
 
         seaborn.scatterplot(data=input_data, x=taxon1, y=taxon2, hue="LongStage", hue_order=step00.long_stage_order, palette=step00.color_stage_dict, legend="brief", s=800, edgecolor="none", ax=ax)
+        matplotlib.pyplot.axline((numpy.mean(input_data[taxon1]), numpy.mean(input_data[taxon2])), slope=stat, color="k", linestyle="--", linewidth=5)
 
         matplotlib.pyplot.title(f"r={stat:.3f}, p={p:.3f}")
         matplotlib.pyplot.xlabel(f"{taxon1} proportion")
