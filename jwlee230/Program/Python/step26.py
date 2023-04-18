@@ -30,11 +30,9 @@ if __name__ == "__main__":
     print(input_data)
 
     box_pairs = list()
-    for s1, s2 in itertools.product(step00.long_stage_order, repeat=2):
-        if s1 == s2:
-            continue
+    for s1, s2 in itertools.combinations(step00.long_stage_order, r=2):
         _, p = scipy.stats.mannwhitneyu(input_data.loc[(input_data["LongStage"] == s1), "Index"], input_data.loc[(input_data["LongStage"] == s2), "Index"])
-        if (p < 0.05) and ((s2, s1) not in box_pairs):
+        if (p < 0.05):
             box_pairs.append((s1, s2))
     print(box_pairs)
 
