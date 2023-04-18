@@ -561,7 +561,7 @@ Output/Step35:
 	mkdir -p $@
 
 Output/Step35/pathway.tar: Python/step35.py Output/Step35/path_abun_unstrat_descrip.xlsx | Output/Step35 build.log
-	$(DOCKER) python3 $(addprefix /,$^ $@)
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
 
 step35: Output/Step35/pathway.tar
 .PHONY: step35

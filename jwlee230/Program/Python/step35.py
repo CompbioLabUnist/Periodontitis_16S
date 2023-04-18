@@ -63,7 +63,7 @@ if __name__ == "__main__":
         seaborn.violinplot(data=input_data, x="LongStage", y=pathway, order=step00.long_stage_order, palette=step00.color_stage_dict, inner="box", cut=1, linewidth=10, ax=ax)
         statannotations.Annotator.Annotator(ax, box_pairs, data=input_data, x="LongStage", y=pathway, order=step00.long_stage_order).configure(test="Mann-Whitney", text_format="star", comparisons_correction=None, loc="inside", verbose=0).apply_and_annotate()
 
-        matplotlib.pyplot.title(f"K.W. p={
+        matplotlib.pyplot.title(f"Kruskal-Wallis p={p_val:.2e}")
         matplotlib.pyplot.xlabel("")
         matplotlib.pyplot.tight_layout()
 
