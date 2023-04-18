@@ -553,7 +553,7 @@ step33: Output/Step33/stat.csv
 Output/Step34:
 	mkdir -p $@
 
-Output/Step34/clinical.tar: Python/step34.py Output/Step17/whole.DADA2.homd.tar.gz Data/치주염선정샘플_250샘플.xlsx Data/metadata.csv | Output/Step34 build.log
+Output/Step34/clinical.tar: Python/step34.py Output/Step17/whole.DADA2.homd.tar.gz | Output/Step34 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
 
 step34: Output/Step34/clinical.tar
