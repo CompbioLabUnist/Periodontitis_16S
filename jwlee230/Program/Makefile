@@ -481,7 +481,10 @@ Output/Step29:
 Output/Step29/%.png: Python/step29.py Output/Step17/%.tar.gz | Output/Step29 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
 
-step29: Output/Step29/whole.DADA2.homd.png
+Output/Step29/%.tar: Python/step29-1.py Output/Step17/%.tar.gz | Output/Step29 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+step29: Output/Step29/whole.DADA2.homd.png Output/Step29/whole.DADA2.homd.tar
 .PHONY: step29
 
 # Step 30 (LefSe)
