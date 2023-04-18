@@ -555,3 +555,13 @@ Output/Step34/clinical.tar: Python/step34.py Output/Step17/whole.DADA2.homd.tar.
 
 step34: Output/Step34/clinical.tar
 .PHONY: step34
+
+# Step 35 (Pathway analysis)
+Output/Step35:
+	mkdir -p $@
+
+Output/Step35/pathway.tar: Python/step35.py Output/Step35/path_abun_unstrat_descrip.xlsx | Output/Step35 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@)
+
+step35: Output/Step35/pathway.tar
+.PHONY: step35
