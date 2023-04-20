@@ -6,6 +6,7 @@ import tarfile
 import matplotlib
 import matplotlib.colors
 import matplotlib.pyplot
+import pandas
 import scipy.stats
 import seaborn
 import step00
@@ -42,9 +43,12 @@ if __name__ == "__main__":
     input_data["ShortStage"] = list(map(lambda x: {"H": 0, "Sli": 1, "M": 2, "S": 3}[x], input_data["ShortStage"]))
     print(input_data)
 
+    raw_output_data = list()
+
     figures = list()
     for taxon in taxa:
         stat, p = scipy.stats.spearmanr(input_data["ShortStage"], input_data[taxon])
+        raw_output_data.append((taxon, stat))
 
         fig, ax = matplotlib.pyplot.subplots(figsize=(24, 24))
 
@@ -58,6 +62,9 @@ if __name__ == "__main__":
         figures.append(f"{taxon}.pdf")
         fig.savefig(figures[-1])
         matplotlib.pyplot.close(fig)
+
+    output_data = pandas.DataFrame(raw_output_data, columns=["Taxonomy", "coef"]).sort_values("coef")
+    print(output_data)
 
     with tarfile.open(args.output, "w") as tar:
         for f in figures:
