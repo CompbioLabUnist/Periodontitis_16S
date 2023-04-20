@@ -45,8 +45,6 @@ if __name__ == "__main__":
     figures = list()
     for taxon in taxa:
         stat, p = scipy.stats.spearmanr(input_data["ShortStage"], input_data[taxon])
-        if (abs(stat) < 0.5) or (p > 0.05):
-            continue
 
         fig, ax = matplotlib.pyplot.subplots(figsize=(24, 24))
 
