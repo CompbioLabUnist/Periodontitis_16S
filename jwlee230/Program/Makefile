@@ -568,3 +568,36 @@ Output/Step35/pathway.tar: Python/step35.py Output/Step35/path_abun_unstrat_desc
 
 step35: Output/Step35/pathway.tar
 .PHONY: step35
+
+# Step 36 (Alpha-diversity -- Extended)
+Output/Step36:
+	mkdir -p $@
+
+Output/Step36/tree.nwk: Output/Step09/whole.DADA.rooted-tree.qza | Output/Step36 build.log
+	$(DOCKER) qiime tools export --input-path $(addprefix /,$^) --output-path $(addprefix /,$(@D)) 1> $@.stdout 2> $@.stderr
+
+Output/Step36/%.tsv: Python/step36.py Output/Step15/%.tsv Output/Step36/tree.nwk | build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+step36: Output/Step36/tree.nwk Output/Step36/whole.DADA2.homd.tsv
+.PHONY: step36
+
+# Step 37 (Draw violin plot by alpha-diversity -- Extended)
+Output/Step37:
+	mkdir -p $@
+
+Output/Step37/%.tar: Python/step37.py Output/Step36/%.tsv | Output/Step37 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+step37: Output/Step37/whole.DADA2.homd.tar
+.PHONY: step37
+
+# Step 38 (Beta-diversity -- Extended)
+Output/Step38:
+	mkdir -p $@
+
+Output/Step38/%.tar: Python/step38.py Output/Step21/%.tsv | Output/Step38 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+step38: Output/Step38/DADA2.unweighted_unifrac.tar Output/Step38/DADA2.weighted_unifrac.tar Output/Step38/DADA2.jaccard.tar Output/Step38/DADA2.bray_curtis.tar
+.PHONY: step38

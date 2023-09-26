@@ -13,7 +13,7 @@ import numpy
 key = bytes("asdf", "UTF-8")
 matplotlib_parameters = {"font.size": 50, "axes.labelsize": 50, "axes.titlesize": 75, "xtick.labelsize": 50, "ytick.labelsize": 50, "font.family": "Arial", "legend.fontsize": 50, "legend.title_fontsize": 50, "figure.dpi": 300, "pdf.fonttype": 42, "ps.fonttype": 42, "text.color": "black", "lines.color": "black"}
 
-alphas = ["ace", "berger_parker_d", "brillouin_d", "chao1", "dominance", "doubles", "enspie", "fisher_alpha", "gini_index", "goods_coverage", "lladser_pe", "margalef", "mcintosh_d", "menhinick", "observed_otus", "robbins", "shannon", "simpson", "singles", "strong"]
+alphas = ["ace", "berger_parker_d", "brillouin_d", "chao1", "dominance", "doubles", "enspie", "faith_pd", "fisher_alpha", "gini_index", "goods_coverage", "lladser_pe", "margalef", "mcintosh_d", "menhinick", "observed_otus", "robbins", "shannon", "simpson", "singles", "strong"]
 
 
 def file_list(path: str) -> typing.List[str]:
