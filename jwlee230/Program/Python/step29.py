@@ -39,7 +39,7 @@ if __name__ == "__main__":
 
     fig, ax = matplotlib.pyplot.subplots(figsize=(1.5 * len(taxa), 24))
 
-    seaborn.boxplot(data=output_data, x="taxonnomy", y="Value", hue="LongStage", order=taxa, hue_order=step00.long_stage_order, palette=step00.color_stage_dict, ax=ax)
+    seaborn.boxplot(data=output_data, x="taxonomy", y="Value", hue="LongStage", order=taxa, hue_order=step00.long_stage_order, palette=step00.color_stage_dict, ax=ax)
 
     matplotlib.pyplot.xlabel("")
     matplotlib.pyplot.ylabel("Proprotion")
