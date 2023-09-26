@@ -57,8 +57,7 @@ if __name__ == "__main__":
     elif args.cpu < 1:
         raise ValueError("CPU must be greater than zero")
 
-    raw_data = pandas.read_csv(args.input, sep="\t")
-    raw_data.set_index(keys="Unnamed: 0", inplace=True, verify_integrity=True)
+    raw_data = pandas.read_csv(args.input, sep="\t", index_col="Unnamed: 0")
     print(raw_data)
 
     tsne_data = pandas.DataFrame(sklearn.manifold.TSNE(n_components=2, init="pca", random_state=42, method="exact", n_jobs=args.cpu).fit_transform(raw_data), columns=["tSNE1", "tSNE2"])
