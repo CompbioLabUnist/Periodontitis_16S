@@ -7,3 +7,4 @@ scipy==1.5.4
 statannot==0.2.3
 statannotations==0.4.4
 openpyxl
+scikit-bio==0.5.5
