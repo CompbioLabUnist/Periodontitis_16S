@@ -2,7 +2,6 @@
 step20: Random Forest Classifier with ANCOM
 """
 import argparse
-import itertools
 import tarfile
 import typing
 import pandas
@@ -14,7 +13,7 @@ import seaborn
 import sklearn.ensemble
 import sklearn.metrics
 import sklearn.model_selection
-import statannot
+import tqdm
 import step00
 
 if __name__ == "__main__":
@@ -100,13 +99,12 @@ if __name__ == "__main__":
     matplotlib.pyplot.close(fig)
 
     # Calculate Metrics by Feature Counts
-    highest_metrics = {metric: (0, 0.0) for metric in step00.derivations}
-    lowest_metrics = {metric: (0, 0.0) for metric in step00.derivations}
+    highest_metrics = {metric: (0, 0.0, 0.0) for metric in step00.derivations}
+    lowest_metrics = {metric: (0, 0.0, 0.0) for metric in step00.derivations}
     scores = list()
 
     k_fold = sklearn.model_selection.StratifiedKFold(n_splits=10)
-    for i in range(1, len(best_features) + 1):
-        print("With", i, "/", len(best_features), "features!!")
+    for i in tqdm.trange(1, len(best_features) + 1):
         used_columns = best_features[:i]
         score_by_metric: typing.Dict[str, typing.List[float]] = dict()
 
@@ -131,12 +129,12 @@ if __name__ == "__main__":
                     score_by_metric[metric] = [score]
 
         for metric in step00.derivations:
-            tmp = numpy.mean(score_by_metric[metric])
+            tmp, std = numpy.mean(score_by_metric[metric], dtype=float), numpy.std(score_by_metric[metric], dtype=float)
             if (highest_metrics[metric][0] == 0) or (highest_metrics[metric][1] < tmp):
-                highest_metrics[metric] = (i, tmp)
+                highest_metrics[metric] = (i, tmp, std)
 
             if (lowest_metrics[metric][0] == 0) or (lowest_metrics[metric][1] > tmp):
-                lowest_metrics[metric] = (i, tmp)
+                lowest_metrics[metric] = (i, tmp, std)
 
     score_data = pandas.DataFrame.from_records(scores, columns=["FeatureCount", "Metrics", "Value"])
     print(score_data)
@@ -155,7 +153,7 @@ if __name__ == "__main__":
     fig, ax = matplotlib.pyplot.subplots(figsize=(32, 18))
     seaborn.lineplot(data=score_data.loc[score_data["Metrics"].isin(step00.selected_derivations)], x="FeatureCount", y="Value", hue="Metrics", style="Metrics", ax=ax, legend="full", markers=True, markersize=20, hue_order=sorted(step00.selected_derivations))
     matplotlib.pyplot.axvline(x=highest_metrics["BA"][0], color="k", linestyle="--")
-    matplotlib.pyplot.text(x=highest_metrics["BA"][0], y=0.3, s=f"Highest BA {highest_metrics['BA'][1]:.3f} with {highest_metrics['BA'][0]} features", horizontalalignment="right", verticalalignment="center", rotation="vertical", fontsize="x-small", color="k")
+    matplotlib.pyplot.text(x=highest_metrics["BA"][0], y=0.3, s=f"Best BA {highest_metrics['BA'][1]:.3f}±{highest_metrics['BA'][2]:.3f} with {highest_metrics['BA'][0]} features", horizontalalignment="right", verticalalignment="center", rotation="vertical", fontsize="x-small", color="k")
     matplotlib.pyplot.grid(True)
     matplotlib.pyplot.ylim(0, 1)
     matplotlib.pyplot.ylabel("Evaluations")
@@ -174,14 +172,12 @@ if __name__ == "__main__":
     matplotlib.pyplot.close(fig)
 
     # Draw Each Metics
-    print("Drawing scores start!!")
-    for metric in step00.selected_derivations:
-        print("--", metric)
+    for metric in tqdm.tqdm(step00.selected_derivations):
         fig, ax = matplotlib.pyplot.subplots(figsize=(32, 18))
         seaborn.lineplot(data=score_data.query("Metrics == '%s'" % metric,), x="FeatureCount", y="Value", ax=ax, markers=True, markersize=20)
         matplotlib.pyplot.grid(True)
         matplotlib.pyplot.ylim(0, 1)
-        matplotlib.pyplot.title("Higest with %s feature(s) at %.3f" % highest_metrics[metric])
+        matplotlib.pyplot.title(f"Best {highest_metrics[metric][0]} feature(s) at {highest_metrics[metric][1]:.3f}±{highest_metrics[metric][2]}")
         matplotlib.pyplot.tight_layout()
         tar_files.append(metric + ".png")
         fig.savefig(tar_files[-1])
@@ -190,66 +186,6 @@ if __name__ == "__main__":
         tar_files.append(metric + ".svg")
         fig.savefig(tar_files[-1])
         matplotlib.pyplot.close(fig)
-    print("Drawing scores done!!")
-
-    # Draw Trees
-    print("Drawing highest trees start!!")
-    for metric in step00.selected_derivations:
-        print("--", metric)
-
-        if highest_metrics[metric][0] == 0:
-            continue
-
-        fig, ax = matplotlib.pyplot.subplots(figsize=(36, 36))
-        sklearn.tree.plot_tree(classifier.fit(data[best_features[:highest_metrics[metric][0]]], data["LongStage"]).estimators_[0], ax=ax, filled=True, class_names=sorted(set(data["LongStage"])))
-        matplotlib.pyplot.title("Highest %s with %s feature(s) at %.3f" % ((metric,) + highest_metrics[metric]))
-        matplotlib.pyplot.tight_layout()
-        tar_files.append("highest_" + metric + ".png")
-        fig.savefig(tar_files[-1])
-        tar_files.append("highest_" + metric + ".pdf")
-        fig.savefig(tar_files[-1])
-        tar_files.append("highest_" + metric + ".svg")
-        fig.savefig(tar_files[-1])
-        matplotlib.pyplot.close(fig)
-    print("Drawing highest trees done!!")
-
-    # Draw Violin Plots
-    print("Drawing Violin plot start!!")
-    for i, feature in enumerate(best_features[:9]):
-        print("--", i, feature)
-
-        order = sorted(set(data["LongStage"])) if (args.two or args.three) else step00.long_stage_order
-        box_pairs = list()
-        for s1, s2 in itertools.product(order, repeat=2):
-            if s1 == s2:
-                continue
-            _, p = scipy.stats.mannwhitneyu(data.loc[(data["LongStage"] == s1), feature], data.loc[(data["LongStage"] == s2), feature])
-            if (p < 0.05) and ((s2, s1) not in box_pairs):
-                box_pairs.append((s1, s2))
-
-        fig, ax = matplotlib.pyplot.subplots(figsize=(18, 18))
-        if args.two or args.three:
-            seaborn.violinplot(data=data, x="LongStage", y=feature, order=order, ax=ax, inner="box", cut=1, linewidth=5)
-        else:
-            seaborn.violinplot(data=data, x="LongStage", y=feature, order=order, ax=ax, inner="box", cut=1, palette=step00.color_stage_dict, linewidth=5)
-
-        if box_pairs:
-            statannot.add_stat_annotation(ax, data=data, x="LongStage", y=feature, order=order, test="Mann-Whitney", box_pairs=box_pairs, text_format="star", loc="inside", verbose=1, comparisons_correction=None)
-        stat, p = scipy.stats.kruskal(*[data.loc[(data["LongStage"] == stage), feature] for stage in order])
-
-        matplotlib.pyplot.title(" ".join(feature.split("; ")[-2:]).replace("_", " ") + f" (K.W. p={p:.2e})", fontsize=50)
-        matplotlib.pyplot.xlabel("")
-        matplotlib.pyplot.ylabel("Proportion")
-        matplotlib.pyplot.tight_layout()
-
-        tar_files.append("Feature_" + str(i) + ".png")
-        fig.savefig(tar_files[-1])
-        tar_files.append("Feature_" + str(i) + ".pdf")
-        fig.savefig(tar_files[-1])
-        tar_files.append("Feature_" + str(i) + ".svg")
-        fig.savefig(tar_files[-1])
-        matplotlib.pyplot.close(fig)
-    print("Drawing Violin Plot done!!")
 
     # Draw scatter plot
     fig, ax = matplotlib.pyplot.subplots(figsize=(36, 36))
@@ -265,5 +201,5 @@ if __name__ == "__main__":
 
     # Save data
     with tarfile.open(args.output, "w") as tar:
-        for file_name in tar_files:
+        for file_name in tqdm.tqdm(tar_files):
             tar.add(file_name, arcname=file_name)
