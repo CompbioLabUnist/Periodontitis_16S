@@ -8,3 +8,4 @@ statannot==0.2.3
 statannotations==0.4.4
 openpyxl
 scikit-bio==0.5.5
+tqdm==4.64.1

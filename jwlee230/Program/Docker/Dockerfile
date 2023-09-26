@@ -9,4 +9,7 @@ RUN apt-get update --allow-releaseinfo-change && apt-get upgrade -y && apt-get i
 ADD requirements.txt /
 RUN pip install --requirement /requirements.txt
 
+# R
+RUN mkdir -p $HOME/.R && echo "MAKEFLAGS = -j" > $HOME/.R/Makevars && Rscript -e 'install.packages("BiocManager", repos="http://cran.r-project.org")' -e 'BiocManager::install(c("DESeq2", "phyloseq", "metagenomeSeq", "ANCOMBC"))'
+
 CMD ["/bin/bash"]
