@@ -51,6 +51,7 @@ if __name__ == "__main__":
         stat, p = scipy.stats.kruskal(*[input_data.loc[(input_data["LongStage"] == stage), alpha] for stage in step00.long_stage_order])
 
         matplotlib.pyplot.xlabel("")
+        matplotlib.pyplot.ylabel(alpha.replace("_", " "))
         matplotlib.pyplot.title(f"Kruskal-Wallis p={p:.2e}")
         matplotlib.pyplot.tight_layout()
 
