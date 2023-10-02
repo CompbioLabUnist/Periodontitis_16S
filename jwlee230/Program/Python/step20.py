@@ -6,6 +6,7 @@ import tarfile
 import typing
 import pandas
 import matplotlib
+import matplotlib.colors
 import matplotlib.pyplot
 import numpy
 import scipy.stats
@@ -13,6 +14,7 @@ import seaborn
 import sklearn.ensemble
 import sklearn.metrics
 import sklearn.model_selection
+import sklearn.preprocessing
 import tqdm
 import step00
 
@@ -54,15 +56,20 @@ if __name__ == "__main__":
     if args.one:
         data = data.loc[(data["LongStage"].isin(["Healthy", "Stage I"]))]
         tsne_data = tsne_data.loc[(tsne_data["LongStage"].isin(["Healthy", "Stage I"]))]
+        stage_list = ["Healthy", "Stage I"]
     elif args.two:
         data["LongStage"] = list(map(lambda x: "Stage II/III" if (x in ["Stage II", "Stage III"]) else x, data["LongStage"]))
         tsne_data["LongStage"] = list(map(lambda x: "Stage II/III" if (x in ["Stage II", "Stage III"]) else x, tsne_data["LongStage"]))
+        stage_list = ["Healthy", "Stage I", "Stage II/III"]
     elif args.three:
         data["LongStage"] = list(map(lambda x: "Stage I/II/III" if (x in ["Stage I", "Stage II", "Stage III"]) else x, data["LongStage"]))
         tsne_data["LongStage"] = list(map(lambda x: "Stage I/II/III" if (x in ["Stage I", "Stage II", "Stage III"]) else x, tsne_data["LongStage"]))
+        stage_list = ["Healthy", "Stage I/II/III"]
+    else:
+        stage_list = ["Healthy", "Stage I", "Stage II", "Stage III"]
 
     print(data)
-    print(set(data["LongStage"]))
+    print(stage_list, set(data["LongStage"]))
 
     # Get Feature Importances
     classifier = sklearn.ensemble.RandomForestClassifier(max_features=None, n_jobs=args.cpu, random_state=42)
@@ -143,11 +150,47 @@ if __name__ == "__main__":
     tar_files.append("metrics.csv")
     with open(tar_files[-1], "w") as f:
         f.write("Count,Metrics,Mean,STD,95% CI\n")
-        for i in range(1, len(best_features) + 1):
+        for i in tqdm.trange(1, len(best_features) + 1):
             for metric in sorted(step00.derivations):
                 selected_data = list(score_data.loc[(score_data["FeatureCount"] == i) & (score_data["Metrics"] == metric)]["Value"])
                 ci = scipy.stats.t.interval(0.95, len(selected_data) - 1, loc=numpy.mean(selected_data), scale=scipy.stats.sem(selected_data))
-                f.write("%d,%s,%.3f,%.3f,%.3f-%.3f\n" % (i, metric, numpy.mean(selected_data), numpy.std(selected_data), ci[0], ci[1]))
+                f.write(f"{i},{metric},{numpy.mean(selected_data):.3f},{numpy.std(selected_data):.3f},{ci[0]:.3f},{ci[1]:.3f}\n")
+
+    # ROC curves
+    for metric in tqdm.tqdm(step00.selected_derivations):
+        y_score = numpy.zeros((len(data), len(stage_list)), dtype=float)
+        used_columns = best_features[:highest_metrics[metric][0]]
+        for train_index, test_index in k_fold.split(data[used_columns], data["LongStage"]):
+            x_train, x_test = data.iloc[train_index][used_columns], data.iloc[test_index][used_columns]
+            y_train, y_test = data.iloc[train_index]["LongStage"], data.iloc[test_index]["LongStage"]
+
+            y_score[test_index, :] = classifier.fit(x_train, y_train).predict_proba(x_test)
+
+        label_binarizer = sklearn.preprocessing.LabelBinarizer().fit(data["LongStage"])
+        y_onehot_test = label_binarizer.transform(data["LongStage"])
+
+        fig, ax = matplotlib.pyplot.subplots(figsize=(24, 24))
+
+        for class_id, (stage, color) in enumerate(zip(stage_list, matplotlib.colors.TABLEAU_COLORS.keys())):
+            fpr, tpr, thresholds = sklearn.metrics.roc_curve(y_onehot_test[:, class_id], y_score[:, class_id])
+            roc_auc = sklearn.metrics.auc(fpr, tpr)
+            sklearn.metrics.RocCurveDisplay(fpr=fpr, tpr=tpr, roc_auc=roc_auc).plot(ax=ax, name=f"ROC curve for {stage}", color=color)
+        matplotlib.pyplot.plot([0, 1], [0, 1], linestyle="--", linewidth=2, color="k", alpha=0.8)
+
+        matplotlib.pyplot.axis("square")
+        matplotlib.pyplot.grid(True)
+        matplotlib.pyplot.xlabel("1 - SPE")
+        matplotlib.pyplot.ylabel("SEN")
+        matplotlib.pyplot.title(f"ROC for {metric}")
+        matplotlib.pyplot.legend()
+
+        matplotlib.pyplot.tight_layout()
+        tar_files.append(f"ROC_{metric}.png")
+        fig.savefig(tar_files[-1])
+        tar_files.append(f"ROC_{metric}.pdf")
+        fig.savefig(tar_files[-1])
+        tar_files.append(f"ROC_{metric}.svg")
+        fig.savefig(tar_files[-1])
 
     # Draw Metrics
     fig, ax = matplotlib.pyplot.subplots(figsize=(32, 18))

@@ -7,6 +7,7 @@ import tarfile
 import typing
 import pandas
 import matplotlib
+import matplotlib.colors
 import matplotlib.pyplot
 import numpy
 import scipy.stats
@@ -14,6 +15,7 @@ import seaborn
 import sklearn.ensemble
 import sklearn.metrics
 import sklearn.model_selection
+import sklearn.preprocessing
 import statannot
 import step00
 
@@ -54,16 +56,20 @@ if __name__ == "__main__":
     if args.one:
         data = data.loc[(data["LongStage"].isin(["Healthy", "Stage I"]))]
         tsne_data = tsne_data.loc[(tsne_data["LongStage"].isin(["Healthy", "Stage I"]))]
+        stage_list = ["Healthy", "Stage I"]
     elif args.two:
         data["LongStage"] = list(map(lambda x: "Stage II/III" if (x in ["Stage II", "Stage III"]) else x, data["LongStage"]))
         tsne_data["LongStage"] = list(map(lambda x: "Stage II/III" if (x in ["Stage II", "Stage III"]) else x, tsne_data["LongStage"]))
+        stage_list = ["Healthy", "Stage I", "Stage II/III"]
     elif args.three:
         data["LongStage"] = list(map(lambda x: "Stage I/II/III" if (x in ["Stage I", "Stage II", "Stage III"]) else x, data["LongStage"]))
         tsne_data["LongStage"] = list(map(lambda x: "Stage I/II/III" if (x in ["Stage I", "Stage II", "Stage III"]) else x, tsne_data["LongStage"]))
+        stage_list = ["Healthy", "Stage I/II/III"]
+    else:
+        stage_list = ["Healthy", "Stage I", "Stage II", "Stage III"]
 
-    print(tsne_data)
     print(data)
-    print(set(data["LongStage"]))
+    print(stage_list, set(data["LongStage"]))
 
     # Get Feature Importances
     classifier = sklearn.ensemble.RandomForestClassifier(max_features=None, n_jobs=args.cpu, random_state=0)
@@ -132,10 +138,10 @@ if __name__ == "__main__":
 
         for metric in step00.derivations:
             if (highest_metrics[metric][0] == 0) or (highest_metrics[metric][1] < numpy.mean(score_by_metric[metric])):
-                highest_metrics[metric] = (i, numpy.mean(score_by_metric[metric]))
+                highest_metrics[metric] = (i, numpy.mean(score_by_metric[metric], dtype=float))
 
             if (lowest_metrics[metric][0] == 0) or (lowest_metrics[metric][1] > numpy.mean(score_by_metric[metric])):
-                lowest_metrics[metric] = (i, numpy.mean(score_by_metric[metric]))
+                lowest_metrics[metric] = (i, numpy.mean(score_by_metric[metric], dtype=float))
 
     score_data = pandas.DataFrame.from_records(scores, columns=["FeatureCount", "Metrics", "Value"])
     print(score_data)
