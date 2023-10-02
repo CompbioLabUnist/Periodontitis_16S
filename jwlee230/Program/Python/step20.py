@@ -106,8 +106,8 @@ if __name__ == "__main__":
     matplotlib.pyplot.close(fig)
 
     # Calculate Metrics by Feature Counts
-    highest_metrics = {metric: (0, 0.0, 0.0) for metric in step00.derivations}
-    lowest_metrics = {metric: (0, 0.0, 0.0) for metric in step00.derivations}
+    highest_metrics = {metric: (0, 0.0, 0.0) for metric in step00.selected_derivations}
+    lowest_metrics = {metric: (0, 0.0, 0.0) for metric in step00.selected_derivations}
     scores = list()
 
     k_fold = sklearn.model_selection.StratifiedKFold(n_splits=10)
@@ -125,7 +125,7 @@ if __name__ == "__main__":
             else:
                 confusion_matrix = numpy.sum(sklearn.metrics.multilabel_confusion_matrix(y_test, classifier.predict(x_test)), axis=0)
 
-            for metric in step00.derivations:
+            for metric in step00.selected_derivations:
                 score = step00.aggregate_confusion_matrix(confusion_matrix, metric)
 
                 scores.append((i, metric, score))
@@ -135,7 +135,7 @@ if __name__ == "__main__":
                 else:
                     score_by_metric[metric] = [score]
 
-        for metric in step00.derivations:
+        for metric in step00.selected_derivations:
             tmp, std = numpy.mean(score_by_metric[metric], dtype=float), numpy.std(score_by_metric[metric], dtype=float)
             if (highest_metrics[metric][0] == 0) or (highest_metrics[metric][1] < tmp):
                 highest_metrics[metric] = (i, tmp, std)
@@ -160,6 +160,7 @@ if __name__ == "__main__":
     for metric in tqdm.tqdm(step00.selected_derivations):
         y_score = numpy.zeros((len(data), len(stage_list)), dtype=float)
         used_columns = best_features[:highest_metrics[metric][0]]
+
         for train_index, test_index in k_fold.split(data[used_columns], data["LongStage"]):
             x_train, x_test = data.iloc[train_index][used_columns], data.iloc[test_index][used_columns]
             y_train, y_test = data.iloc[train_index]["LongStage"], data.iloc[test_index]["LongStage"]
@@ -171,11 +172,16 @@ if __name__ == "__main__":
 
         fig, ax = matplotlib.pyplot.subplots(figsize=(24, 24))
 
-        for class_id, (stage, color) in enumerate(zip(stage_list, matplotlib.colors.TABLEAU_COLORS.keys())):
-            fpr, tpr, thresholds = sklearn.metrics.roc_curve(y_onehot_test[:, class_id], y_score[:, class_id])
+        matplotlib.pyplot.plot([0, 1], [0, 1], linestyle="--", linewidth=10, color="k", alpha=0.5)
+        if len(stage_list) > 2:
+            for class_id, (stage, color) in enumerate(zip(stage_list, matplotlib.colors.TABLEAU_COLORS.keys())):
+                fpr, tpr, thresholds = sklearn.metrics.roc_curve(y_onehot_test[:, class_id], y_score[:, class_id])
+                roc_auc = sklearn.metrics.auc(fpr, tpr)
+                sklearn.metrics.RocCurveDisplay(fpr=fpr, tpr=tpr, roc_auc=roc_auc).plot(ax=ax, name=f"ROC curve for {stage}", color=color, linewidth=5)
+        else:
+            fpr, tpr, thresholds = sklearn.metrics.roc_curve(y_onehot_test, y_score[:, 0])
             roc_auc = sklearn.metrics.auc(fpr, tpr)
-            sklearn.metrics.RocCurveDisplay(fpr=fpr, tpr=tpr, roc_auc=roc_auc).plot(ax=ax, name=f"ROC curve for {stage}", color=color)
-        matplotlib.pyplot.plot([0, 1], [0, 1], linestyle="--", linewidth=2, color="k", alpha=0.8)
+            sklearn.metrics.RocCurveDisplay(fpr=fpr, tpr=tpr, roc_auc=roc_auc).plot(ax=ax, name="ROC curve", linewidth=5)
 
         matplotlib.pyplot.axis("square")
         matplotlib.pyplot.grid(True)
