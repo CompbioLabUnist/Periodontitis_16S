@@ -106,8 +106,7 @@ if __name__ == "__main__":
     matplotlib.pyplot.close(fig)
 
     # Calculate Metrics by Feature Counts
-    highest_metrics = {metric: (0, 0.0, 0.0) for metric in step00.selected_derivations}
-    lowest_metrics = {metric: (0, 0.0, 0.0) for metric in step00.selected_derivations}
+    highest_metrics = {metric: (0, 0.0, 0.0) for metric in step00.selected_derivations + ["AUC"]}
     scores = list()
 
     k_fold = sklearn.model_selection.StratifiedKFold(n_splits=10)
@@ -135,13 +134,36 @@ if __name__ == "__main__":
                 else:
                     score_by_metric[metric] = [score]
 
+            label_binarizer = sklearn.preprocessing.LabelBinarizer().fit(data["LongStage"])
+            y_onehot_test = label_binarizer.transform(y_test)
+            y_score = classifier.predict_proba(x_test)
+
+            if len(stage_list) > 2:
+                for class_id, stage in enumerate(stage_list):
+                    fpr, tpr, thresholds = sklearn.metrics.roc_curve(y_onehot_test[:, class_id], y_score[:, class_id])
+                    roc_auc = sklearn.metrics.auc(fpr, tpr)
+
+                    if "AUC" in score_by_metric:
+                        score_by_metric["AUC"].append(roc_auc)
+                    else:
+                        score_by_metric["AUC"] = [roc_auc]
+            else:
+                fpr, tpr, thresholds = sklearn.metrics.roc_curve(y_onehot_test, y_score[:, 1])
+                roc_auc = sklearn.metrics.auc(fpr, tpr)
+
+                if "AUC" in score_by_metric:
+                    score_by_metric["AUC"].append(roc_auc)
+                else:
+                    score_by_metric["AUC"] = [roc_auc]
+
         for metric in step00.selected_derivations:
             tmp, std = numpy.mean(score_by_metric[metric], dtype=float), numpy.std(score_by_metric[metric], dtype=float)
             if (highest_metrics[metric][0] == 0) or (highest_metrics[metric][1] < tmp):
                 highest_metrics[metric] = (i, tmp, std)
 
-            if (lowest_metrics[metric][0] == 0) or (lowest_metrics[metric][1] > tmp):
-                lowest_metrics[metric] = (i, tmp, std)
+        tmp, std = numpy.mean(score_by_metric["AUC"], dtype=float), numpy.std(score_by_metric["AUC"], dtype=float)
+        if (highest_metrics["AUC"][0] == 0) or (highest_metrics["AUC"][1] < tmp):
+            highest_metrics["AUC"] = (i, tmp, std)
 
     score_data = pandas.DataFrame.from_records(scores, columns=["FeatureCount", "Metrics", "Value"])
     print(score_data)
@@ -151,13 +173,13 @@ if __name__ == "__main__":
     with open(tar_files[-1], "w") as f:
         f.write("Count,Metrics,Mean,STD,95% CI\n")
         for i in tqdm.trange(1, len(best_features) + 1):
-            for metric in sorted(step00.derivations):
+            for metric in sorted(step00.derivations + ["AUC"]):
                 selected_data = list(score_data.loc[(score_data["FeatureCount"] == i) & (score_data["Metrics"] == metric)]["Value"])
                 ci = scipy.stats.t.interval(0.95, len(selected_data) - 1, loc=numpy.mean(selected_data), scale=scipy.stats.sem(selected_data))
                 f.write(f"{i},{metric},{numpy.mean(selected_data):.3f},{numpy.std(selected_data):.3f},{ci[0]:.3f},{ci[1]:.3f}\n")
 
     # ROC curves
-    for metric in tqdm.tqdm(step00.selected_derivations):
+    for metric in tqdm.tqdm(step00.selected_derivations + ["AUC"]):
         y_score = numpy.zeros((len(data), len(stage_list)), dtype=float)
         used_columns = best_features[:highest_metrics[metric][0]]
 
@@ -179,7 +201,7 @@ if __name__ == "__main__":
                 roc_auc = sklearn.metrics.auc(fpr, tpr)
                 sklearn.metrics.RocCurveDisplay(fpr=fpr, tpr=tpr, roc_auc=roc_auc).plot(ax=ax, name=f"ROC curve for {stage}", color=color, linewidth=5)
         else:
-            fpr, tpr, thresholds = sklearn.metrics.roc_curve(y_onehot_test, y_score[:, 0])
+            fpr, tpr, thresholds = sklearn.metrics.roc_curve(y_onehot_test, y_score[:, 1])
             roc_auc = sklearn.metrics.auc(fpr, tpr)
             sklearn.metrics.RocCurveDisplay(fpr=fpr, tpr=tpr, roc_auc=roc_auc).plot(ax=ax, name="ROC curve", linewidth=5)
 
@@ -201,8 +223,8 @@ if __name__ == "__main__":
     # Draw Metrics
     fig, ax = matplotlib.pyplot.subplots(figsize=(32, 18))
     seaborn.lineplot(data=score_data.loc[score_data["Metrics"].isin(step00.selected_derivations)], x="FeatureCount", y="Value", hue="Metrics", style="Metrics", ax=ax, legend="full", markers=True, markersize=20, hue_order=sorted(step00.selected_derivations))
-    matplotlib.pyplot.axvline(x=highest_metrics["BA"][0], color="k", linestyle="--")
-    matplotlib.pyplot.text(x=highest_metrics["BA"][0], y=0.3, s=f"Best BA {highest_metrics['BA'][1]:.3f}±{highest_metrics['BA'][2]:.3f} with {highest_metrics['BA'][0]} features", horizontalalignment="right", verticalalignment="center", rotation="vertical", fontsize="x-small", color="k")
+    matplotlib.pyplot.axvline(x=highest_metrics["AUC"][0], color="k", linestyle="--")
+    matplotlib.pyplot.text(x=highest_metrics["AUC"][0], y=0.3, s=f"Best AUC {highest_metrics['AUC'][1]:.3f}±{highest_metrics['AUC'][2]:.3f} with {highest_metrics['AUC'][0]} features", horizontalalignment="right", verticalalignment="center", rotation="vertical", fontsize="x-small", color="k")
     matplotlib.pyplot.grid(True)
     matplotlib.pyplot.ylim(0, 1)
     matplotlib.pyplot.ylabel("Evaluations")

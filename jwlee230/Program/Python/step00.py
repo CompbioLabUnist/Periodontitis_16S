@@ -105,8 +105,8 @@ def simplified_taxonomy(taxonomy: str) -> str:
     return "_".join(list(filter(None, list(map(lambda x: x.strip().replace("[", "").replace("]", "")[3:], add_spp(taxonomy).split(";"))))))
 
 
-derivations = ("SEN", "SPE", "PRE", "negative_predictive_value", "miss_rate", "fall_out", "false_discovery_rate", "false_ommission_rate", "ACC", "F1_score", "odds_ratio", "BA", "threat_score")
-selected_derivations = ("ACC", "BA", "SEN", "SPE", "PRE")
+derivations = ["SEN", "SPE", "PRE", "negative_predictive_value", "miss_rate", "fall_out", "false_discovery_rate", "false_ommission_rate", "ACC", "F1_score", "odds_ratio", "BA", "threat_score"]
+selected_derivations = ["ACC", "BA", "SEN", "SPE", "PRE"]
 
 
 def aggregate_confusion_matrix(confusion_matrix: numpy.ndarray, derivation: str = "") -> float:
