@@ -48,11 +48,8 @@ if __name__ == "__main__":
         seaborn.violinplot(data=input_data, x="LongStage", y=alpha, order=step00.long_stage_order, ax=ax, inner="box", palette=step00.color_stage_dict, cut=1, linewidth=10)
         statannotations.Annotator.Annotator(ax, box_pairs, data=input_data, x="LongStage", y=alpha, order=step00.long_stage_order).configure(test="t-test_ind", text_format="star", loc="inside", comparisons_correction=None, verbose=0).apply_and_annotate()
 
-        stat, p = scipy.stats.kruskal(*[input_data.loc[(input_data["LongStage"] == stage), alpha] for stage in step00.long_stage_order])
-
         matplotlib.pyplot.xlabel("")
         matplotlib.pyplot.ylabel(alpha.replace("_", " "))
-        matplotlib.pyplot.title(f"Kruskal-Wallis p={p:.2e}")
         matplotlib.pyplot.tight_layout()
 
         figures.append(f"{alpha}.pdf")
