@@ -147,6 +147,8 @@ if __name__ == "__main__":
                         score_by_metric["AUC"].append(roc_auc)
                     else:
                         score_by_metric["AUC"] = [roc_auc]
+
+                    scores.append((i, "AUC", roc_auc))
             else:
                 fpr, tpr, thresholds = sklearn.metrics.roc_curve(y_onehot_test, y_score[:, 1])
                 roc_auc = sklearn.metrics.auc(fpr, tpr)
@@ -155,6 +157,8 @@ if __name__ == "__main__":
                     score_by_metric["AUC"].append(roc_auc)
                 else:
                     score_by_metric["AUC"] = [roc_auc]
+
+                scores.append((i, "AUC", roc_auc))
 
         for metric in step00.selected_derivations:
             tmp, std = numpy.mean(score_by_metric[metric], dtype=float), numpy.std(score_by_metric[metric], dtype=float)
@@ -222,9 +226,9 @@ if __name__ == "__main__":
 
     # Draw Metrics
     fig, ax = matplotlib.pyplot.subplots(figsize=(32, 18))
-    seaborn.lineplot(data=score_data.loc[score_data["Metrics"].isin(step00.selected_derivations)], x="FeatureCount", y="Value", hue="Metrics", style="Metrics", ax=ax, legend="full", markers=True, markersize=20, hue_order=sorted(step00.selected_derivations))
-    matplotlib.pyplot.axvline(x=highest_metrics["AUC"][0], color="k", linestyle="--")
-    matplotlib.pyplot.text(x=highest_metrics["AUC"][0], y=0.3, s=f"Best AUC {highest_metrics['AUC'][1]:.3f}±{highest_metrics['AUC'][2]:.3f} with {highest_metrics['AUC'][0]} features", horizontalalignment="right", verticalalignment="center", rotation="vertical", fontsize="x-small", color="k")
+    seaborn.lineplot(data=score_data, x="FeatureCount", y="Value", hue="Metrics", style="Metrics", ax=ax, legend="full", markers=True, markersize=20, hue_order=sorted(step00.selected_derivations + ["AUC"]))
+    matplotlib.pyplot.axvline(x=highest_metrics["BA"][0], color="k", linestyle="--")
+    matplotlib.pyplot.text(x=highest_metrics["BA"][0], y=0.3, s=f"Best BA {highest_metrics['BA'][1]:.3f}±{highest_metrics['BA'][2]:.3f} with {highest_metrics['BA'][0]} features", horizontalalignment="right", verticalalignment="center", rotation="vertical", fontsize="x-small", color="k")
     matplotlib.pyplot.grid(True)
     matplotlib.pyplot.ylim(0, 1)
     matplotlib.pyplot.ylabel("Evaluations")
