@@ -48,7 +48,7 @@ if __name__ == "__main__":
 
     depth = 3786
     matplotlib.pyplot.axvline(x=depth, color="k", linestyle="--")
-    matplotlib.pyplot.text(x=depth, y=0, s=f"Sampling depth: {depth}", horizontalalignment="right", verticalalignment="bottom", rotation="vertical", fontsize="xx-small", color="k", bbox={"color": "white", "alpha": 0.4})
+    matplotlib.pyplot.text(x=depth, y=min(output_data["diversity"]), s=f"Sampling depth: {depth}", horizontalalignment="right", verticalalignment="bottom", rotation="vertical", fontsize="xx-small", color="k", bbox={"color": "white", "alpha": 0.4})
     matplotlib.pyplot.tight_layout()
 
     fig.savefig(args.output)
