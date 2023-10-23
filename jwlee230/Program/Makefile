@@ -393,7 +393,7 @@ Output/Step21/Deblur.%.tsv: Output/Step10/Deblur/whole.%_distance_matrix.qza | O
 	$(DOCKER) qiime tools export --input-path $(addprefix /,$(word 1,$^)) --output-path $(addprefix /,$(@D)) 1> $@.stdout 2> $@.stderr
 	$(DOCKER) mv $(addprefix /,$(@D))/distance-matrix.tsv $(addprefix /,$@)
 
-step21: Output/Step21/DADA2.unweighted_unifrac.tsv Output/Step21/DADA2.weighted_unifrac.tsv Output/Step21/DADA2.jaccard.tsv Output/Step21/DADA2.bray_curtis.tsv Output/Step21/Deblur.unweighted_unifrac.tsv Output/Step21/Deblur.weighted_unifrac.tsv Output/Step21/Deblur.jaccard.tsv Output/Step21/Deblur.bray_curtis.tsv
+step21: Output/Step21/DADA2.unweighted_unifrac.tsv Output/Step21/DADA2.weighted_unifrac.tsv Output/Step21/DADA2.jaccard.tsv Output/Step21/DADA2.bray_curtis.tsv
 .PHONY: step21
 
 # Step 22 (Draw t-SNE from Beta-diversity TSV)
@@ -403,7 +403,10 @@ Output/Step22:
 Output/Step22/%.png: Python/step22.py Output/Step21/%.tsv | Output/Step22 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) 1> $@.stdout 2> $@.stderr
 
-step22: Output/Step22/DADA2.unweighted_unifrac.png Output/Step22/DADA2.weighted_unifrac.png Output/Step22/DADA2.jaccard.png Output/Step22/DADA2.bray_curtis.png Output/Step22/Deblur.unweighted_unifrac.png Output/Step22/Deblur.weighted_unifrac.png Output/Step22/Deblur.jaccard.png Output/Step22/Deblur.bray_curtis.png
+Output/Step22/%.PCA.png: Python/step22-1.py Output/Step21/%.tsv | Output/Step22 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) 1> $@.stdout 2> $@.stderr
+
+step22: Output/Step22/DADA2.unweighted_unifrac.png Output/Step22/DADA2.weighted_unifrac.png Output/Step22/DADA2.jaccard.png Output/Step22/DADA2.bray_curtis.png Output/Step22/DADA2.unweighted_unifrac.PCA.png Output/Step22/DADA2.weighted_unifrac.PCA.png Output/Step22/DADA2.jaccard.PCA.png Output/Step22/DADA2.bray_curtis.PCA.png
 .PHONY: step22
 
 # Step 23 (Divide Healty vs. Early Only)
@@ -630,3 +633,5 @@ Output/Step40/%.stacked.png: Python/step40-1.py Output/Step16/%.Proportion.tar.g
 
 step40: make Output/Step40/whole.DADA2.homd.png make Output/Step40/whole.DADA2.homd.stacked.png
 .PHONY: step40
+
+# Step 41 (
