@@ -18,11 +18,11 @@ if __name__ == "__main__":
         raise ValueError("Input file must end with .TSV!!")
 
     raw_data = pandas.read_csv(args.input, sep="\t", skiprows=1)
+    raw_data["taxonomy"] = list(map(lambda x: step00.consistency_taxonomy(x) if step00.filter_taxonomy(x) else "Unclassified", list(raw_data["taxonomy"])))
     print(raw_data)
 
     data = raw_data.groupby(by="taxonomy").sum().T
     data = data.loc[sorted(list(data.index), key=step00.sorting), :]
-    data.columns = list(map(step00.consistency_taxonomy, list(data.columns)))
     print(data)
 
     data["ShortStage"] = list(map(step00.change_ID_into_short_stage, list(data.index)))
