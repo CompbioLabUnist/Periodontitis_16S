@@ -91,6 +91,16 @@ def add_spp(taxonomy: str) -> str:
         return taxonomy
 
 
+def filter_taxonomy(taxonomy: str) -> bool:
+    taxonomy_list = list(map(lambda x: x.strip(), taxonomy.split(";")))
+    if len(taxonomy_list) < 6:
+        return False
+    if taxonomy_list[5] in ("g__", "__"):
+        return False
+    else:
+        return True
+
+
 def consistency_taxonomy(taxonomy: str) -> str:
     """
     consistency_taxonomy: make taxonomy information with consistency
@@ -98,11 +108,26 @@ def consistency_taxonomy(taxonomy: str) -> str:
     return "; ".join(list(filter(None, list(map(lambda x: x.strip()[3:], add_spp(taxonomy).split(";"))))))
 
 
+def _check_has_squre(x: str) -> str:
+    if "[" in x:
+        return x.replace("_", " ")
+    else:
+        return x.split("_")[0]
+
+
 def simplified_taxonomy(taxonomy: str) -> str:
-    """
-    simplified_taxonomy: simplified taxonomy information for file name
-    """
-    return "_".join(list(filter(None, list(map(lambda x: x.strip().replace("[", "").replace("]", "")[3:], add_spp(taxonomy).split(";"))))))
+    if taxonomy == "Unclassified":
+        return taxonomy
+
+    taxonomy_list = taxonomy.split("; ")
+    if (len(taxonomy_list) == 6):
+        return _check_has_squre(taxonomy_list[-1]) + " genus"
+    elif (taxonomy_list[-1] == ""):
+        return _check_has_squre(taxonomy_list[-2]) + " spp."
+    elif taxonomy_list[-1].startswith(taxonomy_list[-2]):
+        return taxonomy_list[-2][0] + ". " + taxonomy_list[-1][len(taxonomy_list[-2]) + 1:].replace("_", " ")
+    else:
+        return taxonomy_list[-2][0] + ". " + taxonomy_list[-1].replace("_", " ")
 
 
 derivations = ["SEN", "SPE", "PRE", "negative_predictive_value", "miss_rate", "fall_out", "false_discovery_rate", "false_ommission_rate", "ACC", "F1_score", "odds_ratio", "BA", "threat_score"]
@@ -198,4 +223,5 @@ def sorting(ID: str) -> typing.Tuple[int, str]:
 
 
 if __name__ == "__main__":
-    pass
+    print(simplified_taxonomy("Bacteria; Firmicutes; Bacilli; Lactobacillales; Streptococcaceae; Streptococcus; spp."))
+    print(simplified_taxonomy("Bacteria; Proteobacteria; Gammaproteobacteria; Enterobacterales; Yersiniaceae; Serratia; marcescens"))

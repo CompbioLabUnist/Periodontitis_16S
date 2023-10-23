@@ -612,8 +612,21 @@ Output/Step39/alpha_rarefaction.qzv: Output/Step09/whole.DADA.rooted-tree.qza Ou
 Output/Step39/beta_rarefaction.qzv: Output/Step09/whole.DADA.rooted-tree.qza Output/Step04/whole.table.qza Output/Step07/whole.tsv | Output/Step39 build.log
 	$(DOCKER) qiime diversity beta-rarefaction --i-table $(addprefix /,$(word 2,$^)) --i-phylogeny $(addprefix /,$(word 1,$^)) --p-metric 'weighted_unifrac' --p-clustering-method 'nj' --m-metadata-file $(addprefix /,$(word 3,$^)) --p-sampling-depth 3786 --p-color-scheme 'RdYlGn_r' --o-visualization $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
 
-Output/Step39/%.png: Python/step39.py Output/Step39/%.csv | Output/Step39
+Output/Step39/%.png: Python/step39.py Output/Step39/%.csv | Output/Step39 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
 
 step39: Output/Step39/alpha_rarefaction.qzv Output/Step39/beta_rarefaction.qzv Output/Step39/chao1.png Output/Step39/fisher_alpha.png Output/Step39/margalef.png Output/Step39/observed_features.png
 .PHONY: step39
+
+# Step 40 (Taxonomy bar plot)
+Output/Step40:
+	mkdir -p $@
+
+Output/Step40/%.png: Python/step40.py Output/Step16/%.Proportion.tar.gz | Output/Step40 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+Output/Step40/%.stacked.png: Python/step40-1.py Output/Step16/%.Proportion.tar.gz | Output/Step40 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+step40: make Output/Step40/whole.DADA2.homd.png make Output/Step40/whole.DADA2.homd.stacked.png
+.PHONY: step40
