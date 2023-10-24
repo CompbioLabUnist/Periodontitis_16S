@@ -52,7 +52,7 @@ run: tmp.sh | log Output
 .PHONY: run
 
 # Actual
-latest: step05 step15 step16 step17 step18 step19 step20 step22 step24 step26 step27 step28 step29 step30 step31 step36 step37 step38 step39 step40
+latest: step05 step15 step16 step17 step18 step19 step20 step22 step24 step26 step27 step28 step29 step30 step31 step36 step37 step38 step39 step40 step41
 .PHONY: latest
 
 # Step 01 (Make manifest files)
@@ -471,7 +471,7 @@ step27: Output/Step27/DADA2/whole.unweighted_unifrac.qzv Output/Step27/DADA2/who
 Output/Step28:
 	mkdir -p $@
 
-Output/Step28/%.png: Python/step28.py Output/Step17/%.tar.gz | Output/Step28 build.log
+Output/Step28/%.png: Python/step28.py Output/Step17/%.tar.gz Data/치주염선정샘플_250샘플.xlsx Data/metadata.csv | Output/Step28 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
 
 step28: Output/Step28/whole.DADA2.homd.png
