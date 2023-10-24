@@ -1,5 +1,5 @@
 """
-step40.py: Taxonomy barplot
+step40-1.py: Taxonomy barplot by group
 """
 import argparse
 import itertools
