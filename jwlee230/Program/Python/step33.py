@@ -14,7 +14,7 @@ stage_dict = {"Healthy": "Healthy", "CP_E": "Stage I", "CP_M": "Stage II", "CP_S
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("input", type=str, help="Input TSV file")
+    parser.add_argument("input", type=str, help="Input XLSX file")
     parser.add_argument("metadata", type=str, help="Metadata CSV file")
     parser.add_argument("output", type=str, help="Output CSV file")
 
