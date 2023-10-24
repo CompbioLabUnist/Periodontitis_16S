@@ -225,7 +225,10 @@ if __name__ == "__main__":
         order = sorted(set(data["LongStage"])) if (args.two or args.three) else step00.long_stage_order
         box_pairs = list()
         for s1, s2 in itertools.combinations(order, 2):
-            _, p = scipy.stats.mannwhitneyu(data.loc[(data["LongStage"] == s1), feature], data.loc[(data["LongStage"] == s2), feature])
+            try:
+                _, p = scipy.stats.mannwhitneyu(data.loc[(data["LongStage"] == s1), feature], data.loc[(data["LongStage"] == s2), feature])
+            except ValueError:
+                continue
             if p < 0.05:
                 box_pairs.append((s1, s2))
 
