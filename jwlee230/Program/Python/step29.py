@@ -6,6 +6,7 @@ import matplotlib
 import matplotlib.pyplot
 import pandas
 import seaborn
+import tqdm
 import step00
 
 if __name__ == "__main__":
@@ -31,7 +32,7 @@ if __name__ == "__main__":
 
     taxa = list(data.columns)[:-2]
     raw_output_data = list()
-    for index, row in data.iterrows():
+    for index, row in tqdm.tqdm(data.iterrows()):
         for taxon in taxa:
             raw_output_data.append((taxon, row["LongStage"], row[taxon]))
     output_data = pandas.DataFrame(raw_output_data, columns=["taxonomy", "LongStage", "Value"])

@@ -625,10 +625,10 @@ step39: Output/Step39/alpha_rarefaction.qzv Output/Step39/beta_rarefaction.qzv O
 Output/Step40:
 	mkdir -p $@
 
-Output/Step40/%.png: Python/step40.py Output/Step16/%.Proportion.tar.gz | Output/Step40 build.log
+Output/Step40/%.png: Python/step40.py Output/Step16/%.tar.gz | Output/Step40 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
 
-Output/Step40/%.stacked.png: Python/step40-1.py Output/Step16/%.Proportion.tar.gz | Output/Step40 build.log
+Output/Step40/%.stacked.png: Python/step40-1.py Output/Step16/%.tar.gz | Output/Step40 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
 
 step40: Output/Step40/whole.DADA2.homd.png Output/Step40/whole.DADA2.homd.stacked.png

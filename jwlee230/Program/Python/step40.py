@@ -28,12 +28,11 @@ if __name__ == "__main__":
         raise ValueError("OUTPUT file must end with .PNG!!")
 
     data: pandas.DataFrame = step00.read_pickle(args.input)
-    del data["ShortStage"], data["LongStage"]
     print(data)
 
-    taxa_list = sorted(data.columns, key=lambda x: sum(data[x]), reverse=True)
-    patient_list = sorted(data.index, key=lambda x: tuple(data.loc[x, taxa_list].to_numpy()), reverse=True)
-    data = data.loc[patient_list, taxa_list]
+    taxa_list = sorted(list(data.columns)[:-2], key=lambda x: sum(data[x]), reverse=True)
+    patient_list = sorted(data.index, key=lambda x: sum(data.loc[x, taxa_list]), reverse=True)
+    data = data.loc[patient_list, taxa_list + ["LongStage"]]
     print(data)
 
     matplotlib.use("Agg")
@@ -41,18 +40,23 @@ if __name__ == "__main__":
 
     taxa_colors = dict(zip(taxa_list, matplotlib.colors.XKCD_COLORS.keys()))
 
-    fig, ax = matplotlib.pyplot.subplots(figsize=(32, 18))
+    fig, axs = matplotlib.pyplot.subplots(figsize=(32, 18), ncols=4, sharey=True)
 
-    for i, taxon in tqdm.tqdm(list(enumerate(taxa_list))):
-        label = get_name(taxon) if (i < 20) else None
-        matplotlib.pyplot.bar(range(len(patient_list)), data[taxon], bottom=numpy.sum(data.iloc[:, :i], axis=1), color=taxa_colors[taxon], label=label)
+    for i, stage in enumerate(step00.long_stage_order):
+        drawing_data = data.loc[(data["LongStage"] == stage)]
+        length = len(drawing_data)
 
-    matplotlib.pyplot.grid(True)
-    matplotlib.pyplot.xticks([])
-    matplotlib.pyplot.ylim((0, 1))
-    matplotlib.pyplot.xlabel(f"{len(patient_list)} patients")
-    matplotlib.pyplot.ylabel(f"{len(taxa_list)} taxa proportions")
-    matplotlib.pyplot.legend(loc="upper right", ncol=4, fontsize="xx-small")
+        for j, taxon in tqdm.tqdm(list(enumerate(taxa_list))):
+            label = get_name(taxon) if (i < 10) else None
+            axs[i].bar(range(length), drawing_data[taxon], bottom=numpy.sum(drawing_data.iloc[:, :j], axis=1), color=taxa_colors[taxon], label=label)
+
+        axs[i].grid(True)
+        axs[i].set_xticks([])
+        axs[i].set_xlabel(f"{length} {stage}")
+        if i == 0:
+            axs[i].set_ylabel(f"{len(taxa_list)} taxa abundances")
+        elif i == 3:
+            axs[i].legend(loc="upper right", ncol=2, fontsize="xx-small")
 
     matplotlib.pyplot.tight_layout()
 

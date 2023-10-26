@@ -51,9 +51,8 @@ if __name__ == "__main__":
 
     matplotlib.pyplot.grid(True)
     matplotlib.pyplot.xticks(range(len(step00.long_stage_order)), step00.long_stage_order, rotation="vertical")
-    matplotlib.pyplot.ylim((0, 1))
-    matplotlib.pyplot.ylabel(f"{len(taxa_list)} taxa proportions")
-    matplotlib.pyplot.legend(loc="upper right", ncol=2, fontsize="xx-small")
+    matplotlib.pyplot.ylabel(f"{len(taxa_list)} taxa abundances")
+    matplotlib.pyplot.legend(loc="center right", ncol=4, fontsize="xx-small")
 
     matplotlib.pyplot.tight_layout()
 
