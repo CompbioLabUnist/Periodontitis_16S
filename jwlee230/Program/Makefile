@@ -59,7 +59,7 @@ latest: step05 step15 step16 step17 step18 step19 step20 step22 step24 step26 st
 Output/Step01:
 	mkdir -p $@
 
-Output/Step01/whole.tsv: Python/step01.py $(wildcard Data/fastq/*.fastq.gz) | Output/Step01 build.log
+Output/Step01/whole.tsv: Python/step01.py $(wildcard Data/fastq/*.fastq.gz) $(wildcard Data/SRX8063765/*.fastq.gz) $(wildcard Data/SRX16741789/*.fastq.gz) | Output/Step01 build.log
 	$(DOCKER) python3 $(addprefix /,$^) > $@
 
 step01: Output/Step01/whole.tsv
