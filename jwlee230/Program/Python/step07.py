@@ -61,7 +61,7 @@ if __name__ == "__main__":
     print(spain_info_data)
 
     data = pandas.DataFrame()
-    data["#SampleID"] = list(map(step00.get_ID, args.input))
+    data["#SampleID"] = list(map(step00.get_ID, list(filter(lambda x: x.endswith("_1.fastq.gz"), args.input))))
     data["BarcodeSequence"] = ""
     data["LinkPrimerSequence"] = ""
 
