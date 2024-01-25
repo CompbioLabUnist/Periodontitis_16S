@@ -10,12 +10,8 @@ portugal_ID_set = set()
 spain_ID_set = set()
 
 
-def check_own(ID: str) -> bool:
-    return not ID.startswith("SRR")
-
-
 def change_ID_into_short_stage(ID: str) -> str:
-    if check_own(ID):
+    if not ID.startswith("SRR"):
         return step00.change_ID_into_short_stage(ID)
     elif ID in portugal_ID_set:
         d = {"not applicable": "NA", "Perio_Grade_0": "H", "Perio_Grade_1": "Sli", "Perio_Grade_2": "M", "Perio_Grade_3": "S"}
@@ -23,6 +19,17 @@ def change_ID_into_short_stage(ID: str) -> str:
     elif ID in spain_ID_set:
         d = {"gingivitis": "NA", "health": "H", "stage_I_periodontitis": "Sli", "stage_II_periodontitis": "M", "stage_III_periodontitis": "S", "stage_IV_periodontitis": "NA"}
         return d[spain_info_data.loc[ID, "periodontal_health_status"]]
+
+    raise ValueError("ID not found!!")
+
+
+def check_DB(ID: str) -> str:
+    if not ID.startswith("SRR"):
+        return "Korea"
+    elif ID in portugal_ID_set:
+        return "Portugal"
+    elif ID in spain_ID_set:
+        return "Spain"
 
     raise ValueError("ID not found!!")
 
@@ -67,6 +74,7 @@ if __name__ == "__main__":
 
     data["ShortStage"] = list(map(change_ID_into_short_stage, data["#SampleID"]))
     data["LongStage"] = list(map(step00.change_short_into_long, data["ShortStage"]))
+    data["DB"] = list(map(check_DB, data["#SampleID"]))
 
     data["Description"] = ""
     print(data)
