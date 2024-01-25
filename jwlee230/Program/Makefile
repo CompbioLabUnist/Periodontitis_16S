@@ -62,7 +62,10 @@ Output/Step01:
 Output/Step01/whole.tsv: Python/step01.py $(wildcard Data/fastq/*.fastq.gz) $(wildcard Data/SRX8063765/*.fastq.gz) $(wildcard Data/SRX16741789/*.fastq.gz) | Output/Step01 build.log
 	$(DOCKER) python3 $(addprefix /,$^) > $@
 
-step01: Output/Step01/whole.tsv
+Output/Step01/Korea.tsv: Python/step01.py $(wildcard Data/fastq/*.fastq.gz) | Output/Step01 build.log
+	$(DOCKER) python3 $(addprefix /,$^) > $@
+
+step01: Output/Step01/whole.tsv Output/Step01/Korea.tsv
 .PHONY: step01
 
 # Step 02 (De-multiplexing)
@@ -75,7 +78,7 @@ Output/Step02/%.qza: Output/Step01/%.tsv | Output/Step02 build.log
 Output/Step02/%.qzv: Output/Step02/%.qza | build.log
 	$(DOCKER) qiime demux summarize --i-data $(addprefix /,$<) --o-visualization $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
 
-step02: Output/Step02/whole.qza Output/Step02/whole.qzv
+step02: Output/Step02/whole.qza Output/Step02/whole.qzv Output/Step02/Korea.qza Output/Step02/Korea.qzv
 .PHONY: step02
 
 # Step 03 (Quality Filter)
@@ -85,7 +88,7 @@ Output/Step03:
 Output/Step03/%.seq.qza Output/Step03/%.stat.qza: Output/Step02/%.qza | Output/Step03 build.log
 	$(DOCKER) qiime quality-filter q-score --i-demux $(addprefix /,$<) --o-filtered-sequences $(addprefix /,$(basename $(basename $@))).seq.qza --o-filter-stats $(addprefix /,$(basename $(basename $@))).stat.qza 1> $@.stdout 2> $@.stderr
 
-step03: Output/Step03/whole.seq.qza
+step03: Output/Step03/whole.seq.qza Output/Step03/Korea.seq.qza
 .PHONY: step03
 
 # Step 04 (DADA2 Denoising)
@@ -96,7 +99,7 @@ Output/Step04/%.table.qza Output/Step04/%.seq.qza Output/Step04/%.stat.qza: Outp
 	@echo "You have to check the length manually!!"
 	$(DOCKER) qiime dada2 denoise-paired --i-demultiplexed-seqs $(addprefix /,$<) --p-n-threads $(CPUS) --p-trunc-len-f 300 --p-trunc-len-r 265 --o-table $(addprefix /,$(basename $(basename $@))).table.qza --o-representative-sequences $(addprefix /,$(basename $(basename $@))).seq.qza --o-denoising-stats $(addprefix /,$(basename $(basename $@))).stat.qza 1> $@.stdout 2> $@.stderr
 
-step04: Output/Step04/whole.seq.qza
+step04: Output/Step04/whole.seq.qza Output/Step04/Korea.seq.qza
 .PHONY: step04
 
 # Step 05 (Deblur Denoising)
@@ -107,7 +110,7 @@ Output/Step05/%.table.qza Output/Step05/%.seq.qza Output/Step05/%.stat.qza: Outp
 	@echo "You have to check the length manually!!"
 	$(DOCKER) qiime deblur denoise-16S --i-demultiplexed-seqs $(addprefix /,$<) --p-trim-length 265 --p-jobs-to-start $(CPUS) --o-table $(addprefix /,$(basename $(basename $@))).table.qza --o-representative-sequences $(addprefix /,$(basename $(basename $@))).seq.qza --o-stats $(addprefix /,$(basename $(basename $@))).stat.qza 1> $@.stdout 2> $@.stderr
 
-step05: Output/Step05/whole.table.qza
+step05: Output/Step05/whole.table.qza Output/Step05/Korea.table.qza
 .PHONY: step05
 
 # Step 06 (Visulaize Denoising)
@@ -120,7 +123,7 @@ Output/Step06/%.Demux.stat.qzv: Output/Step03/%.stat.qza | Output/Step06 build.l
 Output/Step06/%.Deblur.stat.qzv: Output/Step05/%.stat.qza | Output/Step06 build.log
 	$(DOCKER) qiime deblur visualize-stats --i-deblur-stats $(addprefix /,$<) --o-visualization $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
 
-step06: Output/Step06/whole.Demux.stat.qzv Output/Step06/whole.Deblur.stat.qzv
+step06: Output/Step06/whole.Demux.stat.qzv Output/Step06/whole.Deblur.stat.qzv Output/Step06/Korea.Demux.stat.qzv Output/Step06/Korea.Deblur.stat.qzv
 .PHONY: step06
 
 # Step 07 (Make metadata)
@@ -130,7 +133,10 @@ Output/Step07:
 Output/Step07/whole.tsv: Python/step07.py Data/치주염선정샘플_250샘플.xlsx Data/SRX8063765.xlsx Data/SRX16741789.xlsx $(wildcard Data/fastq/*.fastq.gz) $(wildcard Data/SRX8063765/*.fastq.gz) $(wildcard Data/SRX16741789/*.fastq.gz) | Output/Step07 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
 
-step07: Output/Step07/whole.tsv
+Output/Step07/Korea.tsv: Python/step07-1.py Output/Step07/whole.tsv | build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+step07: Output/Step07/whole.tsv Output/Step07/Korea.tsv
 .PHONY: step07
 
 # Step 08 (Summary FeatureTable and FeatureData)
@@ -149,7 +155,7 @@ Output/Step08/%.Deblur.table.qzv: Output/Step05/%.table.qza Output/Step07/%.tsv 
 Output/Step08/%.Deblur.seq.qzv: Output/Step05/%.seq.qza | Output/Step08 build.log
 	$(DOCKER) qiime feature-table tabulate-seqs --i-data $(addprefix /,$<) --o-visualization $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
 
-step08: Output/Step08/whole.DADA.table.qzv Output/Step08/whole.DADA.seq.qzv
+step08: Output/Step08/whole.DADA.table.qzv Output/Step08/whole.DADA.seq.qzv Output/Step08/Korea.DADA.table.qzv Output/Step08/Korea.DADA.seq.qzv
 .PHONY: step08
 
 # Step 09 (Phylogenetic diversity analysis)
@@ -162,7 +168,7 @@ Output/Step09/%.DADA.aligned-rep-seqs.qza Output/Step09/%.DADA.masked-aligned-re
 Output/Step09/%.Deblur.aligned-rep-seqs.qza Output/Step09/%.Deblur.masked-aligned-rep-seqs.qza Output/Step09/%.Deblur.unrooted-tree.qza Output/Step09/%.Deblur.rooted-tree.qza: Output/Step05/%.seq.qza | Output/Step09 build.log
 	$(DOCKER) qiime phylogeny align-to-tree-mafft-fasttree --i-sequences $(addprefix /,$<) --o-alignment $(addprefix /,$(basename $(basename $@))).aligned-rep-seqs.qza --o-masked-alignment $(addprefix /,$(basename $(basename $@))).masked-aligned-rep-seqs.qza --o-tree $(addprefix /,$(basename $(basename $@))).unrooted-tree.qza --o-rooted-tree $(addprefix /,$(basename $(basename $@))).rooted-tree.qza --p-n-threads $(CPUS) 1> $@.stdout 2> $@.stderr
 
-step09: Output/Step09/whole.DADA.rooted-tree.qza
+step09: Output/Step09/whole.DADA.rooted-tree.qza  Output/Step09/whole.Deblur.rooted-tree.qza Output/Step09/Korea.DADA.rooted-tree.qza  Output/Step09/Korea.Deblur.rooted-tree.qza
 .PHONY: step09
 
 # Step 10 (Core metrics phylogenetic)
@@ -177,7 +183,7 @@ Output/Step10/Deblur/%.faith_pd_vector.qza Output/Step10/Deblur/%.unweighted_uni
 	@echo "You have to check the sequencing depth manually!!"
 	$(DOCKER) qiime diversity core-metrics-phylogenetic --i-phylogeny $(addprefix /,$(word 1,$^)) --i-table $(addprefix /,$(word 2,$^)) --m-metadata-file $(addprefix /,$(word 3,$^)) --p-sampling-depth "7253" --o-rarefied-table $(addprefix /,$(basename $(basename $@))).rarefied_table.qza --o-faith-pd-vector $(addprefix /,$(basename $(basename $@))).faith_pd_vector.qza --o-observed-features-vector $(addprefix /,$(basename $(basename $@))).observed_features_vector.qza --o-shannon-vector $(addprefix /,$(basename $(basename $@))).shannon_vector.qza --o-evenness-vector $(addprefix /,$(basename $(basename $@))).evenness_vector.qza --o-unweighted-unifrac-distance-matrix $(addprefix /,$(basename $(basename $@))).unweighted_unifrac_distance_matrix.qza --o-weighted-unifrac-distance-matrix $(addprefix /,$(basename $(basename $@))).weighted_unifrac_distance_matrix.qza --o-jaccard-distance-matrix $(addprefix /,$(basename $(basename $@))).jaccard_distance_matrix.qza --o-bray-curtis-distance-matrix $(addprefix /,$(basename $(basename $@))).bray_curtis_distance_matrix.qza --o-unweighted-unifrac-pcoa-results $(addprefix /,$(basename $(basename $@))).unweighted_unifrac_pcoa_results.qza --o-weighted-unifrac-pcoa-results $(addprefix /,$(basename $(basename $@))).weighted_unifrac_pcoa_results.qza --o-unweighted-unifrac-emperor $(addprefix /,$(basename $(basename $@))).unweighted_unifrac_emperor.qzv --o-weighted-unifrac-emperor $(addprefix /,$(basename $(basename $@))).weighted_unifrac_emperor.qzv --o-jaccard-emperor $(addprefix /,$(basename $(basename $@))).jaccard_emperor.qzv --o-bray-curtis-emperor $(addprefix /,$(basename $(basename $@))).bray_curtis_emperor.qzv --o-jaccard-pcoa-results $(addprefix /,$(basename $(basename $@))).jaccard_pcoa_results.qza --o-bray-curtis-pcoa-results $(addprefix /,$(basename $(basename $@))).bray_curtis_pcoa_results.qza --p-n-jobs-or-threads $(CPUS) 1> $@.stdout 2> $@.stderr
 
-step10: Output/Step10/DADA2/whole.faith_pd_vector.qza
+step10: Output/Step10/DADA2/whole.faith_pd_vector.qza Output/Step10/Deblur/whole.faith_pd_vector.qza Output/Step10/DADA2/Korea.faith_pd_vector.qza Output/Step10/Deblur/Korea.faith_pd_vector.qza
 .PHONY: step10
 
 # Step 11 (Alpha-diversity)
@@ -190,8 +196,10 @@ Output/Step11/DADA2/%.qzv: Output/Step10/DADA2/%.qza Output/Step07/whole.tsv | O
 Output/Step11/Deblur/%.qzv: Output/Step10/Deblur/%.qza Output/Step07/whole.tsv | Output/Step11/Deblur build.log
 	$(DOCKER) qiime diversity alpha-group-significance --i-alpha-diversity $(addprefix /,$(word 1,$^)) --m-metadata-file $(addprefix /,$(word 2,$^)) --o-visualization $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
 
-step11: Output/Step11/DADA2/whole.faith_pd_vector.qzv Output/Step11/DADA2/whole.observed_features_vector.qzv Output/Step11/DADA2/whole.shannon_vector.qzv Output/Step11/DADA2/whole.evenness_vector.qzv
-.PHONY: step11
+step11-whole: Output/Step11/DADA2/whole.faith_pd_vector.qzv Output/Step11/DADA2/whole.observed_features_vector.qzv Output/Step11/DADA2/whole.shannon_vector.qzv Output/Step11/DADA2/whole.evenness_vector.qzv
+step11-Korea: Output/Step11/DADA2/Korea.faith_pd_vector.qzv Output/Step11/DADA2/Korea.observed_features_vector.qzv Output/Step11/DADA2/Korea.shannon_vector.qzv Output/Step11/DADA2/Korea.evenness_vector.qzv
+step11: step11-whole step11-Korea
+.PHONY: step11-whole step11-Korea step11
 
 # Step 12 (Beta-diversity)
 Output/Step12/DADA2 Output/Step12/Deblur:
@@ -203,8 +211,10 @@ Output/Step12/DADA2/%.qzv: Output/Step10/DADA2/%.qza Output/Step07/whole.tsv | O
 Output/Step12/Deblur/%.qzv: Output/Step10/Deblur/%.qza Output/Step07/whole.tsv | Output/Step12/Deblur build.log
 	$(DOCKER) qiime diversity beta-group-significance --i-distance-matrix $(addprefix /,$(word 1,$^)) --m-metadata-file $(addprefix /,$(word 2,$^)) --m-metadata-column "LongStage" --o-visualization $(addprefix /,$@) --p-pairwise 1> $@.stdout 2> $@.stderr
 
-step12: Output/Step12/DADA2/whole.unweighted_unifrac_distance_matrix.qzv Output/Step12/DADA2/whole.weighted_unifrac_distance_matrix.qzv Output/Step12/DADA2/whole.jaccard_distance_matrix.qzv Output/Step12/DADA2/whole.bray_curtis_distance_matrix.qzv Output/Step12/Deblur/whole.unweighted_unifrac_distance_matrix.qzv Output/Step12/Deblur/whole.weighted_unifrac_distance_matrix.qzv Output/Step12/Deblur/whole.jaccard_distance_matrix.qzv Output/Step12/Deblur/whole.bray_curtis_distance_matrix.qzv
-.PHONY: step12
+step12-whole: Output/Step12/DADA2/whole.unweighted_unifrac_distance_matrix.qzv Output/Step12/DADA2/whole.weighted_unifrac_distance_matrix.qzv Output/Step12/DADA2/whole.jaccard_distance_matrix.qzv Output/Step12/DADA2/whole.bray_curtis_distance_matrix.qzv Output/Step12/Deblur/whole.unweighted_unifrac_distance_matrix.qzv Output/Step12/Deblur/whole.weighted_unifrac_distance_matrix.qzv Output/Step12/Deblur/whole.jaccard_distance_matrix.qzv Output/Step12/Deblur/whole.bray_curtis_distance_matrix.qzv
+step12-Korea: Output/Step12/DADA2/Korea.unweighted_unifrac_distance_matrix.qzv Output/Step12/DADA2/Korea.weighted_unifrac_distance_matrix.qzv Output/Step12/DADA2/Korea.jaccard_distance_matrix.qzv Output/Step12/DADA2/Korea.bray_curtis_distance_matrix.qzv Output/Step12/Deblur/Korea.unweighted_unifrac_distance_matrix.qzv Output/Step12/Deblur/Korea.weighted_unifrac_distance_matrix.qzv Output/Step12/Deblur/Korea.jaccard_distance_matrix.qzv Output/Step12/Deblur/Korea.bray_curtis_distance_matrix.qzv
+step12: step12-whole step12-Korea
+.PHONY: step12-whole step12-Korea step12
 
 # Step 13 (Taxonomy Classification)
 Output/Step13:
@@ -252,33 +262,33 @@ Output/Step13/%.DADA2.homd.qza: Output/Step13/homd.qza Output/Step04/%.seq.qza |
 Output/Step13/%.Deblur.homd.qza: Output/Step13/homd.qza Output/Step05/%.seq.qza | build.log
 	$(DOCKER) qiime feature-classifier classify-sklearn --i-classifier $(addprefix /,$(word 1,$^)) --i-reads $(addprefix /,$(word 2,$^)) --p-n-jobs $(CPUS) --o-classification $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
 
-step13: Output/Step13/homd_fasta.qza Output/Step13/homd_seqs.qza Output/Step13/homd.qza Output/Step13/whole.DADA2.homd.qza
-.PHONY: step13
+step13-prepare: Output/Step13/homd_fasta.qza Output/Step13/homd_seqs.qza Output/Step13/homd.qza
+step13-whole: Output/Step13/whole.DADA2.homd.qza Output/Step13/whole.Deblur.homd.qza
+step13-Korea: Output/Step13/Korea.DADA2.homd.qza Output/Step13/Korea.Deblur.homd.qza
+step13: step13-prepare step13-whole step13-Korea
+.PHONY: step13-prepare step13-whole step13-Korea step13
 
 # Step 14 (Run ANCOM)
 Output/Step14:
 	mkdir -p $@
 
-Output/Step14/whole.DADA2.%.qza: Output/Step04/whole.table.qza Output/Step13/whole.DADA2.%.qza | Output/Step14 build.log
+Output/Step14/Korea.DADA2.%.qza: Output/Step04/Korea.table.qza Output/Step13/Korea.DADA2.%.qza | Output/Step14 build.log
 	$(DOCKER) qiime taxa collapse --i-table $(addprefix /,$(word 1,$^)) --i-taxonomy $(addprefix /,$(word 2,$^)) --p-level 7 --o-collapsed-table $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
 
-Output/Step14/whole.Deblur.%.qza: Output/Step05/whole.table.qza Output/Step13/whole.Deblur.%.qza | Output/Step14 build.log
+Output/Step14/Korea.Deblur.%.qza: Output/Step05/Korea.table.qza Output/Step13/Korea.Deblur.%.qza | Output/Step14 build.log
 	$(DOCKER) qiime taxa collapse --i-table $(addprefix /,$(word 1,$^)) --i-taxonomy $(addprefix /,$(word 2,$^)) --p-level 7 --o-collapsed-table $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
 
 Output/Step14/%.pseudocount.qza: Output/Step14/%.qza | build.log
 	$(DOCKER) qiime composition add-pseudocount --i-table $(addprefix /,$(word 1,$^)) --o-composition-table $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
 
-Output/Step14/select.tsv: Python/step14.py Output/Step07/whole.tsv | build.log
-	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
-
-Output/Step14/%.site.qzv: Output/Step14/%.qza Output/Step14/select.tsv | build.log
+Output/Step14/%.site.qzv: Output/Step14/%.qza Output/Step07/%.tsv | build.log
 	$(DOCKER) qiime composition ancom --i-table $(addprefix /,$(word 1,$^)) --m-metadata-file $(addprefix /,$(word 2,$^)) --m-metadata-column "LongStage" --o-visualization $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
 
 Output/Step14/%/ancom.tsv: Output/Step14/%.qzv | build.log
 	$(DOCKER) rm -rfv $(addprefix /,$(@D))
 	$(DOCKER) qiime tools export --input-path $(addprefix /,$(word 1,$^)) --output-path $(addprefix /,$(@D)) 1> $(@D).stdout 2> $(@D).stderr
 
-step14: Output/Step14/whole.DADA2.homd.qza Output/Step14/whole.DADA2.homd.pseudocount.qza Output/Step14/whole.DADA2.homd.pseudocount.site.qzv Output/Step14/whole.DADA2.homd.pseudocount.site/ancom.tsv
+step14: Output/Step14/Korea.DADA2.homd.qza Output/Step14/Korea.DADA2.homd.pseudocount.qza Output/Step14/Korea.DADA2.homd.pseudocount.site.qzv Output/Step14/Korea.DADA2.homd.pseudocount.site/ancom.tsv
 .PHONY: step14
 
 # Step 15 (Get TSV files)
