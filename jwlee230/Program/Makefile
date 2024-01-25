@@ -268,7 +268,10 @@ Output/Step14/whole.Deblur.%.qza: Output/Step05/whole.table.qza Output/Step13/wh
 Output/Step14/%.pseudocount.qza: Output/Step14/%.qza | build.log
 	$(DOCKER) qiime composition add-pseudocount --i-table $(addprefix /,$(word 1,$^)) --o-composition-table $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
 
-Output/Step14/%.site.qzv: Output/Step14/%.qza Output/Step07/whole.tsv | build.log
+Output/Step14/select.tsv: Python/step14.py Output/Step07/whole.tsv | build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+Output/Step14/%.site.qzv: Output/Step14/%.qza Output/Step14/select.tsv | build.log
 	$(DOCKER) qiime composition ancom --i-table $(addprefix /,$(word 1,$^)) --m-metadata-file $(addprefix /,$(word 2,$^)) --m-metadata-column "LongStage" --o-visualization $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
 
 Output/Step14/%/ancom.tsv: Output/Step14/%.qzv | build.log
