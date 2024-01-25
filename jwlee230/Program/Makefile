@@ -127,8 +127,8 @@ step06: Output/Step06/whole.Demux.stat.qzv Output/Step06/whole.Deblur.stat.qzv
 Output/Step07:
 	mkdir -p $@
 
-Output/Step07/whole.tsv: Python/step07.py Data/치주염선정샘플_250샘플.xlsx $(wildcard Data/fastq/*.fastq.gz) | Output/Step07 build.log
-	@$(DOCKER) python3 $(addprefix /,$^) > $@
+Output/Step07/whole.tsv: Python/step07.py Data/치주염선정샘플_250샘플.xlsx Data/SRX8063765.xlsx Data/SRX16741789.xlsx $(wildcard Data/fastq/*.fastq.gz) $(wildcard Data/SRX8063765/*.fastq.gz) $(wildcard Data/SRX16741789/*.fastq.gz) | Output/Step07 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
 
 step07: Output/Step07/whole.tsv
 .PHONY: step07
