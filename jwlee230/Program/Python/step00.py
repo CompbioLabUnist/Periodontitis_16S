@@ -175,11 +175,15 @@ def aggregate_confusion_matrix(confusion_matrix: numpy.ndarray, derivation: str 
 
 
 short_stage_dict = {"H": "H", "E": "Sli", "M": "M", "S": "S"}
-short_stage_order = ["H", "Sli", "M", "S"]
-number_stage_order = ["0", "1", "2", "3"]
-long_stage_order = ["Healthy", "Stage I", "Stage II", "Stage III"]
-color_stage_order = ["tab:green", "tab:cyan", "tab:olive", "tab:red"]
+short_stage_order = ["NA", "H", "Sli", "M", "S"]
+number_stage_order = ["-1", "0", "1", "2", "3"]
+long_stage_order = ["NA", "Healthy", "Stage I", "Stage II", "Stage III"]
+color_stage_order = ["white", "tab:green", "tab:cyan", "tab:olive", "tab:red"]
 color_stage_dict = dict(zip(long_stage_order, color_stage_order))
+
+
+def get_ID(filename: str) -> str:
+    return filename.split("/")[-1].split("_")[0]
 
 
 def change_ID_into_short_stage(ID: str) -> str:
