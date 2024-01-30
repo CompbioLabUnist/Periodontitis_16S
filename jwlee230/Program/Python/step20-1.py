@@ -24,6 +24,7 @@ if __name__ == "__main__":
 
     parser.add_argument("input", type=str, help="Input TAR.gz file")
     parser.add_argument("tsne", type=str, help="t-SNE TAR.gz file")
+    parser.add_argument("clinical", help="Clinical TSV file", type=str)
     parser.add_argument("output", type=str, help="Output TAR file")
     parser.add_argument("--cpu", type=int, default=1, help="Number of CPU to use")
 
@@ -36,6 +37,8 @@ if __name__ == "__main__":
 
     if not args.output.endswith(".tar"):
         raise ValueError("Output file must end with .TAR!!")
+    elif not args.clinical.endswith(".tsv"):
+        raise ValueError("Clinical file must end with .TSV!!")
     elif args.cpu < 1:
         raise ValueError("CPU must be greater than zero!!")
 
@@ -45,9 +48,13 @@ if __name__ == "__main__":
 
     tar_files: typing.List[str] = list()
 
+    clinical_data = pandas.read_csv(args.clinical, sep="\t", index_col=0, skiprows=[1])
+    print(clinical_data)
+
     tsne_data = step00.read_pickle(args.tsne)
-    tsne_data["ShortStage"] = list(map(step00.change_ID_into_short_stage, tsne_data["ID"]))
-    tsne_data["LongStage"] = list(map(step00.change_short_into_long, tsne_data["ShortStage"]))
+    tsne_data["ShortStage"] = clinical_data.loc[tsne_data.index, "ShortStage"]
+    tsne_data["LongStage"] = clinical_data.loc[tsne_data.index, "LongStage"]
+    print(tsne_data)
 
     data = step00.read_pickle(args.input)
     del data["ShortStage"]

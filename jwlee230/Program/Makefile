@@ -52,7 +52,7 @@ run: tmp.sh | log Output
 .PHONY: run
 
 # Actual
-latest: step05 step15 step16 step17 step18 step19 step20 step22 step24 step26 step27 step28 step29 step30 step31 step36 step37 step38 step39 step40 step41
+latest: step05 step15 step16 step17 step18 step20 step22 step24 step26 step27 step28 step29 step30 step31 step36 step37 step38 step39 step40 step41
 .PHONY: latest
 
 # Step 01 (Make manifest files)
@@ -281,7 +281,7 @@ Output/Step14/Korea.Deblur.%.qza: Output/Step05/Korea.table.qza Output/Step13/Ko
 Output/Step14/%.pseudocount.qza: Output/Step14/%.qza | build.log
 	$(DOCKER) qiime composition add-pseudocount --i-table $(addprefix /,$(word 1,$^)) --o-composition-table $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
 
-Output/Step14/%.site.qzv: Output/Step14/%.qza Output/Step07/%.tsv | build.log
+Output/Step14/Korea.%.site.qzv: Output/Step14/Korea.%.qza Output/Step07/Korea.tsv | build.log
 	$(DOCKER) qiime composition ancom --i-table $(addprefix /,$(word 1,$^)) --m-metadata-file $(addprefix /,$(word 2,$^)) --m-metadata-column "LongStage" --o-visualization $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
 
 Output/Step14/%/ancom.tsv: Output/Step14/%.qzv | build.log
@@ -311,20 +311,36 @@ Output/Step15/whole.Deblur.%.tsv: Output/Step05/whole.table.qza Output/Step13/wh
 	$(DOCKER) biom convert --input-fp /Output/Step15/tmp/tmp.biom --output-fp $(addprefix /,$@) --to-tsv --process-obs-metadata "taxonomy" --tsv-metadata-formatter "sc_separated" --header-key "taxonomy"
 	$(DOCKER) rm -rfv /Output/Step15/tmp
 
+Output/Step15/Korea.DADA2.%.tsv: Output/Step04/Korea.table.qza Output/Step13/Korea.DADA2.%.qza | Output/Step15 build.log
+	$(DOCKER) qiime tools export --input-path $(addprefix /,$(word 1,$^)) --output-path /Output/Step15/tmp
+	$(DOCKER) qiime tools export --input-path $(addprefix /,$(word 2,$^)) --output-path /Output/Step15/tmp
+	$(DOCKER) sed --in-place "1c#OTU ID\ttaxonomy\tconfidence" /Output/Step15/tmp/taxonomy.tsv
+	$(DOCKER) biom add-metadata --input-fp /Output/Step15/tmp/feature-table.biom --observation-metadata-fp /Output/Step15/tmp/taxonomy.tsv --output-fp /Output/Step15/tmp/tmp.biom --sc-separated "taxonomy"
+	$(DOCKER) biom convert --input-fp /Output/Step15/tmp/tmp.biom --output-fp $(addprefix /,$@) --to-tsv --process-obs-metadata "taxonomy" --tsv-metadata-formatter "sc_separated" --header-key "taxonomy"
+	$(DOCKER) rm -rfv /Output/Step15/tmp
+
+Output/Step15/Korea.Deblur.%.tsv: Output/Step05/Korea.table.qza Output/Step13/Korea.Deblur.%.qza | Output/Step15 build.log
+	$(DOCKER) qiime tools export --input-path $(addprefix /,$(word 1,$^)) --output-path /Output/Step15/tmp
+	$(DOCKER) qiime tools export --input-path $(addprefix /,$(word 2,$^)) --output-path /Output/Step15/tmp
+	$(DOCKER) sed --in-place "1c#OTU ID\ttaxonomy\tconfidence" /Output/Step15/tmp/taxonomy.tsv
+	$(DOCKER) biom add-metadata --input-fp /Output/Step15/tmp/feature-table.biom --observation-metadata-fp /Output/Step15/tmp/taxonomy.tsv --output-fp /Output/Step15/tmp/tmp.biom --sc-separated "taxonomy"
+	$(DOCKER) biom convert --input-fp /Output/Step15/tmp/tmp.biom --output-fp $(addprefix /,$@) --to-tsv --process-obs-metadata "taxonomy" --tsv-metadata-formatter "sc_separated" --header-key "taxonomy"
+	$(DOCKER) rm -rfv /Output/Step15/tmp
+
 Output/Step15/%.Proportion.tsv: Python/step15.py Output/Step15/%.tsv | build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
 
-step15: Output/Step15/whole.DADA2.homd.tsv Output/Step15/whole.DADA2.homd.Proportion.tsv
+step15: Output/Step15/whole.DADA2.homd.tsv Output/Step15/whole.DADA2.homd.Proportion.tsv Output/Step15/Korea.DADA2.homd.tsv Output/Step15/Korea.DADA2.homd.Proportion.tsv
 .PHONY: step15
 
 # Step 16 (Clearify raw TSV into pandas)
 Output/Step16:
 	mkdir -p $@
 
-Output/Step16/%.tar.gz: Python/step16.py Output/Step15/%.tsv | Output/Step16 build.log
+Output/Step16/%.tar.gz: Python/step16.py Output/Step15/%.tsv Output/Step07/whole.tsv | Output/Step16 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
 
-step16: Output/Step16/whole.DADA2.homd.tar.gz Output/Step16/whole.DADA2.homd.Proportion.tar.gz
+step16: Output/Step16/whole.DADA2.homd.tar.gz Output/Step16/whole.DADA2.homd.Proportion.tar.gz Output/Step16/Korea.DADA2.homd.tar.gz Output/Step16/Korea.DADA2.homd.Proportion.tar.gz
 .PHONY: step16
 
 # Step 17 (Select by ANCOM)
@@ -337,7 +353,7 @@ Output/Step17/%.tar.gz: Python/step17.py Output/Step16/%.tar.gz Output/Step14/%.
 Output/Step17/%.Proportion.tar.gz: Python/step17.py Output/Step16/%.Proportion.tar.gz Output/Step14/%.pseudocount.site/ancom.tsv | Output/Step17 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
 
-step17: Output/Step17/whole.DADA2.homd.tar.gz Output/Step17/whole.DADA2.homd.Proportion.tar.gz
+step17: Output/Step17/Korea.DADA2.homd.tar.gz Output/Step17/Korea.DADA2.homd.Proportion.tar.gz
 .PHONY: step17
 
 # Step 18 (Make t-SNE)
@@ -347,7 +363,7 @@ Output/Step18:
 Output/Step18/whole.%.tar.gz: Python/step18.py Output/Step16/whole.%.tar.gz | Output/Step18 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) 1> $@.stdout 2> $@.stderr
 
-Output/Step18/ANCOM.%.tar.gz: Python/step18.py Output/Step17/whole.%.tar.gz | Output/Step18 build.log
+Output/Step18/ANCOM.%.tar.gz: Python/step18.py Output/Step17/Korea.%.tar.gz  | Output/Step18 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) 1> $@.stdout 2> $@.stderr
 
 step18: Output/Step18/whole.DADA2.homd.tar.gz Output/Step18/ANCOM.DADA2.homd.tar.gz Output/Step18/whole.DADA2.homd.Proportion.tar.gz Output/Step18/ANCOM.DADA2.homd.Proportion.tar.gz
@@ -357,7 +373,7 @@ step18: Output/Step18/whole.DADA2.homd.tar.gz Output/Step18/ANCOM.DADA2.homd.tar
 Output/Step19:
 	mkdir -p $@
 
-Output/Step19/%.png: Python/step19.py Output/Step18/%.tar.gz | Output/Step19 build.log
+Output/Step19/%.png: Python/step19.py Output/Step18/%.tar.gz Output/Step07/whole.tsv | Output/Step19 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
 
 step19: Output/Step19/whole.DADA2.homd.png Output/Step19/ANCOM.DADA2.homd.png Output/Step19/whole.DADA2.homd.Proportion.png Output/Step19/ANCOM.DADA2.homd.Proportion.png
@@ -367,28 +383,28 @@ step19: Output/Step19/whole.DADA2.homd.png Output/Step19/ANCOM.DADA2.homd.png Ou
 Output/Step20:
 	mkdir -p $@
 
-Output/Step20/%.tar: Python/step20-1.py Output/Step16/whole.%.tar.gz Output/Step18/whole.%.tar.gz | Output/Step20 build.log
+Output/Step20/%.tar: Python/step20-1.py Output/Step16/Korea.%.tar.gz Output/Step18/Korea.%.tar.gz Output/Step07/whole.tsv | Output/Step20 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) 1> $@.stdout 2> $@.stderr
 
-Output/Step20/one.%.tar: Python/step20-1.py Output/Step16/whole.%.tar.gz Output/Step18/whole.%.tar.gz | Output/Step20 build.log
+Output/Step20/one.%.tar: Python/step20-1.py Output/Step16/Korea.%.tar.gz Output/Step18/Korea.%.tar.gz Output/Step07/whole.tsv | Output/Step20 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --one 1> $@.stdout 2> $@.stderr
 
-Output/Step20/two.%.tar: Python/step20-1.py Output/Step16/whole.%.tar.gz Output/Step18/whole.%.tar.gz | Output/Step20 build.log
+Output/Step20/two.%.tar: Python/step20-1.py Output/Step16/Korea.%.tar.gz Output/Step18/Korea.%.tar.gz Output/Step07/whole.tsv | Output/Step20 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --two 1> $@.stdout 2> $@.stderr
 
-Output/Step20/three.%.tar: Python/step20-1.py Output/Step16/whole.%.tar.gz Output/Step18/whole.%.tar.gz | Output/Step20 build.log
+Output/Step20/three.%.tar: Python/step20-1.py Output/Step16/Korea.%.tar.gz Output/Step18/Korea.%.tar.gz Output/Step07/whole.tsv | Output/Step20 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --three 1> $@.stdout 2> $@.stderr
 
-Output/Step20/ANCOM.%.tar: Python/step20.py Output/Step17/whole.%.tar.gz Output/Step18/ANCOM.%.tar.gz | Output/Step20 build.log
+Output/Step20/ANCOM.%.tar: Python/step20.py Output/Step17/whole.%.tar.gz Output/Step18/ANCOM.%.tar.gz Output/Step07/whole.tsv | Output/Step20 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) 1> $@.stdout 2> $@.stderr
 
-Output/Step20/ANCOM.one.%.tar: Python/step20.py Output/Step17/whole.%.tar.gz Output/Step18/ANCOM.%.tar.gz | Output/Step20 build.log
+Output/Step20/ANCOM.one.%.tar: Python/step20.py Output/Step17/whole.%.tar.gz Output/Step18/ANCOM.%.tar.gz Output/Step07/whole.tsv | Output/Step20 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --one 1> $@.stdout 2> $@.stderr
 
-Output/Step20/ANCOM.two.%.tar: Python/step20.py Output/Step17/whole.%.tar.gz Output/Step18/ANCOM.%.tar.gz | Output/Step20 build.log
+Output/Step20/ANCOM.two.%.tar: Python/step20.py Output/Step17/whole.%.tar.gz Output/Step18/ANCOM.%.tar.gz Output/Step07/whole.tsv | Output/Step20 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --two 1> $@.stdout 2> $@.stderr
 
-Output/Step20/ANCOM.three.%.tar: Python/step20.py Output/Step17/whole.%.tar.gz Output/Step18/ANCOM.%.tar.gz | Output/Step20 build.log
+Output/Step20/ANCOM.three.%.tar: Python/step20.py Output/Step17/whole.%.tar.gz Output/Step18/ANCOM.%.tar.gz Output/Step07/whole.tsv | Output/Step20 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --three 1> $@.stdout 2> $@.stderr
 
 step20: Output/Step20/DADA2.homd.Proportion.tar Output/Step20/one.DADA2.homd.Proportion.tar Output/Step20/two.DADA2.homd.Proportion.tar Output/Step20/three.DADA2.homd.Proportion.tar Output/Step20/ANCOM.DADA2.homd.Proportion.tar Output/Step20/ANCOM.one.DADA2.homd.Proportion.tar Output/Step20/ANCOM.two.DADA2.homd.Proportion.tar Output/Step20/ANCOM.three.DADA2.homd.Proportion.tar

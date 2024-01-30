@@ -42,16 +42,24 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument("input", type=str, help="Input TAR.gz file")
+    parser.add_argument("clinical", help="Clinical TSV file", type=str)
     parser.add_argument("output", type=str, help="Output PNG file")
 
     args = parser.parse_args()
 
     if not args.output.endswith(".png"):
         raise ValueError("OUTPUT file must end with .PNG!!")
+    elif not args.clinical.endswith(".tsv"):
+        raise ValueError("Clinical file must end with .TSV!!")
 
     data: pandas.DataFrame = step00.read_pickle(args.input)
-    data["ShortStage"] = list(map(step00.change_ID_into_short_stage, data["ID"]))
-    data["LongStage"] = list(map(step00.change_short_into_long, data["ShortStage"]))
+    print(data)
+
+    clinical_data = pandas.read_csv(args.clinical, sep="\t", index_col=0, skiprows=[1])
+    print(clinical_data)
+
+    data["ShortStage"] = clinical_data.loc[data.index, "ShortStage"]
+    data["LongStage"] = clinical_data.loc[data.index, "LongStage"]
     print(data)
 
     matplotlib.use("Agg")
@@ -65,8 +73,6 @@ if __name__ == "__main__":
         confidence_ellipse(data.loc[(data["LongStage"] == stage), "tSNE1"], data.loc[(data["LongStage"] == stage), "tSNE2"], ax, color=color, alpha=0.3)
 
     legend = matplotlib.pyplot.legend()
-    for handle in legend.legendHandles:
-        handle.set_sizes([1000])
     matplotlib.pyplot.tight_layout()
 
     fig.savefig(args.output)

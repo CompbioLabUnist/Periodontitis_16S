@@ -130,8 +130,8 @@ def simplified_taxonomy(taxonomy: str) -> str:
         return taxonomy_list[-2][0] + ". " + taxonomy_list[-1].replace("_", " ")
 
 
-derivations = ["SEN", "SPE", "PRE", "negative_predictive_value", "miss_rate", "fall_out", "false_discovery_rate", "false_ommission_rate", "ACC", "F1_score", "odds_ratio", "BA", "threat_score"]
-selected_derivations = ["ACC", "BA", "SEN", "SPE", "PRE"]
+derivations = ["SEN", "SPE", "PRE", "negative_predictive_value", "miss_rate", "fall_out", "false_discovery_rate", "false_ommission_rate", "ACC", "F1", "odds_ratio", "BA", "threat_score"]
+selected_derivations = ["ACC", "BA", "F1", "SEN", "SPE", "PRE"]
 
 
 def aggregate_confusion_matrix(confusion_matrix: numpy.ndarray, derivation: str = "") -> float:

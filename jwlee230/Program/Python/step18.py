@@ -28,6 +28,7 @@ if __name__ == "__main__":
         tsne_data[column] = sklearn.preprocessing.scale(tsne_data[column])
 
     tsne_data["ID"] = list(raw_data.index)
+    tsne_data.set_index("ID", inplace=True)
     print(tsne_data)
 
     step00.make_pickle(args.output, tsne_data)
