@@ -1,5 +1,5 @@
 """
-step20-1: Random Forest Classifier
+step20-1.py: Random Forest Classifier
 """
 import argparse
 import itertools
@@ -14,10 +14,11 @@ import scipy.stats
 import seaborn
 import sklearn.ensemble
 import sklearn.metrics
-import sklearn.model_selection
 import sklearn.preprocessing
 import statannot
+import tqdm
 import step00
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -50,13 +51,14 @@ if __name__ == "__main__":
 
     clinical_data = pandas.read_csv(args.clinical, sep="\t", index_col=0, skiprows=[1])
     print(clinical_data)
+    print(set(clinical_data["DB"]))
 
     tsne_data = step00.read_pickle(args.tsne)
     tsne_data["ShortStage"] = clinical_data.loc[tsne_data.index, "ShortStage"]
     tsne_data["LongStage"] = clinical_data.loc[tsne_data.index, "LongStage"]
     print(tsne_data)
 
-    data = step00.read_pickle(args.input)
+    data = step00.read_pickle(args.input).dropna(axis="index")
     del data["ShortStage"]
     train_columns = sorted(set(data.columns) - {"LongStage"})
 
@@ -78,11 +80,15 @@ if __name__ == "__main__":
     print(data)
     print(stage_list, set(data["LongStage"]))
 
+    Korea_data = data.loc[list(filter(lambda x: x in set(clinical_data[(clinical_data["DB"] == "Korea")].index), list(data.index))), :]
+    Spain_data = data.loc[list(filter(lambda x: x in set(clinical_data[(clinical_data["DB"] == "Spain")].index), list(data.index))), :]
+    Portugal_data = data.loc[list(filter(lambda x: x in set(clinical_data[(clinical_data["DB"] == "Portugal")].index), list(data.index))), :]
+
     # Get Feature Importances
     classifier = sklearn.ensemble.RandomForestClassifier(max_features=None, n_jobs=args.cpu, random_state=0)
-    classifier.fit(data[train_columns], data["LongStage"])
+    classifier.fit(Korea_data[train_columns], Korea_data["LongStage"])
     feature_importances = list(classifier.feature_importances_)
-    best_features = list(map(lambda x: x[1], sorted(list(filter(lambda x: (x[0] > 0) and (step00.consistency_taxonomy(x[1]).count(";") == 5), zip(feature_importances, train_columns))), reverse=True)))
+    best_features = list(map(lambda x: x[1], sorted(list(filter(lambda x: (x[0] > 0) and (step00.consistency_taxonomy(x[1]).count(";") == 6), zip(feature_importances, train_columns))), reverse=True)))
 
     # Save Features
     tar_files.append("features.csv")
@@ -104,136 +110,86 @@ if __name__ == "__main__":
     matplotlib.pyplot.ylabel("Counts")
     matplotlib.pyplot.grid(True)
     matplotlib.pyplot.tight_layout()
-    tar_files.append("importances.png")
-    fig.savefig(tar_files[-1])
     tar_files.append("importances.pdf")
-    fig.savefig(tar_files[-1])
-    tar_files.append("importances.svg")
     fig.savefig(tar_files[-1])
     matplotlib.pyplot.close(fig)
 
     # Calculate Metrics by Feature Counts
-    highest_metrics = {metric: (0, 0.0) for metric in step00.derivations}
-    lowest_metrics = {metric: (0, 0.0) for metric in step00.derivations}
     scores = list()
-
-    k_fold = sklearn.model_selection.StratifiedKFold(n_splits=10)
-    for i in range(1, len(best_features) + 1):
-        print("With", i, "/", len(best_features), "features!!")
+    for i in tqdm.trange(1, len(best_features) + 1):
         used_columns = best_features[:i]
         score_by_metric: typing.Dict[str, typing.List[float]] = dict()
 
-        for train_index, test_index in k_fold.split(data[used_columns], data["LongStage"]):
-            x_train, x_test = data.iloc[train_index][used_columns], data.iloc[test_index][used_columns]
-            y_train, y_test = data.iloc[train_index]["LongStage"], data.iloc[test_index]["LongStage"]
-
-            classifier.fit(x_train, y_train)
-            if args.one or args.three:
-                confusion_matrix = sklearn.metrics.confusion_matrix(y_test, classifier.predict(x_test))
-            else:
-                confusion_matrix = numpy.sum(sklearn.metrics.multilabel_confusion_matrix(y_test, classifier.predict(x_test)), axis=0)
-
-            for metric in step00.derivations:
-                score = step00.aggregate_confusion_matrix(confusion_matrix, metric)
-
-                scores.append((i, metric, score))
-
-                if metric in score_by_metric:
-                    score_by_metric[metric].append(score)
-                else:
-                    score_by_metric[metric] = [score]
+        classifier.fit(Korea_data[used_columns], Korea_data["LongStage"])
+        if args.one or args.three:
+            confusion_matrix = sklearn.metrics.confusion_matrix(Spain_data["LongStage"], classifier.predict(Spain_data[used_columns]))
+        else:
+            confusion_matrix = numpy.sum(sklearn.metrics.multilabel_confusion_matrix(Spain_data["LongStage"], classifier.predict(Spain_data[used_columns])), axis=0)
 
         for metric in step00.derivations:
-            if (highest_metrics[metric][0] == 0) or (highest_metrics[metric][1] < numpy.mean(score_by_metric[metric])):
-                highest_metrics[metric] = (i, numpy.mean(score_by_metric[metric], dtype=float))
+            score = step00.aggregate_confusion_matrix(confusion_matrix, metric)
+            scores.append((i, "Spain", metric, score))
 
-            if (lowest_metrics[metric][0] == 0) or (lowest_metrics[metric][1] > numpy.mean(score_by_metric[metric])):
-                lowest_metrics[metric] = (i, numpy.mean(score_by_metric[metric], dtype=float))
+            if metric in score_by_metric:
+                score_by_metric[metric].append(score)
+            else:
+                score_by_metric[metric] = [score]
 
-    score_data = pandas.DataFrame.from_records(scores, columns=["FeatureCount", "Metrics", "Value"])
+    for i in tqdm.trange(1, len(best_features) + 1):
+        used_columns = best_features[:i]
+        score_by_metric = dict()
+
+        classifier.fit(Korea_data[used_columns], Korea_data["LongStage"])
+        if args.one or args.three:
+            confusion_matrix = sklearn.metrics.confusion_matrix(Portugal_data["LongStage"], classifier.predict(Portugal_data[used_columns]))
+        else:
+            confusion_matrix = numpy.sum(sklearn.metrics.multilabel_confusion_matrix(Portugal_data["LongStage"], classifier.predict(Portugal_data[used_columns])), axis=0)
+
+        for metric in step00.derivations:
+            score = step00.aggregate_confusion_matrix(confusion_matrix, metric)
+            scores.append((i, "Portugal", metric, score))
+
+            if metric in score_by_metric:
+                score_by_metric[metric].append(score)
+            else:
+                score_by_metric[metric] = [score]
+
+    score_data = pandas.DataFrame(scores, columns=["FeatureCount", "DB", "Metrics", "Value"])
     print(score_data)
 
     # Export score data
     tar_files.append("metrics.csv")
     with open(tar_files[-1], "w") as f:
-        f.write("Count,Metrics,Mean,STD,95% CI\n")
-        for i in range(1, len(best_features) + 1):
+        f.write("Count,Metrics,Mean\n")
+        for i in tqdm.trange(1, len(best_features) + 1):
             for metric in sorted(step00.derivations):
                 selected_data = list(score_data.loc[(score_data["FeatureCount"] == i) & (score_data["Metrics"] == metric)]["Value"])
-                ci = scipy.stats.t.interval(0.95, len(selected_data) - 1, loc=numpy.mean(selected_data), scale=scipy.stats.sem(selected_data))
-                f.write("%d,%s,%.3f,%.3f,%.3f-%.3f\n" % (i, metric, numpy.mean(selected_data), numpy.std(selected_data), ci[0], ci[1]))
+                f.write(f"{i},{metric},{numpy.mean(selected_data):.3f}\n")
 
     # Draw Metrics
-    fig, ax = matplotlib.pyplot.subplots(figsize=(32, 18))
-    seaborn.lineplot(data=score_data.loc[score_data["Metrics"].isin(step00.selected_derivations)], x="FeatureCount", y="Value", hue="Metrics", style="Metrics", ax=ax, legend="full", markers=True, markersize=20, hue_order=sorted(step00.selected_derivations))
-    matplotlib.pyplot.axvline(x=highest_metrics["BA"][0], color="k", linestyle="--")
-    matplotlib.pyplot.text(x=highest_metrics["BA"][0], y=0.3, s=f"Highest BA {highest_metrics['BA'][1]:.2f} with {highest_metrics['BA'][0]} features", horizontalalignment="right", verticalalignment="center", rotation="vertical", fontsize="x-small", color="k")
-    matplotlib.pyplot.grid(True)
-    matplotlib.pyplot.ylim(0, 1)
-    matplotlib.pyplot.ylabel("Evaluations")
-    matplotlib.pyplot.xlabel("Feature Counts")
-    matplotlib.pyplot.xticks(sorted(set(score_data["FeatureCount"])), sorted(set(score_data["FeatureCount"])))
-    matplotlib.pyplot.legend(loc="lower left")
-    ax.invert_xaxis()
-    matplotlib.pyplot.tight_layout()
-    tar_files.append("metrics.png")
-    fig.savefig(tar_files[-1])
-    tar_files.append("metrics.pdf")
-    fig.savefig(tar_files[-1])
-    tar_files.append("metrics.svg")
-    fig.savefig(tar_files[-1])
-    matplotlib.pyplot.close(fig)
+    for i in tqdm.trange(1, len(best_features) + 1):
+        drawing_data = score_data.loc[(score_data["FeatureCount"] == i)]
 
-    # Draw Each Metics
-    print("Drawing scores start!!")
-    for metric in step00.selected_derivations:
-        print("--", metric)
-        fig, ax = matplotlib.pyplot.subplots(figsize=(32, 18))
-        seaborn.lineplot(data=score_data.query("Metrics == '%s'" % metric,), x="FeatureCount", y="Value", ax=ax, markers=True, markersize=20)
-        matplotlib.pyplot.grid(True)
+        fig, ax = matplotlib.pyplot.subplots(figsize=(18, 18))
+        seaborn.barplot(data=drawing_data, x="Metrics", y="Value", hue="DB", order=step00.selected_derivations, hue_order=["Spain", "Portugal"], ax=ax)
         matplotlib.pyplot.ylim(0, 1)
-        matplotlib.pyplot.title("Higest with %s feature(s) at %.3f" % highest_metrics[metric])
+        matplotlib.pyplot.ylabel("Evaluations")
+        matplotlib.pyplot.xlabel("")
+        matplotlib.pyplot.legend(loc="lower left")
         matplotlib.pyplot.tight_layout()
-        tar_files.append(metric + ".png")
-        fig.savefig(tar_files[-1])
-        tar_files.append(metric + ".pdf")
-        fig.savefig(tar_files[-1])
-        tar_files.append(metric + ".svg")
+
+        tar_files.append(f"metrics_{i}.pdf")
         fig.savefig(tar_files[-1])
         matplotlib.pyplot.close(fig)
-    print("Drawing scores done!!")
-
-    # Draw Trees
-    print("Drawing highest trees start!!")
-    for metric in step00.selected_derivations:
-        print("--", metric)
-
-        if highest_metrics[metric][0] == 0:
-            continue
-
-        fig, ax = matplotlib.pyplot.subplots(figsize=(36, 36))
-        sklearn.tree.plot_tree(classifier.fit(data[best_features[:highest_metrics[metric][0]]], data["LongStage"]).estimators_[0], ax=ax, filled=True, class_names=sorted(set(data["LongStage"])))
-        matplotlib.pyplot.title("Highest %s with %s feature(s) at %.3f" % ((metric,) + highest_metrics[metric]))
-        matplotlib.pyplot.tight_layout()
-        tar_files.append("highest_" + metric + ".png")
-        fig.savefig(tar_files[-1])
-        tar_files.append("highest_" + metric + ".pdf")
-        fig.savefig(tar_files[-1])
-        tar_files.append("highest_" + metric + ".svg")
-        fig.savefig(tar_files[-1])
-        matplotlib.pyplot.close(fig)
-    print("Drawing highest trees done!!")
 
     # Draw Violin Plots
-    print("Drawing Violin plot start!!")
-    for i, feature in enumerate(best_features[:10]):
-        print("--", i, feature)
+    for i, feature in tqdm.tqdm(enumerate(best_features[:5])):
+        order = sorted(set(Spain_data["LongStage"])) if (args.two or args.three) else ["Healthy", "Stage I", "Stage II", "Stage III"]
 
-        order = sorted(set(data["LongStage"])) if (args.two or args.three) else step00.long_stage_order
         box_pairs = list()
         for s1, s2 in itertools.combinations(order, 2):
             try:
-                _, p = scipy.stats.mannwhitneyu(data.loc[(data["LongStage"] == s1), feature], data.loc[(data["LongStage"] == s2), feature])
+                _, p = scipy.stats.mannwhitneyu(Spain_data.loc[(Spain_data["LongStage"] == s1), feature], Spain_data.loc[(Spain_data["LongStage"] == s2), feature])
             except ValueError:
                 continue
             if p < 0.05:
@@ -241,41 +197,63 @@ if __name__ == "__main__":
 
         fig, ax = matplotlib.pyplot.subplots(figsize=(18, 18))
         if args.two or args.three:
-            seaborn.violinplot(data=data, x="LongStage", y=feature, order=order, ax=ax, inner="box", cut=1, linewidth=10)
+            seaborn.violinplot(data=Spain_data, x="LongStage", y=feature, order=order, ax=ax, inner="box", cut=1, linewidth=10)
         else:
-            seaborn.violinplot(data=data, x="LongStage", y=feature, order=order, ax=ax, inner="box", cut=1, palette=step00.color_stage_dict, linewidth=10)
+            seaborn.violinplot(data=Spain_data, x="LongStage", y=feature, order=order, ax=ax, inner="box", cut=1, palette=step00.color_stage_dict, linewidth=10)
 
         if box_pairs:
-            statannot.add_stat_annotation(ax, data=data, x="LongStage", y=feature, order=order, test="Mann-Whitney", box_pairs=box_pairs, text_format="star", loc="inside", verbose=0, comparisons_correction=None)
-        stat, p = scipy.stats.kruskal(*[data.loc[(data["LongStage"] == stage), feature] for stage in order])
+            statannot.add_stat_annotation(ax, data=Spain_data, x="LongStage", y=feature, order=order, test="Mann-Whitney", box_pairs=box_pairs, text_format="star", loc="inside", verbose=0, comparisons_correction=None)
+        stat, p = scipy.stats.kruskal(*[Spain_data.loc[(Spain_data["LongStage"] == stage), feature] for stage in order])
 
         matplotlib.pyplot.title(" ".join(feature.split("; ")[-2:]).replace("_", " ") + f" (K.W. p={p:.2e})", fontsize=50)
         matplotlib.pyplot.xlabel("")
-        matplotlib.pyplot.ylabel("Proportion")
+        matplotlib.pyplot.ylabel("Proportion in Spain")
         matplotlib.pyplot.tight_layout()
 
-        tar_files.append("Feature_" + str(i) + ".png")
-        fig.savefig(tar_files[-1])
-        tar_files.append("Feature_" + str(i) + ".pdf")
-        fig.savefig(tar_files[-1])
-        tar_files.append("Feature_" + str(i) + ".svg")
+        tar_files.append(f"Spain_{i}.pdf")
         fig.savefig(tar_files[-1])
         matplotlib.pyplot.close(fig)
-    print("Drawing Violin Plot done!!")
+
+    for i, feature in tqdm.tqdm(enumerate(best_features[:5])):
+        order = sorted(set(Portugal_data["LongStage"])) if (args.two or args.three) else ["Healthy", "Stage I", "Stage II", "Stage III"]
+
+        box_pairs = list()
+        for s1, s2 in itertools.combinations(order, 2):
+            try:
+                _, p = scipy.stats.mannwhitneyu(Portugal_data.loc[(Portugal_data["LongStage"] == s1), feature], Portugal_data.loc[(Portugal_data["LongStage"] == s2), feature])
+            except ValueError:
+                continue
+            if p < 0.05:
+                box_pairs.append((s1, s2))
+
+        fig, ax = matplotlib.pyplot.subplots(figsize=(18, 18))
+        if args.two or args.three:
+            seaborn.violinplot(data=Portugal_data, x="LongStage", y=feature, order=order, ax=ax, inner="box", cut=1, linewidth=10)
+        else:
+            seaborn.violinplot(data=Portugal_data, x="LongStage", y=feature, order=order, ax=ax, inner="box", cut=1, palette=step00.color_stage_dict, linewidth=10)
+
+        if box_pairs:
+            statannot.add_stat_annotation(ax, data=Portugal_data, x="LongStage", y=feature, order=order, test="Mann-Whitney", box_pairs=box_pairs, text_format="star", loc="inside", verbose=0, comparisons_correction=None)
+        stat, p = scipy.stats.kruskal(*[Portugal_data.loc[(Portugal_data["LongStage"] == stage), feature] for stage in order])
+
+        matplotlib.pyplot.title(" ".join(feature.split("; ")[-2:]).replace("_", " ") + f" (K.W. p={p:.2e})", fontsize=50)
+        matplotlib.pyplot.xlabel("")
+        matplotlib.pyplot.ylabel("Proportion in Portugal")
+        matplotlib.pyplot.tight_layout()
+
+        tar_files.append(f"Portugal_{i}.pdf")
+        fig.savefig(tar_files[-1])
+        matplotlib.pyplot.close(fig)
 
     # Draw scatter plot
     fig, ax = matplotlib.pyplot.subplots(figsize=(36, 36))
     seaborn.scatterplot(data=tsne_data, x="tSNE1", y="tSNE2", hue="LongStage", style="LongStage", ax=ax, legend="full", s=1000)
     matplotlib.pyplot.tight_layout()
-    tar_files.append("scatter.png")
-    fig.savefig(tar_files[-1])
     tar_files.append("scatter.pdf")
-    fig.savefig(tar_files[-1])
-    tar_files.append("scatter.svg")
     fig.savefig(tar_files[-1])
     matplotlib.pyplot.close(fig)
 
     # Save data
     with tarfile.open(args.output, "w") as tar:
-        for file_name in tar_files:
+        for file_name in tqdm.tqdm(tar_files):
             tar.add(file_name, arcname=file_name)

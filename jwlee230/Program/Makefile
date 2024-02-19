@@ -347,10 +347,16 @@ step16: Output/Step16/whole.DADA2.homd.tar.gz Output/Step16/whole.DADA2.homd.Pro
 Output/Step17:
 	mkdir -p $@
 
-Output/Step17/%.tar.gz: Python/step17.py Output/Step16/%.tar.gz Output/Step14/%.pseudocount.site/ancom.tsv | Output/Step17 build.log
+Output/Step17/Korea.%.tar.gz: Python/step17.py Output/Step16/Korea.%.tar.gz Output/Step14/Korea.%.pseudocount.site/ancom.tsv | Output/Step17 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
 
-Output/Step17/%.Proportion.tar.gz: Python/step17.py Output/Step16/%.Proportion.tar.gz Output/Step14/%.pseudocount.site/ancom.tsv | Output/Step17 build.log
+Output/Step17/whole.%.tar.gz: Python/step17.py Output/Step16/whole.%.tar.gz Output/Step14/Korea.%.pseudocount.site/ancom.tsv | Output/Step17 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+Output/Step17/Korea.%.Proportion.tar.gz: Python/step17.py Output/Step16/Korea.%.Proportion.tar.gz Output/Step14/Korea.%.pseudocount.site/ancom.tsv | Output/Step17 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+Output/Step17/whole.%.Proportion.tar.gz: Python/step17.py Output/Step16/whole.%.Proportion.tar.gz Output/Step14/Korea.%.pseudocount.site/ancom.tsv | Output/Step17 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
 
 step17: Output/Step17/Korea.DADA2.homd.tar.gz Output/Step17/Korea.DADA2.homd.Proportion.tar.gz
@@ -383,16 +389,16 @@ step19: Output/Step19/whole.DADA2.homd.png Output/Step19/ANCOM.DADA2.homd.png Ou
 Output/Step20:
 	mkdir -p $@
 
-Output/Step20/%.tar: Python/step20-1.py Output/Step16/Korea.%.tar.gz Output/Step18/Korea.%.tar.gz Output/Step07/whole.tsv | Output/Step20 build.log
+Output/Step20/%.tar: Python/step20-1.py Output/Step17/whole.%.tar.gz Output/Step18/whole.%.tar.gz Output/Step07/whole.tsv | Output/Step20 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) 1> $@.stdout 2> $@.stderr
 
-Output/Step20/one.%.tar: Python/step20-1.py Output/Step16/Korea.%.tar.gz Output/Step18/Korea.%.tar.gz Output/Step07/whole.tsv | Output/Step20 build.log
+Output/Step20/one.%.tar: Python/step20-1.py Output/Step16/whole.%.tar.gz Output/Step18/whole.%.tar.gz Output/Step07/whole.tsv | Output/Step20 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --one 1> $@.stdout 2> $@.stderr
 
-Output/Step20/two.%.tar: Python/step20-1.py Output/Step16/Korea.%.tar.gz Output/Step18/Korea.%.tar.gz Output/Step07/whole.tsv | Output/Step20 build.log
+Output/Step20/two.%.tar: Python/step20-1.py Output/Step16/whole.%.tar.gz Output/Step18/whole.%.tar.gz Output/Step07/whole.tsv | Output/Step20 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --two 1> $@.stdout 2> $@.stderr
 
-Output/Step20/three.%.tar: Python/step20-1.py Output/Step16/Korea.%.tar.gz Output/Step18/Korea.%.tar.gz Output/Step07/whole.tsv | Output/Step20 build.log
+Output/Step20/three.%.tar: Python/step20-1.py Output/Step16/whole.%.tar.gz Output/Step18/whole.%.tar.gz Output/Step07/whole.tsv | Output/Step20 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --three 1> $@.stdout 2> $@.stderr
 
 Output/Step20/ANCOM.%.tar: Python/step20.py Output/Step17/whole.%.tar.gz Output/Step18/ANCOM.%.tar.gz Output/Step07/whole.tsv | Output/Step20 build.log

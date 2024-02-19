@@ -60,6 +60,7 @@ if __name__ == "__main__":
 
     data["ShortStage"] = clinical_data.loc[data.index, "ShortStage"]
     data["LongStage"] = clinical_data.loc[data.index, "LongStage"]
+    data.dropna(axis="index", inplace=True)
     print(data)
 
     matplotlib.use("Agg")
@@ -69,10 +70,9 @@ if __name__ == "__main__":
 
     seaborn.scatterplot(data=data, x="tSNE1", y="tSNE2", hue="LongStage", ax=ax, legend="full", hue_order=step00.long_stage_order, palette=step00.color_stage_dict, s=1000, edgecolor="none")
 
-    for stage, color in step00.color_stage_dict.items():
+    for stage, color in list(step00.color_stage_dict.items())[1:]:
         confidence_ellipse(data.loc[(data["LongStage"] == stage), "tSNE1"], data.loc[(data["LongStage"] == stage), "tSNE2"], ax, color=color, alpha=0.3)
 
-    legend = matplotlib.pyplot.legend()
     matplotlib.pyplot.tight_layout()
 
     fig.savefig(args.output)

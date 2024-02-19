@@ -1,5 +1,5 @@
 """
-step20: Random Forest Classifier with ANCOM
+step20.py: Random Forest Classifier with ANCOM
 """
 import argparse
 import tarfile
@@ -175,7 +175,7 @@ if __name__ == "__main__":
         if (highest_metrics["AUC"][0] == 0) or (highest_metrics["AUC"][1] < tmp):
             highest_metrics["AUC"] = (i, tmp, std)
 
-    score_data = pandas.DataFrame.from_records(scores, columns=["FeatureCount", "Metrics", "Value"])
+    score_data = pandas.DataFrame(scores, columns=["FeatureCount", "Metrics", "Value"])
     print(score_data)
 
     # Export score data
