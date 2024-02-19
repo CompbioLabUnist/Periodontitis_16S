@@ -39,10 +39,7 @@ delete: build.log
 	rm -fv build.log
 .PHONY: delete
 
-stop:
-	docker rm $(CONTAINER_NAME)
-
-# SGE
+# Slurm
 tmp.sh: build.log
 	echo "make -C $(PWD) latest" > tmp.sh
 
@@ -168,7 +165,7 @@ Output/Step09/%.DADA.aligned-rep-seqs.qza Output/Step09/%.DADA.masked-aligned-re
 Output/Step09/%.Deblur.aligned-rep-seqs.qza Output/Step09/%.Deblur.masked-aligned-rep-seqs.qza Output/Step09/%.Deblur.unrooted-tree.qza Output/Step09/%.Deblur.rooted-tree.qza: Output/Step05/%.seq.qza | Output/Step09 build.log
 	$(DOCKER) qiime phylogeny align-to-tree-mafft-fasttree --i-sequences $(addprefix /,$<) --o-alignment $(addprefix /,$(basename $(basename $@))).aligned-rep-seqs.qza --o-masked-alignment $(addprefix /,$(basename $(basename $@))).masked-aligned-rep-seqs.qza --o-tree $(addprefix /,$(basename $(basename $@))).unrooted-tree.qza --o-rooted-tree $(addprefix /,$(basename $(basename $@))).rooted-tree.qza --p-n-threads $(CPUS) 1> $@.stdout 2> $@.stderr
 
-step09: Output/Step09/whole.DADA.rooted-tree.qza  Output/Step09/whole.Deblur.rooted-tree.qza Output/Step09/Korea.DADA.rooted-tree.qza  Output/Step09/Korea.Deblur.rooted-tree.qza
+step09: Output/Step09/whole.DADA.rooted-tree.qza Output/Step09/whole.Deblur.rooted-tree.qza Output/Step09/Korea.DADA.rooted-tree.qza Output/Step09/Korea.Deblur.rooted-tree.qza
 .PHONY: step09
 
 # Step 10 (Core metrics phylogenetic)
@@ -644,17 +641,22 @@ step38: Output/Step38/DADA2.unweighted_unifrac.tar Output/Step38/DADA2.weighted_
 Output/Step39:
 	mkdir -p $@
 
-Output/Step39/alpha_rarefaction.qzv: Output/Step09/whole.DADA.rooted-tree.qza Output/Step04/whole.table.qza | Output/Step39 build.log
-	$(DOCKER) qiime diversity alpha-rarefaction --i-table $(addprefix /,$(word 2,$^)) --i-phylogeny $(addprefix /,$(word 1,$^)) --o-visualization $(addprefix /,$@) --p-metrics 'chao1' 'fisher_alpha' 'margalef' 'observed_features' --p-max-depth 15000 --p-steps 100 1> $@.stdout 2> $@.stderr
+Output/Step39/%.alpha_rarefaction.qzv: Output/Step09/%.DADA.rooted-tree.qza Output/Step04/%.table.qza | Output/Step39 build.log
+	$(DOCKER) qiime diversity alpha-rarefaction --i-table $(addprefix /,$(word 2,$^)) --i-phylogeny $(addprefix /,$(word 1,$^)) --o-visualization $(addprefix /,$@) --p-metrics 'chao1' 'fisher_alpha' 'margalef' 'observed_features' --p-max-depth "15000" --p-steps "1000" --p-iterations "100" 1> $@.stdout 2> $@.stderr
 
-Output/Step39/beta_rarefaction.qzv: Output/Step09/whole.DADA.rooted-tree.qza Output/Step04/whole.table.qza Output/Step07/whole.tsv | Output/Step39 build.log
-	$(DOCKER) qiime diversity beta-rarefaction --i-table $(addprefix /,$(word 2,$^)) --i-phylogeny $(addprefix /,$(word 1,$^)) --p-metric 'weighted_unifrac' --p-clustering-method 'nj' --m-metadata-file $(addprefix /,$(word 3,$^)) --p-sampling-depth 3786 --p-color-scheme 'RdYlGn_r' --o-visualization $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
+Output/Step39/%.beta_rarefaction.qzv: Output/Step09/%.DADA.rooted-tree.qza Output/Step04/%.table.qza Output/Step07/whole.tsv | Output/Step39 build.log
+	$(DOCKER) qiime diversity beta-rarefaction --i-table $(addprefix /,$(word 2,$^)) --i-phylogeny $(addprefix /,$(word 1,$^)) --p-metric "weighted_unifrac" --p-clustering-method "nj" --m-metadata-file $(addprefix /,$(word 3,$^)) --p-sampling-depth "3614" --p-color-scheme "RdYlGn_r" --p-correlation-method "spearman" --p-iterations "100" --o-visualization $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
 
-Output/Step39/%.png: Python/step39.py Output/Step39/%.csv | Output/Step39 build.log
-	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+Output/Step39/Korea.%.png: Python/step39.py Output/Step39/Korea.%.csv Output/Step07/whole.tsv | Output/Step39 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --depth "3786" 1> $@.stdout 2> $@.stderr
 
-step39: Output/Step39/alpha_rarefaction.qzv Output/Step39/beta_rarefaction.qzv Output/Step39/chao1.png Output/Step39/fisher_alpha.png Output/Step39/margalef.png Output/Step39/observed_features.png
-.PHONY: step39
+Output/Step39/Whole.%.png: Python/step39.py Output/Step39/Whole.%.csv Output/Step07/whole.tsv | Output/Step39 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --depth "3614" 1> $@.stdout 2> $@.stderr
+
+step39-Korea: Output/Step39/Korea.alpha_rarefaction.qzv Output/Step39/Korea.beta_rarefaction.qzv Output/Step39/Korea.chao1.png Output/Step39/Korea.fisher_alpha.png Output/Step39/Korea.margalef.png Output/Step39/Korea.observed_features.png
+step39-Whole: Output/Step39/whole.alpha_rarefaction.qzv Output/Step39/whole.beta_rarefaction.qzv Output/Step39/Whole.chao1.png Output/Step39/Whole.fisher_alpha.png Output/Step39/Whole.margalef.png Output/Step39/Whole.observed_features.png
+step39: step39-Korea step39-Whole
+.PHONY: step39-Korea step39-Whole step39
 
 # Step 40 (Taxonomy bar plot)
 Output/Step40:
