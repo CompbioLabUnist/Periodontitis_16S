@@ -642,7 +642,7 @@ Output/Step39:
 	mkdir -p $@
 
 Output/Step39/%.alpha_rarefaction.qzv: Output/Step09/%.DADA.rooted-tree.qza Output/Step04/%.table.qza | Output/Step39 build.log
-	$(DOCKER) qiime diversity alpha-rarefaction --i-table $(addprefix /,$(word 2,$^)) --i-phylogeny $(addprefix /,$(word 1,$^)) --o-visualization $(addprefix /,$@) --p-metrics 'chao1' 'fisher_alpha' 'margalef' 'observed_features' --p-max-depth "15000" --p-steps "1000" --p-iterations "100" 1> $@.stdout 2> $@.stderr
+	$(DOCKER) qiime diversity alpha-rarefaction --i-table $(addprefix /,$(word 2,$^)) --i-phylogeny $(addprefix /,$(word 1,$^)) --o-visualization $(addprefix /,$@) --p-metrics 'chao1' 'fisher_alpha' 'margalef' 'observed_features' --p-max-depth "15000" --p-steps "100" --p-iterations "10" 1> $@.stdout 2> $@.stderr
 
 Output/Step39/%.beta_rarefaction.qzv: Output/Step09/%.DADA.rooted-tree.qza Output/Step04/%.table.qza Output/Step07/whole.tsv | Output/Step39 build.log
 	$(DOCKER) qiime diversity beta-rarefaction --i-table $(addprefix /,$(word 2,$^)) --i-phylogeny $(addprefix /,$(word 1,$^)) --p-metric "weighted_unifrac" --p-clustering-method "nj" --m-metadata-file $(addprefix /,$(word 3,$^)) --p-sampling-depth "3614" --p-color-scheme "RdYlGn_r" --p-correlation-method "spearman" --p-iterations "100" --o-visualization $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
