@@ -650,11 +650,11 @@ Output/Step39/%.beta_rarefaction.qzv: Output/Step09/%.DADA.rooted-tree.qza Outpu
 Output/Step39/Korea.%.png: Python/step39.py Output/Step39/Korea.%.csv Output/Step07/whole.tsv | Output/Step39 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --depth "3786" 1> $@.stdout 2> $@.stderr
 
-Output/Step39/Whole.%.png: Python/step39.py Output/Step39/Whole.%.csv Output/Step07/whole.tsv | Output/Step39 build.log
+Output/Step39/whole.%.png: Python/step39.py Output/Step39/whole.%.csv Output/Step07/whole.tsv | Output/Step39 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --depth "3614" 1> $@.stdout 2> $@.stderr
 
 step39-Korea: Output/Step39/Korea.alpha_rarefaction.qzv Output/Step39/Korea.beta_rarefaction.qzv Output/Step39/Korea.chao1.png Output/Step39/Korea.fisher_alpha.png Output/Step39/Korea.margalef.png Output/Step39/Korea.observed_features.png
-step39-Whole: Output/Step39/whole.alpha_rarefaction.qzv Output/Step39/whole.beta_rarefaction.qzv Output/Step39/Whole.chao1.png Output/Step39/Whole.fisher_alpha.png Output/Step39/Whole.margalef.png Output/Step39/Whole.observed_features.png
+step39-Whole: Output/Step39/whole.alpha_rarefaction.qzv Output/Step39/whole.beta_rarefaction.qzv Output/Step39/whole.chao1.png Output/Step39/whole.fisher_alpha.png Output/Step39/whole.margalef.png Output/Step39/whole.observed_features.png
 step39: step39-Korea step39-Whole
 .PHONY: step39-Korea step39-Whole step39
 

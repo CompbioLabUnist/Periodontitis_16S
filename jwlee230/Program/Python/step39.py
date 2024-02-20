@@ -55,6 +55,7 @@ if __name__ == "__main__":
 
     matplotlib.pyplot.axvline(x=args.depth, color="k", linestyle="--")
     matplotlib.pyplot.text(x=args.depth, y=10, s=f"Sampling depth: {args.depth}", horizontalalignment="right", verticalalignment="bottom", rotation="vertical", fontsize="xx-small", color="k", bbox={"color": "white", "alpha": 0.4})
+    matplotlib.pyplot.ylim(bottom=0)
     matplotlib.pyplot.tight_layout()
 
     fig.savefig(args.output)
