@@ -17,6 +17,12 @@ RUN_OPTS = --tty --cpus="$(CPUS)" --memory="$(MEMS)"
 all:
 .PHONY: all
 
+test:
+.PHONY: test
+
+clean:
+.PHONY: clean
+
 log Output Docker/Tools:
 	mkdir $@
 
@@ -389,13 +395,13 @@ Output/Step20:
 Output/Step20/%.tar: Python/step20-1.py Output/Step17/whole.%.tar.gz Output/Step18/whole.%.tar.gz Output/Step07/whole.tsv | Output/Step20 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) 1> $@.stdout 2> $@.stderr
 
-Output/Step20/one.%.tar: Python/step20-1.py Output/Step16/whole.%.tar.gz Output/Step18/whole.%.tar.gz Output/Step07/whole.tsv | Output/Step20 build.log
+Output/Step20/one.%.tar: Python/step20-1.py Output/Step17/whole.%.tar.gz Output/Step18/whole.%.tar.gz Output/Step07/whole.tsv | Output/Step20 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --one 1> $@.stdout 2> $@.stderr
 
-Output/Step20/two.%.tar: Python/step20-1.py Output/Step16/whole.%.tar.gz Output/Step18/whole.%.tar.gz Output/Step07/whole.tsv | Output/Step20 build.log
+Output/Step20/two.%.tar: Python/step20-1.py Output/Step17/whole.%.tar.gz Output/Step18/whole.%.tar.gz Output/Step07/whole.tsv | Output/Step20 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --two 1> $@.stdout 2> $@.stderr
 
-Output/Step20/three.%.tar: Python/step20-1.py Output/Step16/whole.%.tar.gz Output/Step18/whole.%.tar.gz Output/Step07/whole.tsv | Output/Step20 build.log
+Output/Step20/three.%.tar: Python/step20-1.py Output/Step17/whole.%.tar.gz Output/Step18/whole.%.tar.gz Output/Step07/whole.tsv | Output/Step20 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --three 1> $@.stdout 2> $@.stderr
 
 Output/Step20/ANCOM.%.tar: Python/step20.py Output/Step17/whole.%.tar.gz Output/Step18/ANCOM.%.tar.gz Output/Step07/whole.tsv | Output/Step20 build.log
@@ -588,7 +594,7 @@ step33: Output/Step33/stat.csv
 Output/Step34:
 	mkdir -p $@
 
-Output/Step34/clinical.tar: Python/step34.py Output/Step17/whole.DADA2.homd.tar.gz | Output/Step34 build.log
+Output/Step34/clinical.tar: Python/step34.py Output/Step17/Korea.DADA2.homd.tar.gz | Output/Step34 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
 
 step34: Output/Step34/clinical.tar
