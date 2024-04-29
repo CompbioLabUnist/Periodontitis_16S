@@ -55,7 +55,7 @@ if __name__ == "__main__":
     tsne_data["LongStage"] = clinical_data.loc[tsne_data.index, "LongStage"]
     print(tsne_data)
 
-    data = step00.read_pickle(args.input)
+    data = step00.read_pickle(args.input).dropna(axis="index")
     del data["ShortStage"]
     train_columns = list(data.columns)[:-1]
 

@@ -117,10 +117,15 @@ if __name__ == "__main__":
     # Calculate Metrics by Feature Counts
     scores = list()
     for i in tqdm.trange(1, len(best_features) + 1):
+        heatmap_data = pandas.DataFrame(data=numpy.zeros((len(stage_list), len(stage_list))), index=stage_list, columns=stage_list, dtype=int)
         used_columns = best_features[:i]
         score_by_metric: typing.Dict[str, typing.List[float]] = dict()
 
         classifier.fit(Korea_data[used_columns], Korea_data["LongStage"])
+
+        for real, predict in zip(Spain_data["LongStage"], classifier.predict(Spain_data[used_columns])):
+            heatmap_data.loc[real, predict] += 1
+
         if args.one or args.three:
             confusion_matrix = sklearn.metrics.confusion_matrix(Spain_data["LongStage"], classifier.predict(Spain_data[used_columns]))
         else:
@@ -135,11 +140,26 @@ if __name__ == "__main__":
             else:
                 score_by_metric[metric] = [score]
 
+        fig, ax = matplotlib.pyplot.subplots(figsize=(18, 18))
+        seaborn.heatmap(data=heatmap_data, annot=True, fmt="d", cbar=False, square=True, xticklabels=True, yticklabels=True, ax=ax)
+        matplotlib.pyplot.title("Spain")
+        matplotlib.pyplot.xlabel("Real")
+        matplotlib.pyplot.ylabel("Predicted")
+        matplotlib.pyplot.tight_layout()
+        tar_files.append(f"Heatmap_Spain_{i}.pdf")
+        fig.savefig(tar_files[-1])
+        matplotlib.pyplot.close(fig)
+
     for i in tqdm.trange(1, len(best_features) + 1):
+        heatmap_data = pandas.DataFrame(data=numpy.zeros((len(stage_list), len(stage_list))), index=stage_list, columns=stage_list, dtype=int)
         used_columns = best_features[:i]
         score_by_metric = dict()
 
         classifier.fit(Korea_data[used_columns], Korea_data["LongStage"])
+
+        for real, predict in zip(Portugal_data["LongStage"], classifier.predict(Portugal_data[used_columns])):
+            heatmap_data.loc[real, predict] += 1
+
         if args.one or args.three:
             confusion_matrix = sklearn.metrics.confusion_matrix(Portugal_data["LongStage"], classifier.predict(Portugal_data[used_columns]))
         else:
@@ -153,6 +173,16 @@ if __name__ == "__main__":
                 score_by_metric[metric].append(score)
             else:
                 score_by_metric[metric] = [score]
+
+        fig, ax = matplotlib.pyplot.subplots(figsize=(18, 18))
+        seaborn.heatmap(data=heatmap_data, annot=True, fmt="d", cbar=False, square=True, xticklabels=True, yticklabels=True, ax=ax)
+        matplotlib.pyplot.title("Portugal")
+        matplotlib.pyplot.xlabel("Real")
+        matplotlib.pyplot.ylabel("Predicted")
+        matplotlib.pyplot.tight_layout()
+        tar_files.append(f"Heatmap_Portugal_{i}.pdf")
+        fig.savefig(tar_files[-1])
+        matplotlib.pyplot.close(fig)
 
     score_data = pandas.DataFrame(scores, columns=["FeatureCount", "DB", "Metrics", "Value"])
     print(score_data)
@@ -172,6 +202,7 @@ if __name__ == "__main__":
 
         fig, ax = matplotlib.pyplot.subplots(figsize=(18, 18))
         seaborn.barplot(data=drawing_data, x="Metrics", y="Value", hue="DB", order=step00.selected_derivations, hue_order=["Spain", "Portugal"], ax=ax)
+        matplotlib.pyplot.title("Write something")
         matplotlib.pyplot.ylim(0, 1)
         matplotlib.pyplot.ylabel("Evaluations")
         matplotlib.pyplot.xlabel("")
@@ -202,7 +233,10 @@ if __name__ == "__main__":
             seaborn.violinplot(data=Spain_data, x="LongStage", y=feature, order=order, ax=ax, inner="box", cut=1, palette=step00.color_stage_dict, linewidth=10)
 
         if box_pairs:
-            statannot.add_stat_annotation(ax, data=Spain_data, x="LongStage", y=feature, order=order, test="Mann-Whitney", box_pairs=box_pairs, text_format="star", loc="inside", verbose=0, comparisons_correction=None)
+            try:
+                statannot.add_stat_annotation(ax, data=Spain_data, x="LongStage", y=feature, order=order, test="Mann-Whitney", box_pairs=box_pairs, text_format="star", loc="inside", verbose=0, comparisons_correction=None)
+            except ValueError:
+                pass
         stat, p = scipy.stats.kruskal(*[Spain_data.loc[(Spain_data["LongStage"] == stage), feature] for stage in order])
 
         matplotlib.pyplot.title(" ".join(feature.split("; ")[-2:]).replace("_", " ") + f" (K.W. p={p:.2e})", fontsize=50)
