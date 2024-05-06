@@ -201,7 +201,7 @@ if __name__ == "__main__":
         drawing_data = score_data.loc[(score_data["FeatureCount"] == i)]
 
         fig, ax = matplotlib.pyplot.subplots(figsize=(18, 18))
-        seaborn.barplot(data=drawing_data, x="Metrics", y="Value", hue="DB", order=step00.selected_derivations, hue_order=["Spain", "Portugal"], ax=ax)
+        seaborn.barplot(data=drawing_data, x="Metrics", y="Value", hue="DB", order=sorted(step00.selected_derivations), hue_order=["Spain", "Portugal"], ax=ax)
         matplotlib.pyplot.title("Write something")
         matplotlib.pyplot.ylim(0, 1)
         matplotlib.pyplot.ylabel("Evaluations")

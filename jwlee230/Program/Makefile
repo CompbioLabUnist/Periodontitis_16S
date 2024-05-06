@@ -471,11 +471,11 @@ step24: Output/Step24/2D.DADA2.homd.png Output/Step24/2D.DADA2.homd.Proportion.p
 Output/Step25:
 	mkdir -p $@
 
-Output/Step25/DADA2.%.tsv: Output/Step10/DADA2/whole.%_vector.qza | Output/Step25 build.log
+Output/Step25/DADA2.%.tsv: Output/Step10/DADA2/Korea.%_vector.qza | Output/Step25 build.log
 	$(DOCKER) qiime tools export --input-path $(addprefix /,$(word 1,$^)) --output-path $(addprefix /,$(@D)) 1> $@.stdout 2> $@.stderr
 	$(DOCKER) mv $(addprefix /,$(@D))/alpha-diversity.tsv $(addprefix /,$@)
 
-Output/Step25/Deblur.%.tsv: Output/Step10/Deblur/whole.%_vector.qza | Output/Step25 build.log
+Output/Step25/Deblur.%.tsv: Output/Step10/Deblur/Korea.%_vector.qza | Output/Step25 build.log
 	$(DOCKER) qiime tools export --input-path $(addprefix /,$(word 1,$^)) --output-path $(addprefix /,$(@D)) 1> $@.stdout 2> $@.stderr
 	$(DOCKER) mv $(addprefix /,$(@D))/alpha-diversity.tsv $(addprefix /,$@)
 
@@ -659,6 +659,9 @@ Output/Step39/Korea.%.png: Python/step39.py Output/Step39/Korea.%.csv Output/Ste
 Output/Step39/whole.%.png: Python/step39.py Output/Step39/whole.%.csv Output/Step07/whole.tsv | Output/Step39 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --depth "3614" 1> $@.stdout 2> $@.stderr
 
+Output/Step39/Korea.%.violin.png: Python/step39-1.py Output/Step39/Korea.%.csv Output/Step07/whole.tsv | Output/Step39 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --depth "3786"
+
 step39-Korea: Output/Step39/Korea.alpha_rarefaction.qzv Output/Step39/Korea.beta_rarefaction.qzv Output/Step39/Korea.chao1.png Output/Step39/Korea.fisher_alpha.png Output/Step39/Korea.margalef.png Output/Step39/Korea.observed_features.png
 step39-Whole: Output/Step39/whole.alpha_rarefaction.qzv Output/Step39/whole.beta_rarefaction.qzv Output/Step39/whole.chao1.png Output/Step39/whole.fisher_alpha.png Output/Step39/whole.margalef.png Output/Step39/whole.observed_features.png
 step39: step39-Korea step39-Whole
@@ -689,3 +692,34 @@ Output/Step41/%.stage.tsv: Python/step41-1.py Output/Step16/%.Proportion.tar.gz 
 
 step41: Output/Step41/whole.DADA2.homd.tsv Output/Step41/whole.DADA2.homd.stage.tsv
 .PHONY: step41
+
+# Step 42 (Alpha-diversity: Normality test)
+Output/Step42:
+	mkdir -p $@
+
+Output/Step42/%.txt: Python/step42.py Output/Step25/%.tsv | Output/Step42 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+step42: Output/Step42/DADA2.evenness.txt Output/Step42/DADA2.faith_pd.txt Output/Step42/DADA2.observed_features.txt Output/Step42/DADA2.shannon.txt
+.PHONY: step42
+
+# Step 43 (Clinical data comparison)
+Output/Step43:
+	mkdir -p $@
+
+Output/Step43/Korea.tar: Python/step43.py Data/치주염선정샘플_250샘플.xlsx Data/metadata.csv $(wildcard Data/fastq/*.fastq.gz) | Output/Step43 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+step43: Output/Step43/Korea.tar
+.PHONY: step43
+
+# Step 44 (Read count comparison)
+Output/Step44:
+	mkdir -p $@
+
+Output/Step44/Korea.tsv: Output/Step04/Korea.stat.qza | Output/Step44 build.log
+	$(DOCKER) qiime tools export --input-path $(addprefix /,$^) --output-path $(addprefix /,$(@D))
+	$(DOCKER) mv $(addprefix /,$(@D)/stats.tsv $@)
+
+Output/Step44/Korea.tar: Python/step44.py Output/Step44/Korea.tsv | Output/Step44 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@)

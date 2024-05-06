@@ -56,7 +56,7 @@ if __name__ == "__main__":
     elif not args.output.endswith(".tsv"):
         raise ValueError("OUTPUT file must end with .tsv!!")
 
-    info_data = pandas.read_excel(args.info, engine="openpyxl")
+    info_data = pandas.concat(pandas.read_excel(args.info, engine="openpyxl", sheet_name=None).values())
     portugal_info_data = pandas.read_excel(args.portugal, engine="openpyxl", index_col="Run")
     spain_info_data = pandas.read_excel(args.spain, engine="openpyxl", index_col="Run")
 
