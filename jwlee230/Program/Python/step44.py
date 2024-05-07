@@ -46,6 +46,8 @@ if __name__ == "__main__":
         statannot.add_stat_annotation(ax, data=input_data, x="Stage", y=column, order=order, test="t-test_ind", box_pairs=list(itertools.combinations(order, r=2)), text_format="star", loc="inside", verbose=0, comparisons_correction=None)
 
         matplotlib.pyplot.xlabel("")
+        matplotlib.pyplot.ylabel("Read count")
+        matplotlib.pyplot.title(column)
         matplotlib.pyplot.tight_layout()
 
         figures.append(f"{column}.pdf")

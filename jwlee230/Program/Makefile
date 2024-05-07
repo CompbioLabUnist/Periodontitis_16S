@@ -723,3 +723,6 @@ Output/Step44/Korea.tsv: Output/Step04/Korea.stat.qza | Output/Step44 build.log
 
 Output/Step44/Korea.tar: Python/step44.py Output/Step44/Korea.tsv | Output/Step44 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@)
+
+step44: Output/Step44/Korea.tar
+.PHONY: step44
