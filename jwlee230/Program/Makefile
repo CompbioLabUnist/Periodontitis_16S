@@ -708,7 +708,7 @@ Output/Step43:
 	mkdir -p $@
 
 Output/Step43/Korea.tar: Python/step43.py Data/치주염선정샘플_250샘플.xlsx Data/metadata.csv $(wildcard Data/fastq/*.fastq.gz) | Output/Step43 build.log
-	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+	$(DOCKER) python3 $(addprefix /,$^ $@)
 
 step43: Output/Step43/Korea.tar
 .PHONY: step43

@@ -6,7 +6,9 @@ import itertools
 import tarfile
 import matplotlib
 import matplotlib.pyplot
+import numpy
 import pandas
+import scipy
 import seaborn
 import statannot
 import tqdm
@@ -70,6 +72,24 @@ if __name__ == "__main__":
         matplotlib.pyplot.tight_layout()
 
         figures.append(f"{column}.pdf")
+        fig.savefig(figures[-1])
+        matplotlib.pyplot.close(fig)
+
+    for column in tqdm.tqdm(clinical_columns[1:]):
+        stat, p = scipy.stats.pearsonr(data[clinical_columns[0]], data[column])
+
+        fig, ax = matplotlib.pyplot.subplots(figsize=(24, 24))
+
+        seaborn.scatterplot(data=data, x=clinical_columns[0], y=column, hue="LongStage", hue_order=order, palette=step00.color_stage_dict, legend="brief", s=800, edgecolor="none", ax=ax)
+        matplotlib.pyplot.axline((numpy.mean(data[clinical_columns[0]]), numpy.mean(data[column])), slope=stat, color="k", linestyle="--", linewidth=5)
+
+        matplotlib.pyplot.title(f"r={stat:.3f}, p={p:.3f}")
+        matplotlib.pyplot.xlabel("Age")
+        matplotlib.pyplot.ylabel(column)
+        matplotlib.pyplot.legend(title="", loc="upper right")
+        matplotlib.pyplot.tight_layout()
+
+        figures.append(f"Age+{column}.pdf")
         fig.savefig(figures[-1])
         matplotlib.pyplot.close(fig)
 

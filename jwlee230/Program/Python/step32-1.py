@@ -68,7 +68,10 @@ if __name__ == "__main__":
 
     figures = list()
     for taxon1, taxon2 in itertools.combinations(taxa, r=2):
-        stat, p = scipy.stats.pearsonr(input_data[taxon1], input_data[taxon2])
+        try:
+            stat, p = scipy.stats.pearsonr(input_data[taxon1], input_data[taxon2])
+        except ValueError:
+            continue
 
         if (abs(stat) < 0.5) or (p > 0.05):
             continue

@@ -5,6 +5,7 @@ import argparse
 import numpy
 import pandas
 import scipy.stats
+import tqdm
 import step00
 
 id_column = "검체 (수진) 번호"
@@ -44,9 +45,9 @@ if __name__ == "__main__":
     print(metadata)
 
     raw_output_data = list()
-    for clinical_column in ["나이", "Plaque Index", "Gingival Index", "PD", "AL", "RE", "No. of teeth"]:
+    for clinical_column in tqdm.tqdm(["나이", "Plaque Index", "Gingival Index", "PD", "AL", "RE", "No. of teeth"]):
         d = [clinical_column]
-        for stage in step00.long_stage_order:
+        for stage in step00.long_stage_order[1:]:
             selected_data = metadata.loc[(metadata["Stage"] == stage), clinical_column]
             d.append(f"{numpy.mean(selected_data):.2f}±{numpy.std(selected_data):.2f}")
         p = scipy.stats.kruskal(*[metadata.loc[(metadata["Stage"] == stage), clinical_column] for stage in step00.long_stage_order])[1]
@@ -54,15 +55,44 @@ if __name__ == "__main__":
         raw_output_data.append(d)
 
     true_values = {"성별": "남", "항생제": "예", "치과치료 유무": "예", "스케일링 유무": "예"}
-    for clinical_column in ["성별", "항생제", "치과치료 유무", "스케일링 유무"]:
+    for clinical_column in tqdm.tqdm(list(true_values.keys())):
         d = [clinical_column]
-        for stage in step00.long_stage_order:
+        for stage in step00.long_stage_order[1:]:
             true_count = len(metadata.loc[(metadata["Stage"] == stage) & (metadata[clinical_column] == true_values[clinical_column])])
             false_count = len(metadata.loc[(metadata["Stage"] == stage) & (metadata[clinical_column] != true_values[clinical_column])])
             proportion = true_count / (true_count + false_count) * 100
             d.append(f"{true_count} ({proportion:.1f}%)")
         d.append("NA")
         raw_output_data.append(d)
+
+    clinical_column = "흡연"
+
+    d = [f"{clinical_column} (Never)"]
+    for stage in tqdm.tqdm(step00.long_stage_order[1:]):
+        true_count = len(metadata.loc[(metadata["Stage"] == stage) & (metadata[clinical_column] == "흡연한적 없음")])
+        false_count = len(metadata.loc[(metadata["Stage"] == stage) & (metadata[clinical_column] != "흡연한적 없음")])
+        proportion = true_count / (true_count + false_count) * 100
+        d.append(f"{true_count} ({proportion:.1f}%)")
+    d.append("NA")
+    raw_output_data.append(d)
+
+    d = [f"{clinical_column} (Ex)"]
+    for stage in tqdm.tqdm(step00.long_stage_order[1:]):
+        true_count = len(metadata.loc[(metadata["Stage"] == stage) & (metadata[clinical_column] == "지금은 끊었음")])
+        false_count = len(metadata.loc[(metadata["Stage"] == stage) & (metadata[clinical_column] != "지금은 끊었음")])
+        proportion = true_count / (true_count + false_count) * 100
+        d.append(f"{true_count} ({proportion:.1f}%)")
+    d.append("NA")
+    raw_output_data.append(d)
+
+    d = [f"{clinical_column} (Current)"]
+    for stage in tqdm.tqdm(step00.long_stage_order[1:]):
+        true_count = len(metadata.loc[(metadata["Stage"] == stage) & (metadata[clinical_column].str.contains("예"))])
+        false_count = len(metadata.loc[(metadata["Stage"] == stage) & ~(metadata[clinical_column].str.contains("예"))])
+        proportion = true_count / (true_count + false_count) * 100
+        d.append(f"{true_count} ({proportion:.1f}%)")
+    d.append("NA")
+    raw_output_data.append(d)
 
     output_data = pandas.DataFrame(raw_output_data, columns=["Clinical", "Healthy", "Stage I", "Stage II", "Stage III", "p-value"])
     print(output_data)
