@@ -14,6 +14,7 @@ import scipy.stats
 import seaborn
 import sklearn.ensemble
 import sklearn.metrics
+import sklearn.model_selection
 import sklearn.preprocessing
 import statannot
 import tqdm
@@ -116,10 +117,36 @@ if __name__ == "__main__":
 
     # Calculate Metrics by Feature Counts
     scores = list()
+    k_fold = sklearn.model_selection.StratifiedKFold(n_splits=10)
+
+    for i in tqdm.trange(1, len(best_features) + 1):
+        used_columns = best_features[:i]
+        score_by_metric: typing.Dict[str, typing.List[float]] = dict()
+
+        for train_index, test_index in k_fold.split(Korea_data[used_columns], Korea_data["LongStage"]):
+            x_train, x_test = data.iloc[train_index][used_columns], data.iloc[test_index][used_columns]
+            y_train, y_test = data.iloc[train_index]["LongStage"], data.iloc[test_index]["LongStage"]
+
+            classifier.fit(x_train, y_train)
+
+            if args.one or args.three:
+                confusion_matrix = sklearn.metrics.confusion_matrix(y_test, classifier.predict(x_test))
+            else:
+                confusion_matrix = numpy.sum(sklearn.metrics.multilabel_confusion_matrix(y_test, classifier.predict(x_test)), axis=0)
+
+            for metric in step00.derivations:
+                score = step00.aggregate_confusion_matrix(confusion_matrix, metric)
+                scores.append((i, "Korean", metric, score))
+
+                if metric in score_by_metric:
+                    score_by_metric[metric].append(score)
+                else:
+                    score_by_metric[metric] = [score]
+
     for i in tqdm.trange(1, len(best_features) + 1):
         heatmap_data = pandas.DataFrame(data=numpy.zeros((len(stage_list), len(stage_list))), index=stage_list, columns=stage_list, dtype=int)
         used_columns = best_features[:i]
-        score_by_metric: typing.Dict[str, typing.List[float]] = dict()
+        score_by_metric = dict()
 
         classifier.fit(Korea_data[used_columns], Korea_data["LongStage"])
 
@@ -133,7 +160,7 @@ if __name__ == "__main__":
 
         for metric in step00.derivations:
             score = step00.aggregate_confusion_matrix(confusion_matrix, metric)
-            scores.append((i, "Spain", metric, score))
+            scores.append((i, "Spanish", metric, score))
 
             if metric in score_by_metric:
                 score_by_metric[metric].append(score)
@@ -142,7 +169,7 @@ if __name__ == "__main__":
 
         fig, ax = matplotlib.pyplot.subplots(figsize=(18, 18))
         seaborn.heatmap(data=heatmap_data, annot=True, fmt="d", cbar=False, square=True, xticklabels=True, yticklabels=True, ax=ax)
-        matplotlib.pyplot.title("Spain")
+        matplotlib.pyplot.title("Spanish")
         matplotlib.pyplot.xlabel("Real")
         matplotlib.pyplot.ylabel("Predicted")
         matplotlib.pyplot.tight_layout()
@@ -167,7 +194,7 @@ if __name__ == "__main__":
 
         for metric in step00.derivations:
             score = step00.aggregate_confusion_matrix(confusion_matrix, metric)
-            scores.append((i, "Portugal", metric, score))
+            scores.append((i, "Portuguese", metric, score))
 
             if metric in score_by_metric:
                 score_by_metric[metric].append(score)
@@ -176,7 +203,7 @@ if __name__ == "__main__":
 
         fig, ax = matplotlib.pyplot.subplots(figsize=(18, 18))
         seaborn.heatmap(data=heatmap_data, annot=True, fmt="d", cbar=False, square=True, xticklabels=True, yticklabels=True, ax=ax)
-        matplotlib.pyplot.title("Portugal")
+        matplotlib.pyplot.title("Portuguese")
         matplotlib.pyplot.xlabel("Real")
         matplotlib.pyplot.ylabel("Predicted")
         matplotlib.pyplot.tight_layout()
@@ -201,7 +228,7 @@ if __name__ == "__main__":
         drawing_data = score_data.loc[(score_data["FeatureCount"] == i)]
 
         fig, ax = matplotlib.pyplot.subplots(figsize=(18, 18))
-        seaborn.barplot(data=drawing_data, x="Metrics", y="Value", hue="DB", order=sorted(step00.selected_derivations), hue_order=["Spain", "Portugal"], ax=ax)
+        seaborn.barplot(data=drawing_data, x="Metrics", y="Value", hue="DB", order=sorted(step00.selected_derivations), hue_order=["Korean", "Spanish", "Portuguese"], ax=ax)
         matplotlib.pyplot.title("Write something")
         matplotlib.pyplot.ylim(0, 1)
         matplotlib.pyplot.ylabel("Evaluations")
@@ -241,7 +268,7 @@ if __name__ == "__main__":
 
         matplotlib.pyplot.title(" ".join(feature.split("; ")[-2:]).replace("_", " ") + f" (K.W. p={p:.2e})", fontsize=50)
         matplotlib.pyplot.xlabel("")
-        matplotlib.pyplot.ylabel("Proportion in Spain")
+        matplotlib.pyplot.ylabel("Proportion in Spainish")
         matplotlib.pyplot.tight_layout()
 
         tar_files.append(f"Spain_{i}.pdf")
@@ -272,7 +299,7 @@ if __name__ == "__main__":
 
         matplotlib.pyplot.title(" ".join(feature.split("; ")[-2:]).replace("_", " ") + f" (K.W. p={p:.2e})", fontsize=50)
         matplotlib.pyplot.xlabel("")
-        matplotlib.pyplot.ylabel("Proportion in Portugal")
+        matplotlib.pyplot.ylabel("Proportion in Portuguese")
         matplotlib.pyplot.tight_layout()
 
         tar_files.append(f"Portugal_{i}.pdf")
