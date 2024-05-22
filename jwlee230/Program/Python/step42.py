@@ -12,23 +12,29 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument("input", type=str, help="Input TSV file")
-    parser.add_argument("output", type=str, help="Output TXT file")
+    parser.add_argument("output", type=str, help="Output TSV file")
 
     args = parser.parse_args()
 
     if not args.input.endswith(".tsv"):
         raise ValueError("INPUT must end with .TSV!!")
-    elif not args.output.endswith(".txt"):
-        raise ValueError("OUTPUT must end with .TXT!!")
+    elif not args.output.endswith(".tsv"):
+        raise ValueError("OUTPUT must end with .TSV!!")
 
-    input_data = pandas.read_csv(args.input, sep="\t", names=["ID", "Index"], skiprows=1)
-    input_data["ShortStage"] = list(map(step00.change_ID_into_short_stage, input_data["ID"]))
+    input_data = pandas.read_csv(args.input, sep="\t", index_col=0)
+    alpha_list = list(input_data.columns)
     print(input_data)
 
-    whole_stat, whole_p = scipy.stats.normaltest(input_data["Index"])
-    print("Whole", ":", whole_p)
+    input_data = input_data.loc[list(filter(lambda x: not x.startswith("SRR"), list(input_data.index)))]
+    input_data["Stage"] = list(map(step00.change_ID_into_long_stage, list(input_data.index)))
+    print(input_data)
 
-    for stage in tqdm.tqdm(step00.short_stage_order[1:]):
-        stage_data = input_data.loc[(input_data["ShortStage"] == stage)]
-        stage_stat, stage_p = scipy.stats.normaltest(stage_data["Index"])
-        print(stage, ":", stage_p)
+    output_data = pandas.DataFrame(index=["All"] + step00.long_stage_order[1:], columns=alpha_list)
+    for alpha in tqdm.tqdm(alpha_list):
+        output_data.loc["All", alpha] = scipy.stats.normaltest(input_data[alpha])[1]
+
+    for alpha, stage in tqdm.tqdm(list(itertools.product(alpha_list, step00.long_stage_order[1:]))):
+        output_data.loc[stage, alpha] = scipy.stats.normaltest(input_data.loc[(input_data["Stage"] == stage), alpha])[1]
+    print(output_data)
+
+    output_data.to_csv(args.output, sep="\t", float_format="%.3f")

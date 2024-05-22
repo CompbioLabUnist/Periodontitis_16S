@@ -697,10 +697,10 @@ step41: Output/Step41/whole.DADA2.homd.tsv Output/Step41/whole.DADA2.homd.stage.
 Output/Step42:
 	mkdir -p $@
 
-Output/Step42/%.txt: Python/step42.py Output/Step25/%.tsv | Output/Step42 build.log
+Output/Step42/%.tsv: Python/step42.py Output/Step36/%.tsv | Output/Step42 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
 
-step42: Output/Step42/DADA2.evenness.txt Output/Step42/DADA2.faith_pd.txt Output/Step42/DADA2.observed_features.txt Output/Step42/DADA2.shannon.txt
+step42: Output/Step42/whole.DADA2.homd.tsv
 .PHONY: step42
 
 # Step 43 (Clinical data comparison)
