@@ -708,7 +708,7 @@ Output/Step43:
 	mkdir -p $@
 
 Output/Step43/Korea.tar: Python/step43.py Data/치주염선정샘플_250샘플.xlsx Data/metadata.csv $(wildcard Data/fastq/*.fastq.gz) | Output/Step43 build.log
-	$(DOCKER) python3 $(addprefix /,$^ $@)
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
 
 step43: Output/Step43/Korea.tar
 .PHONY: step43
@@ -722,7 +722,17 @@ Output/Step44/Korea.tsv: Output/Step04/Korea.stat.qza | Output/Step44 build.log
 	$(DOCKER) mv $(addprefix /,$(@D)/stats.tsv $@)
 
 Output/Step44/Korea.tar: Python/step44.py Output/Step44/Korea.tsv | Output/Step44 build.log
-	$(DOCKER) python3 $(addprefix /,$^ $@)
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
 
 step44: Output/Step44/Korea.tar
 .PHONY: step44
+
+# Step 45 (Beta-diversity: Normality test)
+Output/Step45:
+	mkdir -p $@
+
+Output/Step45/%.tsv: Python/step45.py Output/Step21/%.tsv | Output/Step45 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+step45: Output/Step45/DADA2.weighted_unifrac.tsv
+.PHONY: step45
