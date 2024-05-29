@@ -660,7 +660,7 @@ Output/Step39/whole.%.png: Python/step39.py Output/Step39/whole.%.csv Output/Ste
 	$(DOCKER) python3 $(addprefix /,$^ $@) --depth "3614" 1> $@.stdout 2> $@.stderr
 
 Output/Step39/Korea.%.violin.png: Python/step39-1.py Output/Step39/Korea.%.csv Output/Step07/whole.tsv | Output/Step39 build.log
-	$(DOCKER) python3 $(addprefix /,$^ $@) --depth "3786"
+	$(DOCKER) python3 $(addprefix /,$^ $@) --depth "3786" 1> $@.stdout 2> $@.stderr
 
 step39-Korea: Output/Step39/Korea.alpha_rarefaction.qzv Output/Step39/Korea.beta_rarefaction.qzv Output/Step39/Korea.chao1.png Output/Step39/Korea.fisher_alpha.png Output/Step39/Korea.margalef.png Output/Step39/Korea.observed_features.png
 step39-Whole: Output/Step39/whole.alpha_rarefaction.qzv Output/Step39/whole.beta_rarefaction.qzv Output/Step39/whole.chao1.png Output/Step39/whole.fisher_alpha.png Output/Step39/whole.margalef.png Output/Step39/whole.observed_features.png

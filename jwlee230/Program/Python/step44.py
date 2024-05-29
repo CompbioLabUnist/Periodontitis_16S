@@ -43,7 +43,8 @@ if __name__ == "__main__":
         fig, ax = matplotlib.pyplot.subplots(figsize=(18, 18))
 
         seaborn.violinplot(data=input_data, x="Stage", y=column, order=order, ax=ax, inner="box", palette=step00.color_stage_dict, cut=1, linewidth=10)
-        statannot.add_stat_annotation(ax, data=input_data, x="Stage", y=column, order=order, test="t-test_ind", box_pairs=list(itertools.combinations(order, r=2)), text_format="star", loc="inside", verbose=0, comparisons_correction=None)
+        # statannot.add_stat_annotation(ax, data=input_data, x="Stage", y=column, order=order, test="t-test_ind", box_pairs=list(itertools.combinations(order, r=2)), text_format="star", loc="inside", verbose=0, comparisons_correction=None)
+        statannot.add_stat_annotation(ax, data=input_data, x="Stage", y=column, order=order, test="Mann-Whitney", box_pairs=list(itertools.combinations(order, r=2)), text_format="star", loc="inside", verbose=True, comparisons_correction=None)
 
         matplotlib.pyplot.xlabel("")
         matplotlib.pyplot.ylabel("Read count")

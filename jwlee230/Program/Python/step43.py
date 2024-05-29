@@ -64,7 +64,8 @@ if __name__ == "__main__":
         fig, ax = matplotlib.pyplot.subplots(figsize=(18, 18))
 
         seaborn.violinplot(data=data, x="LongStage", y=column, order=order, palette=step00.color_stage_dict, ax=ax, inner="box", cut=1, linewidth=10)
-        statannot.add_stat_annotation(ax, data=data, x="LongStage", y=column, order=order, test="t-test_ind", box_pairs=list(itertools.combinations(order, r=2)), text_format="star", loc="inside", verbose=0, comparisons_correction=None)
+        # statannot.add_stat_annotation(ax, data=data, x="LongStage", y=column, order=order, test="t-test_ind", box_pairs=list(itertools.combinations(order, r=2)), text_format="star", loc="inside", verbose=0, comparisons_correction=None)
+        statannot.add_stat_annotation(ax, data=data, x="LongStage", y=column, order=order, test="Mann-Whitney", box_pairs=list(itertools.combinations(order, r=2)), text_format="star", loc="inside", verbose=True, comparisons_correction=None)
 
         matplotlib.pyplot.xlabel("")
         if column == clinical_columns[0]:
