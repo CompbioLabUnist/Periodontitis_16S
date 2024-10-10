@@ -1,3 +1,3 @@
 # Periodontitis_16S
 
-Processing on the Wallace
+Programs (codes) for periodontitis analysis
