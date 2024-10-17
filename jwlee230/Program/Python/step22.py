@@ -57,7 +57,11 @@ if __name__ == "__main__":
     elif args.cpu < 1:
         raise ValueError("CPU must be greater than zero")
 
-    raw_data = pandas.read_csv(args.input, sep="\t", index_col="Unnamed: 0")
+    raw_data = pandas.read_csv(args.input, sep="\t", index_col=0)
+    print(raw_data)
+
+    ids = list(filter(lambda x: not x.startswith("SRR"), list(raw_data.index)))
+    raw_data = raw_data.loc[ids, ids]
     print(raw_data)
 
     tsne_data = pandas.DataFrame(sklearn.manifold.TSNE(n_components=2, init="pca", random_state=42, method="exact", n_jobs=args.cpu).fit_transform(raw_data), columns=["tSNE1", "tSNE2"])
@@ -78,10 +82,10 @@ if __name__ == "__main__":
 
     fig, ax = matplotlib.pyplot.subplots(figsize=(24, 24))
 
-    seaborn.scatterplot(data=tsne_data, x="tSNE1", y="tSNE2", hue="LongStage", ax=ax, legend="full", hue_order=step00.long_stage_order, palette=step00.color_stage_order, s=2000, edgecolor="none")
+    seaborn.scatterplot(data=tsne_data, x="tSNE1", y="tSNE2", hue="LongStage", ax=ax, legend="full", hue_order=step00.long_stage_order[1:], palette=step00.color_stage_order, s=2000, edgecolor="none")
 
-    for stage, color in zip(step00.long_stage_order, step00.color_stage_order):
-        confidence_ellipse(tsne_data.loc[(tsne_data["LongStage"] == stage), "tSNE1"], tsne_data.loc[(tsne_data["LongStage"] == stage), "tSNE2"], ax, color=color, alpha=0.3)
+    for stage, color in zip(step00.long_stage_order[1:], step00.color_stage_order[1:]):
+        confidence_ellipse(tsne_data.loc[(tsne_data["LongStage"] == stage), "tSNE1"], tsne_data.loc[(tsne_data["LongStage"] == stage), "tSNE2"], ax, edgecolor=color, linewidth=5, facecolor="none")
 
     matplotlib.pyplot.title(f"PERMANOVA p={p_value:.2e}")
 

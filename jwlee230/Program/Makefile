@@ -652,6 +652,9 @@ Output/Step38:
 Output/Step38/%.tar: Python/step38.py Output/Step21/%.tsv | Output/Step38 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
 
+Output/Step38/Korea.tar: Python/step38-1.py Output/Step15/Korea.DADA2.homd.tsv | build.log Output/Step38
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpus $(CPUS)
+
 step38: Output/Step38/DADA2.unweighted_unifrac.tar Output/Step38/DADA2.weighted_unifrac.tar Output/Step38/DADA2.jaccard.tar Output/Step38/DADA2.bray_curtis.tar
 .PHONY: step38
 
