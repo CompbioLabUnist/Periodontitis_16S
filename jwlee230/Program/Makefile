@@ -416,6 +416,18 @@ Output/Step20/ANCOM.two.%.tar: Python/step20.py Output/Step17/whole.%.tar.gz Out
 Output/Step20/ANCOM.three.%.tar: Python/step20.py Output/Step17/whole.%.tar.gz Output/Step18/ANCOM.%.tar.gz Output/Step07/whole.tsv | Output/Step20 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --three 1> $@.stdout 2> $@.stderr
 
+Output/Step20/whole.%.tar: Python/step20-2.py Output/Step16/whole.%.tar.gz Output/Step18/whole.%.tar.gz Output/Step07/whole.tsv | Output/Step20 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) 1> $@.stdout 2> $@.stderr
+
+Output/Step20/whole.one.%.tar: Python/step20-2.py Output/Step16/whole.%.tar.gz Output/Step18/whole.%.tar.gz Output/Step07/whole.tsv | Output/Step20 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --one 1> $@.stdout 2> $@.stderr
+
+Output/Step20/whole.two.%.tar: Python/step20-2.py Output/Step16/whole.%.tar.gz Output/Step18/whole.%.tar.gz Output/Step07/whole.tsv | Output/Step20 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --two 1> $@.stdout 2> $@.stderr
+
+Output/Step20/whole.three.%.tar: Python/step20-2.py Output/Step16/whole.%.tar.gz Output/Step18/whole.%.tar.gz Output/Step07/whole.tsv | Output/Step20 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --three 1> $@.stdout 2> $@.stderr
+
 step20: Output/Step20/DADA2.homd.Proportion.tar Output/Step20/one.DADA2.homd.Proportion.tar Output/Step20/two.DADA2.homd.Proportion.tar Output/Step20/three.DADA2.homd.Proportion.tar Output/Step20/ANCOM.DADA2.homd.Proportion.tar Output/Step20/ANCOM.one.DADA2.homd.Proportion.tar Output/Step20/ANCOM.two.DADA2.homd.Proportion.tar Output/Step20/ANCOM.three.DADA2.homd.Proportion.tar
 .PHONY: step20
 
@@ -736,3 +748,13 @@ Output/Step45/%.tsv: Python/step45.py Output/Step21/%.tsv | Output/Step45 build.
 
 step45: Output/Step45/DADA2.weighted_unifrac.tsv
 .PHONY: step45
+
+# Step 46 (Draw violin plot by abundance)
+Output/Step46:
+	mkdir -p $@
+
+Output/Step46/%.png: Python/step46.py Output/Step17/%.tar.gz | build.log Output/Step46
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+step46: Output/Step46/Korea.DADA2.homd.png
+.PHONY: step46
