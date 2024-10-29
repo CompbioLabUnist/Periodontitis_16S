@@ -761,3 +761,22 @@ Output/Step46/%.png: Python/step46.py Output/Step17/%.tar.gz | build.log Output/
 
 step46: Output/Step46/Korea.DADA2.homd.png
 .PHONY: step46
+
+# Step 47 (Gradient Boosting Classifier)
+Output/Step47:
+	mkdir -p $@
+
+Output/Step47/ANCOM.%.tar: Python/step47.py Output/Step17/whole.%.tar.gz Output/Step18/ANCOM.%.tar.gz Output/Step07/whole.tsv | Output/Step47 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) 1> $@.stdout 2> $@.stderr
+
+Output/Step47/ANCOM.one.%.tar: Python/step47.py Output/Step17/whole.%.tar.gz Output/Step18/ANCOM.%.tar.gz Output/Step07/whole.tsv | Output/Step47 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --one 1> $@.stdout 2> $@.stderr
+
+Output/Step47/ANCOM.two.%.tar: Python/step47.py Output/Step17/whole.%.tar.gz Output/Step18/ANCOM.%.tar.gz Output/Step07/whole.tsv | Output/Step47 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --two 1> $@.stdout 2> $@.stderr
+
+Output/Step47/ANCOM.three.%.tar: Python/step47.py Output/Step17/whole.%.tar.gz Output/Step18/ANCOM.%.tar.gz Output/Step07/whole.tsv | Output/Step47 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --three 1> $@.stdout 2> $@.stderr
+
+step47: Output/Step47/ANCOM.DADA2.homd.Proportion.tar Output/Step47/ANCOM.one.DADA2.homd.Proportion.tar Output/Step47/ANCOM.two.DADA2.homd.Proportion.tar Output/Step47/ANCOM.three.DADA2.homd.Proportion.tar
+.PHONY: step47
