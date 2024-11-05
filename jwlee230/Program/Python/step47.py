@@ -15,6 +15,7 @@ import sklearn.ensemble
 import sklearn.metrics
 import sklearn.model_selection
 import sklearn.preprocessing
+import statannotations.Annotator
 import tqdm
 import step00
 
@@ -229,6 +230,7 @@ if __name__ == "__main__":
         fig.savefig(tar_files[-1])
         tar_files.append(f"ROC_{metric}.svg")
         fig.savefig(tar_files[-1])
+        matplotlib.pyplot.close(fig)
 
     # Draw Metrics
     fig, ax = matplotlib.pyplot.subplots(figsize=(32, 18))
@@ -277,6 +279,94 @@ if __name__ == "__main__":
     tar_files.append("scatter.pdf")
     fig.savefig(tar_files[-1])
     tar_files.append("scatter.svg")
+    fig.savefig(tar_files[-1])
+    matplotlib.pyplot.close(fig)
+
+    scores_2 = list()
+    for train_index, test_index in k_fold.split(data[used_columns], data["LongStage"]):
+        x_train, x_test = data.iloc[train_index][best_features], data.iloc[test_index][best_features]
+        y_train, y_test = data.iloc[train_index]["LongStage"], data.iloc[test_index]["LongStage"]
+
+        classifier.fit(x_train, y_train)
+        if args.one or args.three:
+            confusion_matrix = sklearn.metrics.confusion_matrix(y_test, classifier.predict(x_test))
+        else:
+            confusion_matrix = numpy.sum(sklearn.metrics.multilabel_confusion_matrix(y_test, classifier.predict(x_test)), axis=0)
+
+        for metric in step00.selected_derivations:
+            score = step00.aggregate_confusion_matrix(confusion_matrix, metric)
+
+            scores_2.append(("GB", metric, score))
+
+            if metric in score_by_metric:
+                score_by_metric[metric].append(score)
+            else:
+                score_by_metric[metric] = [score]
+
+        label_binarizer = sklearn.preprocessing.LabelBinarizer().fit(data["LongStage"])
+        y_onehot_test = label_binarizer.transform(y_test)
+        y_score = classifier.predict_proba(x_test)
+
+        if len(stage_list) > 2:
+            for class_id, stage in enumerate(stage_list):
+                fpr, tpr, thresholds = sklearn.metrics.roc_curve(y_onehot_test[:, class_id], y_score[:, class_id])
+                roc_auc = sklearn.metrics.auc(fpr, tpr)
+                scores_2.append(("GB", "AUC", roc_auc))
+        else:
+            fpr, tpr, thresholds = sklearn.metrics.roc_curve(y_onehot_test, y_score[:, 1])
+            roc_auc = sklearn.metrics.auc(fpr, tpr)
+            scores_2.append(("GB", "AUC", roc_auc))
+
+    RF_classifier = sklearn.ensemble.RandomForestClassifier(max_features=None, n_jobs=args.cpu, random_state=42)
+    for train_index, test_index in k_fold.split(data[used_columns], data["LongStage"]):
+        x_train, x_test = data.iloc[train_index][best_features], data.iloc[test_index][best_features]
+        y_train, y_test = data.iloc[train_index]["LongStage"], data.iloc[test_index]["LongStage"]
+
+        RF_classifier.fit(x_train, y_train)
+        if args.one or args.three:
+            confusion_matrix = sklearn.metrics.confusion_matrix(y_test, RF_classifier.predict(x_test))
+        else:
+            confusion_matrix = numpy.sum(sklearn.metrics.multilabel_confusion_matrix(y_test, RF_classifier.predict(x_test)), axis=0)
+
+        for metric in step00.selected_derivations:
+            score = step00.aggregate_confusion_matrix(confusion_matrix, metric)
+
+            scores_2.append(("RF", metric, score))
+
+            if metric in score_by_metric:
+                score_by_metric[metric].append(score)
+            else:
+                score_by_metric[metric] = [score]
+
+        label_binarizer = sklearn.preprocessing.LabelBinarizer().fit(data["LongStage"])
+        y_onehot_test = label_binarizer.transform(y_test)
+        y_score = RF_classifier.predict_proba(x_test)
+
+        if len(stage_list) > 2:
+            for class_id, stage in enumerate(stage_list):
+                fpr, tpr, thresholds = sklearn.metrics.roc_curve(y_onehot_test[:, class_id], y_score[:, class_id])
+                roc_auc = sklearn.metrics.auc(fpr, tpr)
+                scores_2.append(("RF", "AUC", roc_auc))
+        else:
+            fpr, tpr, thresholds = sklearn.metrics.roc_curve(y_onehot_test, y_score[:, 1])
+            roc_auc = sklearn.metrics.auc(fpr, tpr)
+            scores_2.append(("RF", "AUC", roc_auc))
+
+    score_data = pandas.DataFrame(scores_2, columns=["Input", "Metrics", "Value"])
+    print(score_data)
+
+    fig, ax = matplotlib.pyplot.subplots(figsize=(18, 18))
+    seaborn.barplot(data=score_data, x="Metrics", y="Value", order=sorted(step00.selected_derivations + ["AUC"]), hue="Input", hue_order=["RF", "GB"], ax=ax)
+    statannotations.Annotator.Annotator(ax, [((derivation, "RF"), (derivation, "GB")) for derivation in sorted(step00.selected_derivations + ["AUC"])], data=score_data, x="Metrics", y="Value", order=sorted(step00.selected_derivations + ["AUC"]), hue="Input", hue_order=["RF", "GB"]).configure(test="Mann-Whitney", text_format="star", loc="inside", comparisons_correction=None, verbose=0).apply_and_annotate()
+    matplotlib.pyplot.grid(True)
+    matplotlib.pyplot.ylabel("Evaluations")
+    matplotlib.pyplot.xlabel("Metrics")
+    matplotlib.pyplot.tight_layout()
+    tar_files.append("comparison.png")
+    fig.savefig(tar_files[-1])
+    tar_files.append("comparison.pdf")
+    fig.savefig(tar_files[-1])
+    tar_files.append("comparison.svg")
     fig.savefig(tar_files[-1])
     matplotlib.pyplot.close(fig)
 
