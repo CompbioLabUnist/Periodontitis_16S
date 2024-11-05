@@ -229,6 +229,7 @@ if __name__ == "__main__":
         fig.savefig(tar_files[-1])
         tar_files.append(f"ROC_{metric}.svg")
         fig.savefig(tar_files[-1])
+        matplotlib.pyplot.close(fig)
 
     # Draw Metrics
     fig, ax = matplotlib.pyplot.subplots(figsize=(32, 18))
