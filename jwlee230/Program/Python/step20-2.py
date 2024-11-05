@@ -1,5 +1,5 @@
 """
-step20-2.py: Random Forest Classifier with ANCOM
+step20-2.py: Random Forest Classifier with whole composition
 """
 import argparse
 import tarfile
@@ -9,12 +9,12 @@ import matplotlib
 import matplotlib.colors
 import matplotlib.pyplot
 import numpy
-import scipy.stats
 import seaborn
 import sklearn.ensemble
 import sklearn.metrics
 import sklearn.model_selection
 import sklearn.preprocessing
+import statannotations.Annotator
 import tqdm
 import step00
 
@@ -22,6 +22,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument("input", type=str, help="Input TAR.gz file")
+    parser.add_argument("ancom", type=str, help="ANCOM TAR.gz file")
     parser.add_argument("tsne", type=str, help="t-SNE TAR.gz file")
     parser.add_argument("clinical", help="Clinical TSV file", type=str)
     parser.add_argument("output", type=str, help="Output TAR file")
@@ -84,7 +85,7 @@ if __name__ == "__main__":
     best_features = list(map(lambda x: x[1], sorted(zip(feature_importances, train_columns), reverse=True)))
 
     # Save Features
-    tar_files.append("Features.csv")
+    tar_files.append("Features_All.csv")
     with open(tar_files[-1], "w") as f:
         f.write("Order,Taxonomy Classification,Importances\n")
         for i, (feature, importance) in enumerate(zip(best_features, sorted(feature_importances, reverse=True))):
@@ -103,11 +104,7 @@ if __name__ == "__main__":
     matplotlib.pyplot.ylabel("Counts")
     matplotlib.pyplot.grid(True)
     matplotlib.pyplot.tight_layout()
-    tar_files.append("importances.png")
-    fig.savefig(tar_files[-1])
-    tar_files.append("importances.pdf")
-    fig.savefig(tar_files[-1])
-    tar_files.append("importances.svg")
+    tar_files.append("importances_All.pdf")
     fig.savefig(tar_files[-1])
     matplotlib.pyplot.close(fig)
 
@@ -133,7 +130,7 @@ if __name__ == "__main__":
         for metric in step00.selected_derivations:
             score = step00.aggregate_confusion_matrix(confusion_matrix, metric)
 
-            scores.append((i, metric, score))
+            scores.append(("All", metric, score))
 
             if metric in score_by_metric:
                 score_by_metric[metric].append(score)
@@ -154,7 +151,7 @@ if __name__ == "__main__":
                 else:
                     score_by_metric["AUC"] = [roc_auc]
 
-                scores.append((i, "AUC", roc_auc))
+                scores.append(("All", "AUC", roc_auc))
         else:
             fpr, tpr, thresholds = sklearn.metrics.roc_curve(y_onehot_test, y_score[:, 1])
             roc_auc = sklearn.metrics.auc(fpr, tpr)
@@ -164,7 +161,81 @@ if __name__ == "__main__":
             else:
                 score_by_metric["AUC"] = [roc_auc]
 
-            scores.append((i, "AUC", roc_auc))
+            scores.append(("All", "AUC", roc_auc))
+
+    ancom_data = step00.read_pickle(args.ancom).dropna(axis="index")
+    del ancom_data["ShortStage"]
+    train_columns = list(ancom_data.columns)[:-1]
+
+    if args.one:
+        ancom_data = ancom_data.loc[(ancom_data["LongStage"].isin(["Healthy", "Stage I"]))]
+        stage_list = ["Healthy", "Stage I"]
+    elif args.two:
+        ancom_data["LongStage"] = list(map(lambda x: "Stage II/III" if (x in ["Stage II", "Stage III"]) else x, ancom_data["LongStage"]))
+        stage_list = ["Healthy", "Stage I", "Stage II/III"]
+    elif args.three:
+        ancom_data["LongStage"] = list(map(lambda x: "Stage I/II/III" if (x in ["Stage I", "Stage II", "Stage III"]) else x, ancom_data["LongStage"]))
+        stage_list = ["Healthy", "Stage I/II/III"]
+    else:
+        stage_list = ["Healthy", "Stage I", "Stage II", "Stage III"]
+
+    print(ancom_data)
+    print(stage_list, set(ancom_data["LongStage"]))
+
+    # Get Feature Importances
+    classifier = sklearn.ensemble.RandomForestClassifier(max_features=None, n_jobs=args.cpu, random_state=42)
+    classifier.fit(ancom_data[train_columns], ancom_data["LongStage"])
+    feature_importances = list(classifier.feature_importances_)
+    best_features = list(map(lambda x: x[1], sorted(zip(feature_importances, train_columns), reverse=True)))
+
+    # Save Features
+    tar_files.append("Features_ANCOM.csv")
+    with open(tar_files[-1], "w") as f:
+        f.write("Order,Taxonomy Classification,Importances\n")
+        for i, (feature, importance) in enumerate(zip(best_features, sorted(feature_importances, reverse=True))):
+            f.write(str(i))
+            f.write(",")
+            f.write(" ".join(feature.split("; ")[5:]).replace("_", " "))
+            f.write(",")
+            f.write(f"{importance:.3f}")
+            f.write("\n")
+
+    # Draw Feature Importances
+    fig, ax = matplotlib.pyplot.subplots(figsize=(32, 18))
+    seaborn.histplot(ancom_data=feature_importances, kde=False, ax=ax)
+    matplotlib.pyplot.title("Feature Importances by Feature Counts")
+    matplotlib.pyplot.xlabel("Feature Importances")
+    matplotlib.pyplot.ylabel("Counts")
+    matplotlib.pyplot.grid(True)
+    matplotlib.pyplot.tight_layout()
+    tar_files.append("importances_ANCOM.pdf")
+    fig.savefig(tar_files[-1])
+    matplotlib.pyplot.close(fig)
+
+    used_columns = best_features
+    i = len(best_features)
+
+    for train_index, test_index in k_fold.split(ancom_data[used_columns], ancom_data["LongStage"]):
+        x_train, x_test = ancom_data.iloc[train_index][used_columns], ancom_data.iloc[test_index][used_columns]
+        y_train, y_test = ancom_data.iloc[train_index]["LongStage"], ancom_data.iloc[test_index]["LongStage"]
+
+        classifier.fit(x_train, y_train)
+        if args.one or args.three:
+            confusion_matrix = sklearn.metrics.confusion_matrix(y_test, classifier.predict(x_test))
+        else:
+            confusion_matrix = numpy.sum(sklearn.metrics.multilabel_confusion_matrix(y_test, classifier.predict(x_test)), axis=0)
+
+        for metric in step00.selected_derivations:
+            score = step00.aggregate_confusion_matrix(confusion_matrix, metric)
+
+            scores.append(("ANCOM", metric, score))
+
+            if metric in score_by_metric:
+                score_by_metric[metric].append(score)
+            else:
+                score_by_metric[metric] = [score]
+
+            scores.append(("ANCOM", "AUC", roc_auc))
 
     for metric in step00.selected_derivations:
         tmp, std = numpy.mean(score_by_metric[metric], dtype=float), numpy.std(score_by_metric[metric], dtype=float)
@@ -175,18 +246,8 @@ if __name__ == "__main__":
     if (highest_metrics["AUC"][0] == 0) or (highest_metrics["AUC"][1] < tmp):
         highest_metrics["AUC"] = (i, tmp, std)
 
-    score_data = pandas.DataFrame(scores, columns=["FeatureCount", "Metrics", "Value"])
+    score_data = pandas.DataFrame(scores, columns=["Input", "Metrics", "Value"])
     print(score_data)
-
-    # Export score data
-    tar_files.append("metrics.csv")
-    with open(tar_files[-1], "w") as f:
-        f.write("Count,Metrics,Mean,STD,95% CI\n")
-        for i in tqdm.trange(1, len(best_features) + 1):
-            for metric in sorted(step00.derivations + ["AUC"]):
-                selected_data = list(score_data.loc[(score_data["FeatureCount"] == i) & (score_data["Metrics"] == metric)]["Value"])
-                ci = scipy.stats.t.interval(0.95, len(selected_data) - 1, loc=numpy.mean(selected_data), scale=scipy.stats.sem(selected_data))
-                f.write(f"{i},{metric},{numpy.mean(selected_data):.3f},{numpy.std(selected_data):.3f},{ci[0]:.3f},{ci[1]:.3f}\n")
 
     # ROC curves
     for metric in tqdm.tqdm(step00.selected_derivations + ["AUC"]):
@@ -196,7 +257,6 @@ if __name__ == "__main__":
         for train_index, test_index in k_fold.split(data[used_columns], data["LongStage"]):
             x_train, x_test = data.iloc[train_index][used_columns], data.iloc[test_index][used_columns]
             y_train, y_test = data.iloc[train_index]["LongStage"], data.iloc[test_index]["LongStage"]
-
             y_score[test_index, :] = classifier.fit(x_train, y_train).predict_proba(x_test)
 
         label_binarizer = sklearn.preprocessing.LabelBinarizer().fit(data["LongStage"])
@@ -209,11 +269,11 @@ if __name__ == "__main__":
             for class_id, (stage, color) in enumerate(zip(stage_list, matplotlib.colors.TABLEAU_COLORS.keys())):
                 fpr, tpr, thresholds = sklearn.metrics.roc_curve(y_onehot_test[:, class_id], y_score[:, class_id])
                 roc_auc = sklearn.metrics.auc(fpr, tpr)
-                sklearn.metrics.RocCurveDisplay(fpr=fpr, tpr=tpr, roc_auc=roc_auc).plot(ax=ax, name=f"ROC curve for {stage}", color=color, linewidth=5)
+                sklearn.metrics.RocCurveDisplay(fpr=fpr, tpr=tpr, roc_auc=roc_auc).plot(ax=ax, name=f"ROC for {stage} (All)", color=color, linewidth=5)
         else:
             fpr, tpr, thresholds = sklearn.metrics.roc_curve(y_onehot_test, y_score[:, 1])
             roc_auc = numpy.mean(score_by_metric["AUC"], dtype=float)
-            sklearn.metrics.RocCurveDisplay(fpr=fpr, tpr=tpr, roc_auc=roc_auc).plot(ax=ax, name="ROC curve", linewidth=5)
+            sklearn.metrics.RocCurveDisplay(fpr=fpr, tpr=tpr, roc_auc=roc_auc).plot(ax=ax, name="ROC curve (All)", linewidth=5)
 
         matplotlib.pyplot.axis("square")
         matplotlib.pyplot.grid(True)
@@ -223,55 +283,28 @@ if __name__ == "__main__":
         matplotlib.pyplot.legend()
 
         matplotlib.pyplot.tight_layout()
-        tar_files.append(f"ROC_{metric}.png")
-        fig.savefig(tar_files[-1])
         tar_files.append(f"ROC_{metric}.pdf")
         fig.savefig(tar_files[-1])
-        tar_files.append(f"ROC_{metric}.svg")
-        fig.savefig(tar_files[-1])
+        matplotlib.pyplot.close(fig)
 
     # Draw Metrics
     fig, ax = matplotlib.pyplot.subplots(figsize=(32, 18))
-    seaborn.barplot(data=score_data, x="Metrics", y="Value", order=sorted(step00.selected_derivations + ["AUC"]), ax=ax)
+    seaborn.barplot(data=score_data, x="Metrics", y="Value", order=sorted(step00.selected_derivations + ["AUC"]), hue="Input", hue_order=["All", "ANCOM"], ax=ax)
+    statannotations.Annotator.Annotator(ax, [((derivation, "All"), (derivation, "ANCOM")) for derivation in sorted(step00.selected_derivations + ["AUC"])], data=score_data, x="Metrics", y="Value", order=sorted(step00.selected_derivations + ["AUC"]), hue="Input", hue_order=["All", "ANCOM"]).configure(test="Mann-Whitney", text_format="star", loc="inside", comparisons_correction=None, verbose=0).apply_and_annotate()
     matplotlib.pyplot.grid(True)
-    matplotlib.pyplot.ylim(0, 1)
     matplotlib.pyplot.ylabel("Evaluations")
     matplotlib.pyplot.xlabel("Metrics")
     matplotlib.pyplot.title("Write something")
     matplotlib.pyplot.tight_layout()
-    tar_files.append("metrics.png")
-    fig.savefig(tar_files[-1])
     tar_files.append("metrics.pdf")
     fig.savefig(tar_files[-1])
-    tar_files.append("metrics.svg")
-    fig.savefig(tar_files[-1])
     matplotlib.pyplot.close(fig)
-
-    # Draw Each Metics
-    for metric in tqdm.tqdm(step00.selected_derivations):
-        fig, ax = matplotlib.pyplot.subplots(figsize=(32, 18))
-        seaborn.lineplot(data=score_data.query("Metrics == '%s'" % metric,), x="FeatureCount", y="Value", ax=ax, markers=True, markersize=20)
-        matplotlib.pyplot.grid(True)
-        matplotlib.pyplot.ylim(0, 1)
-        matplotlib.pyplot.title(f"Best {highest_metrics[metric][0]} feature(s) at {highest_metrics[metric][1]:.3f}±{highest_metrics[metric][2]}")
-        matplotlib.pyplot.tight_layout()
-        tar_files.append(metric + ".png")
-        fig.savefig(tar_files[-1])
-        tar_files.append(metric + ".pdf")
-        fig.savefig(tar_files[-1])
-        tar_files.append(metric + ".svg")
-        fig.savefig(tar_files[-1])
-        matplotlib.pyplot.close(fig)
 
     # Draw scatter plot
     fig, ax = matplotlib.pyplot.subplots(figsize=(36, 36))
     seaborn.scatterplot(data=tsne_data, x="tSNE1", y="tSNE2", hue="LongStage", style="LongStage", ax=ax, legend="full", s=1000)
     matplotlib.pyplot.tight_layout()
-    tar_files.append("scatter.png")
-    fig.savefig(tar_files[-1])
     tar_files.append("scatter.pdf")
-    fig.savefig(tar_files[-1])
-    tar_files.append("scatter.svg")
     fig.savefig(tar_files[-1])
     matplotlib.pyplot.close(fig)
 

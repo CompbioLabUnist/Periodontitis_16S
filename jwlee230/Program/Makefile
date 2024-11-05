@@ -416,19 +416,19 @@ Output/Step20/ANCOM.two.%.tar: Python/step20.py Output/Step17/whole.%.tar.gz Out
 Output/Step20/ANCOM.three.%.tar: Python/step20.py Output/Step17/whole.%.tar.gz Output/Step18/ANCOM.%.tar.gz Output/Step07/whole.tsv | Output/Step20 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --three 1> $@.stdout 2> $@.stderr
 
-Output/Step20/whole.%.tar: Python/step20-2.py Output/Step16/whole.%.tar.gz Output/Step18/whole.%.tar.gz Output/Step07/whole.tsv | Output/Step20 build.log
+Output/Step20/whole.%.tar: Python/step20-2.py Output/Step16/whole.%.tar.gz Output/Step17/whole.%.tar.gz Output/Step18/whole.%.tar.gz Output/Step07/whole.tsv | Output/Step20 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) 1> $@.stdout 2> $@.stderr
 
-Output/Step20/whole.one.%.tar: Python/step20-2.py Output/Step16/whole.%.tar.gz Output/Step18/whole.%.tar.gz Output/Step07/whole.tsv | Output/Step20 build.log
+Output/Step20/whole.one.%.tar: Python/step20-2.py Output/Step16/whole.%.tar.gz Output/Step17/whole.%.tar.gz Output/Step18/whole.%.tar.gz Output/Step07/whole.tsv | Output/Step20 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --one 1> $@.stdout 2> $@.stderr
 
-Output/Step20/whole.two.%.tar: Python/step20-2.py Output/Step16/whole.%.tar.gz Output/Step18/whole.%.tar.gz Output/Step07/whole.tsv | Output/Step20 build.log
+Output/Step20/whole.two.%.tar: Python/step20-2.py Output/Step16/whole.%.tar.gz Output/Step17/whole.%.tar.gz Output/Step18/whole.%.tar.gz Output/Step07/whole.tsv | Output/Step20 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --two 1> $@.stdout 2> $@.stderr
 
-Output/Step20/whole.three.%.tar: Python/step20-2.py Output/Step16/whole.%.tar.gz Output/Step18/whole.%.tar.gz Output/Step07/whole.tsv | Output/Step20 build.log
+Output/Step20/whole.three.%.tar: Python/step20-2.py Output/Step16/whole.%.tar.gz Output/Step17/whole.%.tar.gz Output/Step18/whole.%.tar.gz Output/Step07/whole.tsv | Output/Step20 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --three 1> $@.stdout 2> $@.stderr
 
-step20: Output/Step20/DADA2.homd.Proportion.tar Output/Step20/one.DADA2.homd.Proportion.tar Output/Step20/two.DADA2.homd.Proportion.tar Output/Step20/three.DADA2.homd.Proportion.tar Output/Step20/ANCOM.DADA2.homd.Proportion.tar Output/Step20/ANCOM.one.DADA2.homd.Proportion.tar Output/Step20/ANCOM.two.DADA2.homd.Proportion.tar Output/Step20/ANCOM.three.DADA2.homd.Proportion.tar
+step20: Output/Step20/DADA2.homd.Proportion.tar Output/Step20/one.DADA2.homd.Proportion.tar Output/Step20/two.DADA2.homd.Proportion.tar Output/Step20/three.DADA2.homd.Proportion.tar Output/Step20/ANCOM.DADA2.homd.Proportion.tar Output/Step20/ANCOM.one.DADA2.homd.Proportion.tar Output/Step20/ANCOM.two.DADA2.homd.Proportion.tar Output/Step20/ANCOM.three.DADA2.homd.Proportion.tar Output/Step20/whole.DADA2.homd.Proportion.tar Output/Step20/whole.one.DADA2.homd.Proportion.tar Output/Step20/whole.two.DADA2.homd.Proportion.tar Output/Step20/whole.three.DADA2.homd.Proportion.tar
 .PHONY: step20
 
 # Step 21 (Extract TSV from Beta-diversity)
