@@ -653,7 +653,7 @@ Output/Step38/%.tar: Python/step38.py Output/Step21/%.tsv | Output/Step38 build.
 	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
 
 Output/Step38/Korea.tar: Python/step38-1.py Output/Step15/Korea.DADA2.homd.tsv | build.log Output/Step38
-	$(DOCKER) python3 $(addprefix /,$^ $@) --cpus $(CPUS)
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpus $(CPUS) 1> $@.stdout 2> $@.stderr
 
 step38: Output/Step38/DADA2.unweighted_unifrac.tar Output/Step38/DADA2.weighted_unifrac.tar Output/Step38/DADA2.jaccard.tar Output/Step38/DADA2.bray_curtis.tar
 .PHONY: step38
@@ -780,3 +780,19 @@ Output/Step47/ANCOM.three.%.tar: Python/step47.py Output/Step17/whole.%.tar.gz O
 
 step47: Output/Step47/ANCOM.DADA2.homd.Proportion.tar Output/Step47/ANCOM.one.DADA2.homd.Proportion.tar Output/Step47/ANCOM.two.DADA2.homd.Proportion.tar Output/Step47/ANCOM.three.DADA2.homd.Proportion.tar
 .PHONY: step47
+
+# Step 48 (Aitchson distance)
+Output/Step48:
+	mkdir -p $@
+
+Output/Step48/%.tsv: Python/step48.py Output/Step15/%.homd.tsv | Output/Step48 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) 1> $@.stdout 2> $@.stderr
+
+Output/Step48/%.png: Python/step22.py Output/Step48/%.tsv | build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) 1> $@.stdout 2> $@.stderr
+
+Output/Step48/%.tar: Python/step38.py Output/Step48/%.tsv | build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+step48: Output/Step48/Korea.DADA2.tsv
+.PHONY: step48
