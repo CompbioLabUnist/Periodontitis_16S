@@ -82,7 +82,7 @@ if __name__ == "__main__":
 
     fig, ax = matplotlib.pyplot.subplots(figsize=(24, 24))
 
-    seaborn.scatterplot(data=tsne_data, x="tSNE1", y="tSNE2", hue="LongStage", ax=ax, legend="full", hue_order=step00.long_stage_order[1:], palette=step00.color_stage_order, s=2000, edgecolor="none")
+    seaborn.scatterplot(data=tsne_data, x="tSNE1", y="tSNE2", hue="LongStage", ax=ax, legend="full", hue_order=step00.long_stage_order[1:], palette=step00.color_stage_order[1:], s=2000, edgecolor="none")
 
     for stage, color in zip(step00.long_stage_order[1:], step00.color_stage_order[1:]):
         confidence_ellipse(tsne_data.loc[(tsne_data["LongStage"] == stage), "tSNE1"], tsne_data.loc[(tsne_data["LongStage"] == stage), "tSNE2"], ax, edgecolor=color, linewidth=5, facecolor="none")
