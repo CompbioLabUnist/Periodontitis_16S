@@ -2,6 +2,7 @@
 step22.py: Draw t-SNE from Beta-diversity TSV
 """
 import argparse
+import itertools
 import matplotlib
 from matplotlib.patches import Ellipse
 import matplotlib.pyplot
@@ -64,7 +65,7 @@ if __name__ == "__main__":
     raw_data = raw_data.loc[ids, ids]
     print(raw_data)
 
-    tsne_data = pandas.DataFrame(sklearn.manifold.TSNE(n_components=2, init="pca", random_state=42, method="exact", n_jobs=args.cpu).fit_transform(raw_data), columns=["tSNE1", "tSNE2"])
+    tsne_data = pandas.DataFrame(sklearn.manifold.TSNE(n_components=2, init="pca", random_state=42, method="exact", n_jobs=args.cpu).fit_transform(raw_data), index=ids, columns=["tSNE1", "tSNE2"])
 
     for column in tsne_data.columns:
         tsne_data[column] = sklearn.preprocessing.scale(tsne_data[column])
@@ -73,8 +74,13 @@ if __name__ == "__main__":
     tsne_data["LongStage"] = list(map(step00.change_short_into_long, tsne_data["ShortStage"]))
     print(tsne_data)
 
+    for a, b in itertools.combinations(step00.long_stage_order[1:], r=2):
+        selected_data = tsne_data.loc[(tsne_data["LongStage"] == a) | (tsne_data["LongStage"] == b)]
+        p_value = skbio.stats.distance.permanova(skbio.stats.distance.DistanceMatrix(raw_data.loc[selected_data.index, selected_data.index], ids=list(selected_data.index)), grouping=list(selected_data["LongStage"]))["p-value"]
+        print(a, b, p_value)
+
     p_value = skbio.stats.distance.permanova(skbio.stats.distance.DistanceMatrix(raw_data, ids=list(raw_data.index)), grouping=list(tsne_data["LongStage"]))["p-value"]
-    print(p_value)
+    print("All:", p_value)
 
     matplotlib.use("Agg")
     matplotlib.rcParams.update(step00.matplotlib_parameters)

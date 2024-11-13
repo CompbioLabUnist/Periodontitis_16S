@@ -2,6 +2,7 @@
 step48.py: Aitchson distance
 """
 import argparse
+import itertools
 import multiprocessing
 import numpy
 import pandas
@@ -42,6 +43,10 @@ if __name__ == "__main__":
     with multiprocessing.Pool(args.cpu) as pool:
         for x in tqdm.tqdm(patient_list):
             output_data.loc[x, :] = pool.starmap(aitchson_distance, [(x, y) for y in patient_list])
+    print(output_data)
+
+    for x, y in tqdm.tqdm(list(itertools.combinations(patient_list, r=2))):
+        output_data.loc[x, y] = output_data.loc[y, x]
     print(output_data)
 
     output_data.to_csv(args.output, sep="\t")
