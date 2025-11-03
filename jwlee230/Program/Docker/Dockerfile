@@ -10,6 +10,6 @@ ADD requirements.txt /
 RUN pip install --no-cache-dir --requirement /requirements.txt
 
 # R
-RUN mkdir -p $HOME/.R && echo "MAKEFLAGS = -j" > $HOME/.R/Makevars && conda deactivate &&conda create -n ancombc_env -c conda-forge -c bioconda r-base bioconductor-ancombc -y
+RUN mkdir -p $HOME/.R && echo "MAKEFLAGS = -j" > $HOME/.R/Makevars && conda create -n ancombc_env -c conda-forge -c bioconda r-base bioconductor-ancombc -y
 
 CMD ["/bin/bash"]
