@@ -10,8 +10,9 @@ TOOLS =
 DOCKER = docker run --rm $(VOLUME_OPTS) $(RUN_OPTS) $(IMAGE_NAME)
 
 # Options
-VOLUME_OPTS = --volume $(abspath Output):/Output --volume $(abspath Data):/Data --volume $(abspath Python):/Python
+VOLUME_OPTS = --volume $(abspath Output):/Output --volume $(abspath Data):/Data --volume $(abspath Python):/Python --volume $(abspath R):/R
 RUN_OPTS = --tty --cpus="$(CPUS)" --memory="$(MEMS)"
+R = /opt/conda/envs/ancombc_env/bin/Rscript --vanilla
 
 # General
 all:
@@ -796,3 +797,16 @@ Output/Step48/%.tar: Python/step38.py Output/Step48/%.tsv | build.log
 
 step48: Output/Step48/Korea.DADA2.tsv
 .PHONY: step48
+
+# Step 49 (ANCOM-BC2)
+Output/Step49:
+	mkdir -p $@
+
+Output/Step49/%.tsv: Python/step49.py Output/Step15/%.tsv | Output/Step49 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+Output/Step49/%.ANCOMBC.tsv: R/run_ANCOMBC2.R Output/Step49/%.tsv Output/Step07/whole.tsv | build.log
+	$(DOCKER) $(R) $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+step49: Output/Step49/whole.DADA2.homd.tsv Output/Step49/Korea.DADA2.homd.tsv Output/Step49/whole.DADA2.homd.ANCOMBC.tsv Output/Step49/Korea.DADA2.homd.ANCOMBC.tsv
+.PHONY: step49
