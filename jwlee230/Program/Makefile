@@ -810,3 +810,16 @@ Output/Step49/%.ANCOMBC.tsv: R/run_ANCOMBC2.R Output/Step49/%.tsv Output/Step07/
 
 step49: Output/Step49/whole.DADA2.homd.tsv Output/Step49/Korea.DADA2.homd.tsv Output/Step49/whole.DADA2.homd.ANCOMBC.tsv Output/Step49/Korea.DADA2.homd.ANCOMBC.tsv
 .PHONY: step49
+
+# Step 50 (Select by ANCOM-BC2)
+Output/Step50:
+	mkdir -p $@
+
+Output/Step50/Korea.%.tar.gz: Python/step50.py Output/Step16/Korea.%.tar.gz Output/Step49/Korea.%.ANCOMBC.tsv | Output/Step50 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+Output/Step50/whole.%.tar.gz: Python/step50.py Output/Step16/whole.%.tar.gz Output/Step49/whole.%.ANCOMBC.tsv | Output/Step50 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+step50: Output/Step50/Korea.DADA2.homd.tar.gz Output/Step50/whole.DADA2.homd.tar.gz
+.PHONY: step50
