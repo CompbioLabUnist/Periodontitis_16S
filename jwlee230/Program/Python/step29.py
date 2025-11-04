@@ -22,7 +22,7 @@ if __name__ == "__main__":
 
     matplotlib.use("Agg")
     matplotlib.rcParams.update(step00.matplotlib_parameters)
-    seaborn.set(context="poster", style="whitegrid", rc=step00.matplotlib_parameters)
+    seaborn.set_theme(context="poster", style="whitegrid", rc=step00.matplotlib_parameters)
 
     data = step00.read_pickle(args.input)
     for i, index in enumerate(data.index):
@@ -40,12 +40,13 @@ if __name__ == "__main__":
 
     fig, ax = matplotlib.pyplot.subplots(figsize=(1.5 * len(taxa), 24))
 
-    seaborn.boxplot(data=output_data, x="taxonomy", y="Value", hue="LongStage", order=taxa, hue_order=step00.long_stage_order, palette=step00.color_stage_dict, ax=ax)
+    seaborn.boxplot(data=output_data, x="taxonomy", y="Value", hue="LongStage", order=taxa, hue_order=step00.long_stage_order[1:], palette=step00.color_stage_dict, ax=ax)
 
     matplotlib.pyplot.xlabel("")
     matplotlib.pyplot.ylabel("Proprotion")
+    matplotlib.pyplot.ylim((-0.05, 1.05))
     matplotlib.pyplot.xticks(rotation="vertical")
-    matplotlib.pyplot.legend(loc="upper center")
+    matplotlib.pyplot.legend(loc="upper right")
     matplotlib.pyplot.tight_layout()
 
     fig.savefig(args.output)

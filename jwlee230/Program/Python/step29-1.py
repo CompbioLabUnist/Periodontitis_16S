@@ -24,7 +24,7 @@ if __name__ == "__main__":
 
     matplotlib.use("Agg")
     matplotlib.rcParams.update(step00.matplotlib_parameters)
-    seaborn.set(context="poster", style="whitegrid", rc=step00.matplotlib_parameters)
+    seaborn.set_theme(context="poster", style="whitegrid", rc=step00.matplotlib_parameters)
 
     data = step00.read_pickle(args.input)
     for i, index in enumerate(data.index):
@@ -36,12 +36,12 @@ if __name__ == "__main__":
 
     figures = list()
     for taxon in taxa:
-        stat, p = scipy.stats.kruskal(*[data.loc[(data["LongStage"] == stage), taxon] for stage in step00.long_stage_order])
+        stat, p = scipy.stats.kruskal(*[data.loc[(data["LongStage"] == stage), taxon] for stage in step00.long_stage_order[1:]])
 
         fig, ax = matplotlib.pyplot.subplots(figsize=(24, 24))
 
-        seaborn.violinplot(data=data, x="LongStage", y=taxon, order=step00.long_stage_order, palette=step00.color_stage_dict, inner="box", cut=1, linewidth=10, ax=ax)
-        statannotations.Annotator.Annotator(ax, list(itertools.combinations(step00.long_stage_order, r=2)), data=data, x="LongStage", y=taxon, order=step00.long_stage_order).configure(test="Mann-Whitney", text_format="star", comparisons_correction=None, loc="inside", verbose=0).apply_and_annotate()
+        seaborn.violinplot(data=data, x="LongStage", y=taxon, order=step00.long_stage_order[1:], palette=step00.color_stage_dict, inner="box", cut=1, linewidth=10, ax=ax)
+        statannotations.Annotator.Annotator(ax, list(itertools.combinations(step00.long_stage_order[1:], r=2)), data=data, x="LongStage", y=taxon, order=step00.long_stage_order[1:]).configure(test="Mann-Whitney", text_format="star", comparisons_correction=None, loc="inside", verbose=0).apply_and_annotate()
 
         matplotlib.pyplot.title(f"Kruskal-Wallis p={p:.2e}")
         matplotlib.pyplot.xlabel("")
