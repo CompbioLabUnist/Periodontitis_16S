@@ -30,4 +30,8 @@ if __name__ == "__main__":
     transfomed_data = pandas.DataFrame(skbio.stats.composition.clr(input_data.to_numpy()), index=input_data.index, columns=input_data.columns)
     print(transfomed_data)
 
+    transfomed_data["ShortStage"] = stage_data[0]
+    transfomed_data["LongStage"] = stage_data[1]
+    print(transfomed_data)
+
     step00.make_pickle(args.output, transfomed_data)
