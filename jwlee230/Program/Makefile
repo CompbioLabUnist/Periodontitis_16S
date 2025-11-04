@@ -823,3 +823,36 @@ Output/Step50/whole.%.tar.gz: Python/step50.py Output/Step16/whole.%.tar.gz Outp
 
 step50: Output/Step50/Korea.DADA2.homd.tar.gz Output/Step50/whole.DADA2.homd.tar.gz
 .PHONY: step50
+
+# Step 51 (ANCOM-BC2 cluster map)
+Output/Step51:
+	mkdir -p $@
+
+Output/Step51/%.png: Python/step28.py Output/Step50/%.tar.gz Data/치주염선정샘플_250샘플.xlsx Data/metadata.csv | Output/Step51 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+step51: Output/Step51/Korea.DADA2.homd.png
+.PHONY: step51
+
+# Step 52 (ANCOM-BC2 box plot)
+Output/Step52:
+	mkdir -p $@
+
+Output/Step52/%.png: Python/step29.py Output/Step50/%.tar.gz | Output/Step52 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+Output/Step52/%.tar: Python/step29-1.py Output/Step50/%.tar.gz | Output/Step52 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+step52: Output/Step52/Korea.DADA2.homd.png Output/Step52/Korea.DADA2.homd.tar
+.PHONY: step52
+
+# Step 53 (Centered log-ratio)
+Output/Step53:
+	mkdir -p $@
+
+Output/Step53/%.tar.gz: Python/step53.py Output/Step50/%.tar.gz | Output/Step53 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+step53: Output/Step53/Korea.DADA2.homd.tar.gz Output/Step53/whole.DADA2.homd.tar.gz
+.PHONY: step53
