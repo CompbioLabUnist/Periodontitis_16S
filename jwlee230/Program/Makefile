@@ -856,3 +856,13 @@ Output/Step53/%.tar.gz: Python/step53.py Output/Step50/%.tar.gz | Output/Step53 
 
 step53: Output/Step53/Korea.DADA2.homd.tar.gz Output/Step53/whole.DADA2.homd.tar.gz
 .PHONY: step53
+
+# Step 54 (Random forest classifier with CLR)
+Output/Step54:
+	mkdir -p $@
+
+Output/Step54/Korea.%.tar: Python/step54.py Output/Step53/Korea.%.tar.gz Output/Step07/Korea.tsv | Output/Step54 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) 1> $@.stdout 2> $@.stderr
+
+step54: Output/Step54/Korea.DADA2.homd.tar
+.PHONY: step54
