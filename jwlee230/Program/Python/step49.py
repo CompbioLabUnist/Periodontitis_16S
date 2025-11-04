@@ -3,7 +3,6 @@ step49.py: merge TSV
 """
 import argparse
 import pandas
-import step00
 
 
 if __name__ == "__main__":
