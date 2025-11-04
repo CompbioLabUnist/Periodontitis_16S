@@ -3,7 +3,6 @@ step28.py: ANCOM cluster map
 """
 import argparse
 import matplotlib
-import matplotlib.pyplot
 import numpy
 import pandas
 import seaborn
@@ -32,7 +31,7 @@ if __name__ == "__main__":
 
     matplotlib.use("Agg")
     matplotlib.rcParams.update(step00.matplotlib_parameters)
-    seaborn.set(context="poster", style="whitegrid", rc=step00.matplotlib_parameters)
+    seaborn.set_theme(context="poster", style="whitegrid", rc=step00.matplotlib_parameters)
 
     data = step00.read_pickle(args.input)
     print(data)
@@ -48,7 +47,7 @@ if __name__ == "__main__":
     print(info_data)
 
     metadata = pandas.read_csv(args.metadata)
-    metadata = metadata.loc[(metadata["Classification"].isin(stage_dict.keys()))]
+    metadata = metadata.loc[(metadata["Classification"].isin(list(stage_dict.keys())))]
     metadata["Stage"] = list(map(lambda x: stage_dict[x], list(metadata["Classification"])))
     meta_ids = list(metadata[id_column])
     print(metadata)
