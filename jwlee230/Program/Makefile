@@ -864,5 +864,34 @@ Output/Step54:
 Output/Step54/Korea.%.tar: Python/step54.py Output/Step53/Korea.%.tar.gz Output/Step07/Korea.tsv | Output/Step54 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) 1> $@.stdout 2> $@.stderr
 
-step54: Output/Step54/Korea.DADA2.homd.tar
+Output/Step54/Korea.one.%.tar: Python/step54.py Output/Step53/Korea.%.tar.gz Output/Step07/Korea.tsv | Output/Step54 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --one 1> $@.stdout 2> $@.stderr
+
+Output/Step54/Korea.two.%.tar: Python/step54.py Output/Step53/Korea.%.tar.gz Output/Step07/Korea.tsv | Output/Step54 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --two 1> $@.stdout 2> $@.stderr
+
+Output/Step54/Korea.three.%.tar: Python/step54.py Output/Step53/Korea.%.tar.gz Output/Step07/Korea.tsv | Output/Step54 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --three 1> $@.stdout 2> $@.stderr
+
+step54: Output/Step54/Korea.DADA2.homd.tar Output/Step54/Korea.one.DADA2.homd.tar Output/Step54/Korea.two.DADA2.homd.tar Output/Step54/Korea.three.DADA2.homd.tar
 .PHONY: step54
+
+# Step 55 (Venn Diagram for ANCOM v. ANCOM-BC2)
+Output/Step55:
+	mkdir -p $@
+
+Output/Step55/Korea.%.png: Python/step55.py Output/Step17/Korea.%.tar.gz Output/Step50/Korea.%.tar.gz | Output/Step55 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+step55: Output/Step55/Korea.DADA2.homd.png
+.PHONY: step55
+
+# Step 56 (RF comparison)
+Output/Step56:
+	mkdir -p $@
+
+Output/Step56/whole-proportion.%.tsv: Python/step56.py Output/Step16/Korea.%.Proportion.tar.gz Output/Step07/whole.tsv | Output/Step56 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) 1> $@.stdout 2> $@.stderr
+
+Output/Step56/ANCOM-proportion.%.tsv: Python/step56.py Output/Step17/Korea.%.Proportion.tar.gz Output/Step07/whole.tsv | Output/Step56 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) 1> $@.stdout 2> $@.stderr
