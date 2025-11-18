@@ -10,6 +10,7 @@ if __name__ == "__main__":
 
     parser.add_argument("input", help="Input TSV file", type=str)
     parser.add_argument("output", help="Output TSV file", type=str)
+    parser.add_argument("--data", help="Database choices", choices=["Korea", "Spain", "Portugal"], required=True)
 
     args = parser.parse_args()
 
@@ -21,7 +22,7 @@ if __name__ == "__main__":
     input_data = pandas.read_csv(args.input, sep="\t", skiprows=[1], keep_default_na=False, na_values={})
     print(input_data)
 
-    output_data = input_data.loc[(input_data["DB"] == "Korea")]
+    output_data = input_data.loc[(input_data["DB"] == args.data)]
     print(output_data)
 
     with open(args.output, "w") as f:
