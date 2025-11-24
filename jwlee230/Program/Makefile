@@ -1,4 +1,4 @@
-# Variables
+# Variable AND DB!='NA's
 DATE := $(shell date "+%Y%m%d")
 RANDOM := $(shell bash -c 'echo $$RANDOM')
 IMAGE_NAME = periodontitis:latest
@@ -276,11 +276,20 @@ step13: step13-prepare step13-whole step13-Korea
 Output/Step14:
 	mkdir -p $@
 
+Output/Step14/whole.DADA2.%.qza: Output/Step04/whole.table.qza Output/Step13/whole.DADA2.%.qza | Output/Step14 build.log
+	$(DOCKER) qiime taxa collapse --i-table $(addprefix /,$(word 1,$^)) --i-taxonomy $(addprefix /,$(word 2,$^)) --p-level 7 --o-collapsed-table $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
+
 Output/Step14/Korea.DADA2.%.qza: Output/Step04/Korea.table.qza Output/Step13/Korea.DADA2.%.qza | Output/Step14 build.log
 	$(DOCKER) qiime taxa collapse --i-table $(addprefix /,$(word 1,$^)) --i-taxonomy $(addprefix /,$(word 2,$^)) --p-level 7 --o-collapsed-table $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
 
 Output/Step14/Korea.Deblur.%.qza: Output/Step05/Korea.table.qza Output/Step13/Korea.Deblur.%.qza | Output/Step14 build.log
 	$(DOCKER) qiime taxa collapse --i-table $(addprefix /,$(word 1,$^)) --i-taxonomy $(addprefix /,$(word 2,$^)) --p-level 7 --o-collapsed-table $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
+
+Output/Step14/Spain.DADA2.%.qza: Output/Step14/whole.DADA2.%.qza Output/Step07/whole.tsv | build.log
+	$(DOCKER) qiime feature-table filter-samples --i-table $(addprefix /,$(word 1,$^)) --m-metadata-file $(addprefix /,$(word 2,$^)) --p-where "DB=='Spain' AND LongStage!='NA'" --o-filtered-table $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
+
+Output/Step14/Portugal.DADA2.%.qza: Output/Step14/whole.DADA2.%.qza Output/Step07/whole.tsv | build.log
+	$(DOCKER) qiime feature-table filter-samples --i-table $(addprefix /,$(word 1,$^)) --m-metadata-file $(addprefix /,$(word 2,$^)) --p-where "DB=='Portugal' AND DB!='NA'" --o-filtered-table $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
 
 Output/Step14/%.pseudocount.qza: Output/Step14/%.qza | build.log
 	$(DOCKER) qiime composition add-pseudocount --i-table $(addprefix /,$(word 1,$^)) --o-composition-table $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
@@ -288,11 +297,17 @@ Output/Step14/%.pseudocount.qza: Output/Step14/%.qza | build.log
 Output/Step14/Korea.%.site.qzv: Output/Step14/Korea.%.qza Output/Step07/Korea.tsv | build.log
 	$(DOCKER) qiime composition ancom --i-table $(addprefix /,$(word 1,$^)) --m-metadata-file $(addprefix /,$(word 2,$^)) --m-metadata-column "LongStage" --o-visualization $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
 
+Output/Step14/Spain.%.site.qzv: Output/Step14/Spain.%.qza Output/Step07/Spain.tsv | build.log
+	$(DOCKER) qiime composition ancom --i-table $(addprefix /,$(word 1,$^)) --m-metadata-file $(addprefix /,$(word 2,$^)) --m-metadata-column "LongStage" --o-visualization $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
+
+Output/Step14/Portugal.%.site.qzv: Output/Step14/Portugal.%.qza Output/Step07/Portugal.tsv | build.log
+	$(DOCKER) qiime composition ancom --i-table $(addprefix /,$(word 1,$^)) --m-metadata-file $(addprefix /,$(word 2,$^)) --m-metadata-column "LongStage" --o-visualization $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
+
 Output/Step14/%/ancom.tsv: Output/Step14/%.qzv | build.log
 	$(DOCKER) rm -rfv $(addprefix /,$(@D))
 	$(DOCKER) qiime tools export --input-path $(addprefix /,$(word 1,$^)) --output-path $(addprefix /,$(@D)) 1> $(@D).stdout 2> $(@D).stderr
 
-step14: Output/Step14/Korea.DADA2.homd.qza Output/Step14/Korea.DADA2.homd.pseudocount.qza Output/Step14/Korea.DADA2.homd.pseudocount.site.qzv Output/Step14/Korea.DADA2.homd.pseudocount.site/ancom.tsv
+step14: Output/Step14/Korea.DADA2.homd.qza Output/Step14/Korea.DADA2.homd.pseudocount.qza Output/Step14/Korea.DADA2.homd.pseudocount.site.qzv Output/Step14/Korea.DADA2.homd.pseudocount.site/ancom.tsv Output/Step14/Spain.DADA2.homd.qza Output/Step14/Spain.DADA2.homd.pseudocount.qza Output/Step14/Spain.DADA2.homd.pseudocount.site.qzv Output/Step14/Spain.DADA2.homd.pseudocount.site/ancom.tsv Output/Step14/Portugal.DADA2.homd.qza Output/Step14/Portugal.DADA2.homd.pseudocount.qza Output/Step14/Portugal.DADA2.homd.pseudocount.site.qzv Output/Step14/Portugal.DADA2.homd.pseudocount.site/ancom.tsv
 .PHONY: step14
 
 # Step 15 (Get TSV files)
@@ -792,7 +807,7 @@ Output/Step48/%.png: Python/step22.py Output/Step48/%.tsv | build.log
 Output/Step48/%.tar: Python/step38.py Output/Step48/%.tsv | build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
 
-step48: Output/Step48/Korea.DADA2.tsv
+step48: Output/Step48/Korea.DADA2.tsv Output/Step48/Korea.DADA2.png Output/Step48/Korea.DADA2.tar
 .PHONY: step48
 
 # Step 49 (ANCOM-BC2)
@@ -925,3 +940,13 @@ Output/Step56/ANCOM-BC2.%.png: Python/step56-1.py Output/Step56/ANCOM-CLR.%.tsv 
 
 step56: Output/Step56/whole-proportion.DADA2.homd.tsv Output/Step56/ANCOM-proportion.DADA2.homd.tsv Output/Step56/ANCOM-CLR.DADA2.homd.tsv Output/Step56/ANCOMBC2-CLR.DADA2.homd.tsv Output/Step56/ANCOM-Whole.DADA2.homd.png Output/Step56/Proportion-CLR.DADA2.homd.png Output/Step56/ANCOM-BC2.DADA2.homd.png
 .PHONY: step56
+
+# Step 57 (Venn Diagram for DB)
+Output/Step57:
+	mkdir -p $@
+
+Output/Step57/DB.%.png: Python/step57.py Output/Step14/Korea.%.pseudocount.site/ancom.tsv Output/Step14/Spain.%.pseudocount.site/ancom.tsv Output/Step14/Portugal.%.pseudocount.site/ancom.tsv | Output/Step57 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+step57: Output/Step57/DB.DADA2.homd.png
+.PHONY: step57
