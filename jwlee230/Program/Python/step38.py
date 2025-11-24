@@ -52,7 +52,7 @@ if __name__ == "__main__":
         fig, ax = matplotlib.pyplot.subplots(figsize=(18, 18))
         seaborn.violinplot(data=output_data, x="stage", y="distance", order=step00.long_stage_order[1:], ax=ax, inner="box", palette=step00.color_stage_dict, cut=1, linewidth=10)
         # statannotations.Annotator.Annotator(ax, list(itertools.combinations(step00.long_stage_order, r=2)), data=output_data, x="stage", y="distance", order=step00.long_stage_order).configure(test="t-test_ind", text_format="star", loc="inside", comparisons_correction=None, verbose=0).apply_and_annotate()
-        compare_list = list(filter(lambda x: x[0] == base_stage, list(itertools.combinations(step00.long_stage_order[1:], r=2))))
+        compare_list = list(filter(lambda x: base_stage in x, list(itertools.combinations(step00.long_stage_order[1:], r=2))))
         statannotations.Annotator.Annotator(ax, compare_list, data=output_data, x="stage", y="distance", order=step00.long_stage_order[1:]).configure(test="Mann-Whitney", text_format="star", loc="inside", comparisons_correction=None, verbose=True).apply_and_annotate()
 
         matplotlib.pyplot.xlabel("")

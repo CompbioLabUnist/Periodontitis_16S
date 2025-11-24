@@ -61,7 +61,7 @@ if __name__ == "__main__":
 
     data = data.loc[:, metadata.index]
 
-    g = seaborn.clustermap(data=data, xticklabels=False, yticklabels=True, row_cluster=True, col_cluster=False, col_colors=list(map(lambda x: step00.color_stage_dict[step00.change_ID_into_long_stage(x)], list(data.columns))), figsize=(32, 32), cmap="YlOrRd", cbar_pos=(0.90, 0.8, 0.05, 0.18), dendrogram_ratio=(0.2, 0.01))
+    g = seaborn.clustermap(data=data, xticklabels=False, yticklabels=True, row_cluster=True, col_cluster=True, col_colors=list(map(lambda x: step00.color_stage_dict[step00.change_ID_into_long_stage(x)], list(data.columns))), figsize=(32, 32), cmap="YlOrRd", cbar_pos=(0.90, 0.8, 0.05, 0.18), dendrogram_ratio=(0.2, 0.2))
 
     g.savefig(args.output)
     g.savefig(args.output.replace(".png", ".pdf"))

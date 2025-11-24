@@ -6,6 +6,7 @@ import matplotlib
 import matplotlib.pyplot
 import pandas
 import seaborn
+import tqdm
 import venn
 import step00
 
@@ -31,8 +32,6 @@ if __name__ == "__main__":
     venn_data["ANCOM-BC2"] = set(list(ancom_bc_data.columns)[:-2])
     print(ancom_bc_data)
 
-    print(sorted(venn_data["ANCOM"] & venn_data["ANCOM-BC2"]))
-
     fig, ax = matplotlib.pyplot.subplots(figsize=(6, 6))
 
     ax = venn.venn(venn_data, fmt="{size:d} ({percentage:.1f}%)", fontsize=12, ax=ax)
@@ -42,3 +41,14 @@ if __name__ == "__main__":
     fig.savefig(args.output.replace(".png", ".pdf"))
     fig.savefig(args.output.replace(".png", ".svg"))
     matplotlib.pyplot.close(fig)
+
+    taxa_list = sorted(venn_data["ANCOM"] | venn_data["ANCOM-BC2"])
+    output_data = pandas.DataFrame(index=taxa_list, columns=["ANCOM", "ANCOM-BC2"], dtype=str)
+    for taxon in tqdm.tqdm(taxa_list):
+        for column in ["ANCOM", "ANCOM-BC2"]:
+            if taxon in venn_data[column]:
+                output_data.loc[taxon, column] = "O"
+            else:
+                output_data.loc[taxon, column] = "X"
+    output_data.index = list(map(step00.simplified_taxonomy, taxa_list))
+    print(output_data)
