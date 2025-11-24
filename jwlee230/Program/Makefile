@@ -56,7 +56,7 @@ run: tmp.sh | log Output
 .PHONY: run
 
 # Actual
-latest: step05 step15 step16 step17 step18 step20 step22 step24 step26 step27 step28 step29 step30 step31 step36 step37 step38 step39 step40 step41
+latest: step05 step15 step16 step17 step18 step20 step22 step24 step26 step27 step28 step29 step30 step31 step36 step37 step38 step39 step40 step41 step49 step50 step51 step52 step53 step54 step55 step56
 .PHONY: latest
 
 # Step 01 (Make manifest files)
@@ -137,10 +137,10 @@ Output/Step07:
 Output/Step07/whole.tsv: Python/step07.py Data/치주염선정샘플_250샘플.xlsx Data/SRX8063765.xlsx Data/SRX16741789.xlsx $(wildcard Data/fastq/*.fastq.gz) $(wildcard Data/SRX8063765/*.fastq.gz) $(wildcard Data/SRX16741789/*.fastq.gz) | Output/Step07 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
 
-Output/Step07/Korea.tsv: Python/step07-1.py Output/Step07/whole.tsv | build.log
-	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+Output/Step07/%.tsv: Python/step07-1.py Output/Step07/whole.tsv | build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --data '$*' 1> $@.stdout 2> $@.stderr
 
-step07: Output/Step07/whole.tsv Output/Step07/Korea.tsv
+step07: Output/Step07/whole.tsv Output/Step07/Korea.tsv Output/Step07/Spain.tsv Output/Step07/Portugal.tsv
 .PHONY: step07
 
 # Step 08 (Summary FeatureTable and FeatureData)
@@ -653,9 +653,6 @@ Output/Step38:
 Output/Step38/%.tar: Python/step38.py Output/Step21/%.tsv | Output/Step38 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
 
-Output/Step38/Korea.tar: Python/step38-1.py Output/Step15/Korea.DADA2.homd.tsv | build.log Output/Step38
-	$(DOCKER) python3 $(addprefix /,$^ $@) --cpus $(CPUS) 1> $@.stdout 2> $@.stderr
-
 step38: Output/Step38/DADA2.unweighted_unifrac.tar Output/Step38/DADA2.weighted_unifrac.tar Output/Step38/DADA2.jaccard.tar Output/Step38/DADA2.bray_curtis.tar
 .PHONY: step38
 
@@ -854,7 +851,10 @@ Output/Step53:
 Output/Step53/%.tar.gz: Python/step53.py Output/Step50/%.tar.gz | Output/Step53 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
 
-step53: Output/Step53/Korea.DADA2.homd.tar.gz Output/Step53/whole.DADA2.homd.tar.gz
+Output/Step53/ANCOM-%.tar.gz: Python/step53.py Output/Step17/%.tar.gz | Output/Step53 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+step53: Output/Step53/Korea.DADA2.homd.tar.gz Output/Step53/whole.DADA2.homd.tar.gz Output/Step53/ANCOM-Korea.DADA2.homd.tar.gz Output/Step53/ANCOM-whole.DADA2.homd.tar.gz
 .PHONY: step53
 
 # Step 54 (Random forest classifier with CLR)
@@ -873,7 +873,19 @@ Output/Step54/Korea.two.%.tar: Python/step54.py Output/Step53/Korea.%.tar.gz Out
 Output/Step54/Korea.three.%.tar: Python/step54.py Output/Step53/Korea.%.tar.gz Output/Step07/Korea.tsv | Output/Step54 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --three 1> $@.stdout 2> $@.stderr
 
-step54: Output/Step54/Korea.DADA2.homd.tar Output/Step54/Korea.one.DADA2.homd.tar Output/Step54/Korea.two.DADA2.homd.tar Output/Step54/Korea.three.DADA2.homd.tar
+Output/Step54/ANCOM-Korea.%.tar: Python/step54.py Output/Step53/ANCOM-Korea.%.tar.gz Output/Step07/Korea.tsv | Output/Step54 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) 1> $@.stdout 2> $@.stderr
+
+Output/Step54/ANCOM-Korea.one.%.tar: Python/step54.py Output/Step53/ANCOM-Korea.%.tar.gz Output/Step07/Korea.tsv | Output/Step54 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --one 1> $@.stdout 2> $@.stderr
+
+Output/Step54/ANCOM-Korea.two.%.tar: Python/step54.py Output/Step53/ANCOM-Korea.%.tar.gz Output/Step07/Korea.tsv | Output/Step54 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --two 1> $@.stdout 2> $@.stderr
+
+Output/Step54/ANCOM-Korea.three.%.tar: Python/step54.py Output/Step53/ANCOM-Korea.%.tar.gz Output/Step07/Korea.tsv | Output/Step54 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --three 1> $@.stdout 2> $@.stderr
+
+step54: Output/Step54/Korea.DADA2.homd.tar Output/Step54/Korea.one.DADA2.homd.tar Output/Step54/Korea.two.DADA2.homd.tar Output/Step54/Korea.three.DADA2.homd.tar Output/Step54/ANCOM-Korea.DADA2.homd.tar Output/Step54/ANCOM-Korea.one.DADA2.homd.tar Output/Step54/ANCOM-Korea.two.DADA2.homd.tar Output/Step54/ANCOM-Korea.three.DADA2.homd.tar
 .PHONY: step54
 
 # Step 55 (Venn Diagram for ANCOM v. ANCOM-BC2)
@@ -893,5 +905,23 @@ Output/Step56:
 Output/Step56/whole-proportion.%.tsv: Python/step56.py Output/Step16/Korea.%.Proportion.tar.gz Output/Step07/whole.tsv | Output/Step56 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) 1> $@.stdout 2> $@.stderr
 
-Output/Step56/ANCOM-proportion.%.tsv: Python/step56.py Output/Step17/Korea.%.Proportion.tar.gz Output/Step07/whole.tsv | Output/Step56 build.log
+Output/Step56/ANCOM-proportion.%.tsv: Python/step56.py Output/Step17/Korea.%.Proportion.tar.gz Output/Step07/Korea.tsv | Output/Step56 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) 1> $@.stdout 2> $@.stderr
+
+Output/Step56/ANCOM-CLR.%.tsv: Python/step56.py Output/Step53/ANCOM-Korea.%.tar.gz Output/Step07/Korea.tsv | Output/Step56 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) 1> $@.stdout 2> $@.stderr
+
+Output/Step56/ANCOMBC2-CLR.%.tsv: Python/step56.py Output/Step53/Korea.%.tar.gz Output/Step07/Korea.tsv | Output/Step56 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) 1> $@.stdout 2> $@.stderr
+
+Output/Step56/ANCOM-Whole.%.png: Python/step56-1.py Output/Step56/whole-proportion.%.tsv Output/Step56/ANCOM-proportion.%.tsv | build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --name 'DAT' 'Whole' 1> $@.stdout 2> $@.stderr
+
+Output/Step56/Proportion-CLR.%.png: Python/step56-1.py Output/Step56/ANCOM-proportion.%.tsv Output/Step56/ANCOM-CLR.%.tsv | build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --name 'Proportion' 'CLR' 1> $@.stdout 2> $@.stderr
+
+Output/Step56/ANCOM-BC2.%.png: Python/step56-1.py Output/Step56/ANCOM-CLR.%.tsv Output/Step56/ANCOMBC2-CLR.%.tsv | build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --name 'ANCOM' 'ANCOM-BC2' 1> $@.stdout 2> $@.stderr
+
+step56: Output/Step56/whole-proportion.DADA2.homd.tsv Output/Step56/ANCOM-proportion.DADA2.homd.tsv Output/Step56/ANCOM-CLR.DADA2.homd.tsv Output/Step56/ANCOMBC2-CLR.DADA2.homd.tsv Output/Step56/ANCOM-Whole.DADA2.homd.png Output/Step56/Proportion-CLR.DADA2.homd.png Output/Step56/ANCOM-BC2.DADA2.homd.png
+.PHONY: step56
