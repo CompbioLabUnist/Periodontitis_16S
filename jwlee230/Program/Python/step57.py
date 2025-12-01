@@ -41,7 +41,7 @@ if __name__ == "__main__":
     venn_data["Portugal"] = set(portugal_data.index)
     print(portugal_data)
 
-    fig, ax = matplotlib.pyplot.subplots(figsize=(6, 6))
+    fig, ax = matplotlib.pyplot.subplots(figsize=(8, 8))
 
     ax = venn.venn(venn_data, fmt="{size:d} ({percentage:.1f}%)", fontsize=12, ax=ax)
     matplotlib.pyplot.tight_layout()
