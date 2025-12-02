@@ -1,4 +1,4 @@
-# Variable AND DB!='NA's
+# Variable
 DATE := $(shell date "+%Y%m%d")
 RANDOM := $(shell bash -c 'echo $$RANDOM')
 IMAGE_NAME = periodontitis:latest
@@ -289,7 +289,7 @@ Output/Step14/Spain.DADA2.%.qza: Output/Step14/whole.DADA2.%.qza Output/Step07/w
 	$(DOCKER) qiime feature-table filter-samples --i-table $(addprefix /,$(word 1,$^)) --m-metadata-file $(addprefix /,$(word 2,$^)) --p-where "DB=='Spain' AND LongStage!='NA'" --o-filtered-table $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
 
 Output/Step14/Portugal.DADA2.%.qza: Output/Step14/whole.DADA2.%.qza Output/Step07/whole.tsv | build.log
-	$(DOCKER) qiime feature-table filter-samples --i-table $(addprefix /,$(word 1,$^)) --m-metadata-file $(addprefix /,$(word 2,$^)) --p-where "DB=='Portugal' AND DB!='NA'" --o-filtered-table $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
+	$(DOCKER) qiime feature-table filter-samples --i-table $(addprefix /,$(word 1,$^)) --m-metadata-file $(addprefix /,$(word 2,$^)) --p-where "DB=='Portugal' AND LongStage!='NA'" --o-filtered-table $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
 
 Output/Step14/%.pseudocount.qza: Output/Step14/%.qza | build.log
 	$(DOCKER) qiime composition add-pseudocount --i-table $(addprefix /,$(word 1,$^)) --o-composition-table $(addprefix /,$@) 1> $@.stdout 2> $@.stderr
@@ -814,13 +814,22 @@ step48: Output/Step48/Korea.DADA2.tsv Output/Step48/Korea.DADA2.png Output/Step4
 Output/Step49:
 	mkdir -p $@
 
-Output/Step49/%.tsv: Python/step49.py Output/Step15/%.tsv | Output/Step49 build.log
+Output/Step49/whole.%.tsv: Python/step49.py Output/Step15/whole.%.tsv | Output/Step49 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+Output/Step49/Korea.%.tsv: Python/step49.py Output/Step15/Korea.%.tsv | Output/Step49 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+Output/Step49/Spain.%.tsv: Python/step49-1.py Output/Step15/whole.%.tsv Output/Step07/Spain.tsv | Output/Step49 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+Output/Step49/Portugal.%.tsv: Python/step49-1.py Output/Step15/whole.%.tsv Output/Step07/Portugal.tsv | Output/Step49 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
 
 Output/Step49/%.ANCOMBC.tsv: R/run_ANCOMBC2.R Output/Step49/%.tsv Output/Step07/whole.tsv | build.log
 	$(DOCKER) $(R) $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
 
-step49: Output/Step49/whole.DADA2.homd.tsv Output/Step49/Korea.DADA2.homd.tsv Output/Step49/whole.DADA2.homd.ANCOMBC.tsv Output/Step49/Korea.DADA2.homd.ANCOMBC.tsv
+step49: Output/Step49/whole.DADA2.homd.tsv Output/Step49/whole.DADA2.homd.ANCOMBC.tsv Output/Step49/Korea.DADA2.homd.tsv Output/Step49/Korea.DADA2.homd.ANCOMBC.tsv Output/Step49/Spain.DADA2.homd.tsv Output/Step49/Spain.DADA2.homd.ANCOMBC.tsv Output/Step49/Portugal.DADA2.homd.tsv Output/Step49/Portugal.DADA2.homd.ANCOMBC.tsv
 .PHONY: step49
 
 # Step 50 (Select by ANCOM-BC2)
@@ -833,7 +842,13 @@ Output/Step50/Korea.%.tar.gz: Python/step50.py Output/Step16/Korea.%.tar.gz Outp
 Output/Step50/whole.%.tar.gz: Python/step50.py Output/Step16/whole.%.tar.gz Output/Step49/whole.%.ANCOMBC.tsv | Output/Step50 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
 
-step50: Output/Step50/Korea.DADA2.homd.tar.gz Output/Step50/whole.DADA2.homd.tar.gz
+Output/Step50/Spain.%.tar.gz: Python/step50.py Output/Step16/whole.%.tar.gz Output/Step49/Spain.%.ANCOMBC.tsv | Output/Step50 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+Output/Step50/Portugal.%.tar.gz: Python/step50.py Output/Step16/whole.%.tar.gz Output/Step49/Portugal.%.ANCOMBC.tsv | Output/Step50 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+step50: Output/Step50/Korea.DADA2.homd.tar.gz Output/Step50/whole.DADA2.homd.tar.gz Output/Step50/Spain.DADA2.homd.tar.gz Output/Step50/Portugal.DADA2.homd.tar.gz
 .PHONY: step50
 
 # Step 51 (ANCOM-BC2 cluster map)
@@ -900,6 +915,18 @@ Output/Step54/ANCOM-Korea.two.%.tar: Python/step54.py Output/Step53/ANCOM-Korea.
 Output/Step54/ANCOM-Korea.three.%.tar: Python/step54.py Output/Step53/ANCOM-Korea.%.tar.gz Output/Step07/Korea.tsv | Output/Step54 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --three 1> $@.stdout 2> $@.stderr
 
+Output/Step54/ANCOM-whole.%.tar: Python/step54-1.py Output/Step53/ANCOM-whole.%.tar.gz  Output/Step07/whole.tsv | Output/Step54 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) 1> $@.stdout 2> $@.stderr
+
+Output/Step54/ANCOM-whole.one.%.tar: Python/step54-1.py Output/Step53/ANCOM-whole.%.tar.gz  Output/Step07/whole.tsv | Output/Step54 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --one 1> $@.stdout 2> $@.stderr
+
+Output/Step54/ANCOM-whole.two.%.tar: Python/step54-1.py Output/Step53/ANCOM-whole.%.tar.gz  Output/Step07/whole.tsv | Output/Step54 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --two 1> $@.stdout 2> $@.stderr
+
+Output/Step54/ANCOM-whole.three.%.tar: Python/step54-1.py Output/Step53/ANCOM-whole.%.tar.gz  Output/Step07/whole.tsv | Output/Step54 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --three 1> $@.stdout 2> $@.stderr
+
 step54: Output/Step54/Korea.DADA2.homd.tar Output/Step54/Korea.one.DADA2.homd.tar Output/Step54/Korea.two.DADA2.homd.tar Output/Step54/Korea.three.DADA2.homd.tar Output/Step54/ANCOM-Korea.DADA2.homd.tar Output/Step54/ANCOM-Korea.one.DADA2.homd.tar Output/Step54/ANCOM-Korea.two.DADA2.homd.tar Output/Step54/ANCOM-Korea.three.DADA2.homd.tar
 .PHONY: step54
 
@@ -910,7 +937,10 @@ Output/Step55:
 Output/Step55/Korea.%.png: Python/step55.py Output/Step17/Korea.%.tar.gz Output/Step50/Korea.%.tar.gz | Output/Step55 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
 
-step55: Output/Step55/Korea.DADA2.homd.png
+Output/Step55/ANCOMBC.%.png: Python/step55-1.py Output/Step50/Korea.DADA2.homd.tar.gz Output/Step50/Spain.DADA2.homd.tar.gz Output/Step50/Portugal.DADA2.homd.tar.gz | Output/Step55 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+step55: Output/Step55/Korea.DADA2.homd.png Output/Step55/ANCOMBC.DADA2.homd.png
 .PHONY: step55
 
 # Step 56 (RF comparison)
