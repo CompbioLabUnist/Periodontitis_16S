@@ -50,6 +50,6 @@ if __name__ == "__main__":
                 output_data.loc[taxon, column] = "O"
             else:
                 output_data.loc[taxon, column] = "X"
-    output_data.index = list(map(step00.simplified_taxonomy, taxa_list))
+    # output_data.index = list(map(step00.simplified_taxonomy, taxa_list))
     output_data.to_csv(args.output.replace(".png", ".tsv"), sep="\t")
     print(output_data)

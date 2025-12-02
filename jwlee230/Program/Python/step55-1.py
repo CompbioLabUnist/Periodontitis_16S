@@ -36,7 +36,7 @@ if __name__ == "__main__":
     venn_data["Portugal"] = set(list(portugal_data.columns)[:-2])
     print(portugal_data)
 
-    fig, ax = matplotlib.pyplot.subplots(figsize=(8, 8))
+    fig, ax = matplotlib.pyplot.subplots(figsize=(6, 6))
 
     ax = venn.venn(venn_data, fmt="{size:d} ({percentage:.1f}%)", fontsize=12, ax=ax)
     matplotlib.pyplot.tight_layout()
@@ -54,6 +54,6 @@ if __name__ == "__main__":
                 output_data.loc[taxon, column] = "O"
             else:
                 output_data.loc[taxon, column] = "X"
-    output_data.index = list(map(step00.simplified_taxonomy, taxa_list))
+    # output_data.index = list(map(step00.simplified_taxonomy, taxa_list))
     output_data.to_csv(args.output.replace(".png", ".tsv"), sep="\t")
     print(output_data)

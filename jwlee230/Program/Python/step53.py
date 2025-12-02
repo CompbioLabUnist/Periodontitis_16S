@@ -27,11 +27,12 @@ if __name__ == "__main__":
         input_data.loc[index, :] = input_data.loc[index, :] / sum(input_data.loc[index, :]) + 1e-6
     print(input_data)
 
-    transfomed_data = pandas.DataFrame(skbio.stats.composition.clr(input_data.to_numpy()), index=input_data.index, columns=input_data.columns)
-    print(transfomed_data)
+    transformed_data = pandas.DataFrame(skbio.stats.composition.clr(input_data.to_numpy()), index=input_data.index, columns=input_data.columns)
+    print(transformed_data)
+    transformed_data.to_csv(args.output.replace("tar.gz", "tsv"), sep="\t")
 
-    transfomed_data["ShortStage"] = stage_data[0]
-    transfomed_data["LongStage"] = stage_data[1]
-    print(transfomed_data)
+    transformed_data["ShortStage"] = stage_data[0]
+    transformed_data["LongStage"] = stage_data[1]
+    print(transformed_data)
 
-    step00.make_pickle(args.output, transfomed_data)
+    step00.make_pickle(args.output, transformed_data)
