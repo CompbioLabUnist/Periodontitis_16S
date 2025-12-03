@@ -884,7 +884,10 @@ Output/Step53/%.tar.gz: Python/step53.py Output/Step50/%.tar.gz | Output/Step53 
 Output/Step53/ANCOM-%.tar.gz: Python/step53.py Output/Step17/%.tar.gz | Output/Step53 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
 
-step53: Output/Step53/Korea.DADA2.homd.tar.gz Output/Step53/whole.DADA2.homd.tar.gz Output/Step53/ANCOM-Korea.DADA2.homd.tar.gz Output/Step53/ANCOM-whole.DADA2.homd.tar.gz
+Output/Step53/No-%.tar.gz: Python/step53.py Output/Step16/%.tar.gz | Output/Step53 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) 1> $@.stdout 2> $@.stderr
+
+step53: Output/Step53/Korea.DADA2.homd.tar.gz Output/Step53/whole.DADA2.homd.tar.gz Output/Step53/ANCOM-Korea.DADA2.homd.tar.gz Output/Step53/ANCOM-whole.DADA2.homd.tar.gz Output/Step53/No-Korea.DADA2.homd.tar.gz Output/Step53/No-whole.DADA2.homd.tar.gz
 .PHONY: step53
 
 # Step 54 (Random forest classifier with CLR)
@@ -927,7 +930,19 @@ Output/Step54/ANCOM-whole.two.%.tar: Python/step54-1.py Output/Step53/ANCOM-whol
 Output/Step54/ANCOM-whole.three.%.tar: Python/step54-1.py Output/Step53/ANCOM-whole.%.tar.gz  Output/Step07/whole.tsv | Output/Step54 build.log
 	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --three 1> $@.stdout 2> $@.stderr
 
-step54: Output/Step54/Korea.DADA2.homd.tar Output/Step54/Korea.one.DADA2.homd.tar Output/Step54/Korea.two.DADA2.homd.tar Output/Step54/Korea.three.DADA2.homd.tar Output/Step54/ANCOM-Korea.DADA2.homd.tar Output/Step54/ANCOM-Korea.one.DADA2.homd.tar Output/Step54/ANCOM-Korea.two.DADA2.homd.tar Output/Step54/ANCOM-Korea.three.DADA2.homd.tar
+Output/Step54/No-Korea.%.tar: Python/step54.py Output/Step53/No-Korea.%.tar.gz Output/Step07/Korea.tsv | Output/Step54 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) 1> $@.stdout 2> $@.stderr
+
+Output/Step54/No-Korea.one.%.tar: Python/step54.py Output/Step53/No-Korea.%.tar.gz Output/Step07/Korea.tsv | Output/Step54 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --one 1> $@.stdout 2> $@.stderr
+
+Output/Step54/No-Korea.two.%.tar: Python/step54.py Output/Step53/No-Korea.%.tar.gz Output/Step07/Korea.tsv | Output/Step54 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --two 1> $@.stdout 2> $@.stderr
+
+Output/Step54/No-Korea.three.%.tar: Python/step54.py Output/Step53/No-Korea.%.tar.gz Output/Step07/Korea.tsv | Output/Step54 build.log
+	$(DOCKER) python3 $(addprefix /,$^ $@) --cpu $(CPUS) --three 1> $@.stdout 2> $@.stderr
+
+step54: Output/Step54/Korea.DADA2.homd.tar Output/Step54/Korea.one.DADA2.homd.tar Output/Step54/Korea.two.DADA2.homd.tar Output/Step54/Korea.three.DADA2.homd.tar Output/Step54/ANCOM-Korea.DADA2.homd.tar Output/Step54/ANCOM-Korea.one.DADA2.homd.tar Output/Step54/ANCOM-Korea.two.DADA2.homd.tar Output/Step54/ANCOM-Korea.three.DADA2.homd.tar Output/Step54/No-Korea.DADA2.homd.tar Output/Step54/No-Korea.one.DADA2.homd.tar Output/Step54/No-Korea.two.DADA2.homd.tar Output/Step54/No-Korea.three.DADA2.homd.tar
 .PHONY: step54
 
 # Step 55 (Venn Diagram for ANCOM v. ANCOM-BC2)
